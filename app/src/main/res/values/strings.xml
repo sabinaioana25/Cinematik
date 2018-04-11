@@ -1,0 +1,38 @@
+<resources>
+
+    <!-- Sort by -->
+    <string name="app_name">Cinematik</string>
+    <string name="pref_sort_by_title">Sort By</string>
+    <string name="pref_sort_by_key" translatable="false">sort_by</string>
+    <string name="pref_sort_by_popularity_desc_label">Popularity</string>
+    <string name="pref_sort_by_rating_desc_label">Rating</string>
+    <string name="pref_sort_by_popularity_desc" translatable="false">popularity.desc</string>
+    <string name="pref_sort_by_rating_desc" translatable="false">vote_average.desc</string>
+    <string name="pref_vote_count_title">Vote Count</string>
+    <string name="prev_vote_count_key">vote_count.gte</string>
+    <string name="pref_vote_count_default_value">2000</string>
+
+    <!-- Detail Activity -->
+    <string name="IMDB">IMDB</string>
+    <string name="category_overview">Overview</string>
+    <string name="category_crew">Crew</string>
+    <string name="category_director">Director</string>
+    <string name="category_writers">Writers</string>
+    <string name="category_budget">Budget</string>
+    <string name="category_revenue">Revenue</string>
+    <string name="category_cast">Cast</string>
+    <string name="category_reviews">Reviews</string>
+    <string name="category_trailer">Trailer</string>
+    <string name="category_see_full_cast">See Full Cast</string>
+    <string name="category_see_all_reviews">See All Reviews</string>
+    <string name="content_description_poster">Poster</string>
+    <string name="authors_label">Authors</string>
+    <string name="producers_label">Writers</string>
+    <string name="directors_label">Director</string>
+    <string name="crew_label">Crew</string>
+    <string name="overview_label">Overview</string>
+    <string name="layout_breaker_line">layout_breaker</string>
+    <string name="todo">TODO</string>
+
+</resources>
+

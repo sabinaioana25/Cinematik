@@ -1,0 +1,316 @@
+package com.example.android.cinematik.utilities;
+
+import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.example.android.cinematik.pojos.MovieItem;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+
+/**
+ * Created by Sabina on 3/19/2018.
+ */
+
+public class MovieJsonUtils {
+
+    private static final String LOG_TAG = MovieJsonUtils.class.getSimpleName();
+
+    /**
+     * Specific keys for JSON Parsing
+     */
+    private static final String KEY_ID = "id";
+    private static final String KEY_POSTER = "poster_path";
+
+    /*
+     * DetailActivity review components
+     */
+    private static final String URL_PATH_REVIEWS = "reviews";
+    private static final String DETAIL_REVIEW_RESULTS = "results";
+    private static final String DETAIL_REVIEW_AUTHOR_NAME = "author";
+    private static final String DETAIL_REVIEW_CONTENT = "content";
+    /*
+    DetailActivity components to extract from JSON
+     */
+    private static final String KEY_MOVIE_ID = "id";
+    private static final String KEY_RESULTS = "results";
+    private static final String KEY_BACKDROP_PATH = "backdrop_path";
+    private static final String KEY_TITLE = "title";
+    private static final String KEY_OVERVIEW = "overview";
+    private static final String KEY_RELEASE_DATE = "release_date";
+    private static final String DETAIL_GENRES = "genres";
+    private static final String KEY_GENRE_NAME = "name";
+    private static final String DETAIL_BUDGET = "budget";
+    private static final String DETAIL_VOTE_AVERAGE = "vote_average";
+    private static final String DETAIL_REVENUE = "revenue";
+    private static final String DETAIL_RUNTIME = "runtime";
+    private static final String DETAIL_CREDITS = "credits";
+    private static final String DETAIL_CAST = "cast";
+    private static final String CAST_CHARACTER_NAME = "character";
+    private static final String CAST_PROFILE_PATH = "profile_path";
+    private static final String CAST_ACTOR_NAME = "name";
+    private static final String DETAIL_CREW = "crew";
+    private static final String CREW_PERSON_NAME = "name";
+    private static final String CREW_JOB = "job";
+    private static final String CREW_JOB_DIRECTOR = "Director";
+    private static final String CREW_JOB_WRITER = "Writer";
+    private static final String CREW_JOB_PRODUCER = "Producer";
+    private static final String CREW_PROFILE_PATH = "profile_path";
+
+    private MovieJsonUtils() {
+    }
+
+    public static List<MovieItem> getMovieData(String requestUrl, Context context) {
+        URL url = NetworkUtils.createUrl(requestUrl);
+        String jsonResponse = null;
+
+        try {
+            jsonResponse = NetworkUtils.makeHttpRequest(url, context);
+        } catch (IOException e) {
+        }
+
+        List<MovieItem> movieItems = extractFeatureFromJson(jsonResponse);
+        return movieItems;
+    }
+
+    public static List<MovieItem> extractFeatureFromJson(String jsonResponse) {
+
+         /*
+        Create an empty List<MovieItem>
+         */
+        List<MovieItem> movieItemsMain = new ArrayList<MovieItem>();
+
+        if (TextUtils.isEmpty(jsonResponse)) {
+            return null;
+        }
+
+        /*
+        Build the list of Movie objects
+         */
+        try {
+            JSONObject baseJsonResponse = new JSONObject(jsonResponse);
+            JSONArray movieResult = baseJsonResponse.getJSONArray(KEY_RESULTS);
+            String poster = null;
+            int id;
+            for (int i = 0; i < movieResult.length(); i++) {
+                JSONObject movieObject = movieResult.getJSONObject(i);
+
+                // Check if poster exists
+                poster = movieObject.optString(KEY_POSTER);
+
+                // Check if ID exists
+                id = movieObject.optInt(KEY_ID);
+
+                MovieItem movieItemMainActivity = new MovieItem(poster,
+                        id,
+                        null,
+                        null,
+                        null,
+                        null,
+                        0,
+                        null,
+                        null,
+                        0,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
+                movieItemsMain.add(movieItemMainActivity);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return movieItemsMain;
+    }
+
+    public static MovieItem extractDetailsFromJson(String jsonResponse) {
+
+        /*
+        Create an empty List<MovieItem>
+         */
+        MovieItem movieList = null;
+
+        if (TextUtils.isEmpty(jsonResponse)) {
+            return null;
+        }
+         /*
+        Build the list of Movie objects
+         */
+
+        try {
+            JSONObject baseJsonResponse = new JSONObject(jsonResponse);
+
+            // poster
+            String posterPath = null;
+//            String jsonPosterPath = baseJsonResponse.optString(KEY_POSTER);
+//            if (jsonPosterPath != null) {
+//                posterPath = NetworkUtils.buildUrlPoster(jsonPosterPath.substring(1),
+//                        NetworkUtils.URL_POSTER_SIZE_VALUE);
+//            }
+
+            // ID
+            int jsonID = baseJsonResponse.getInt(KEY_ID);
+
+
+            // backdrop_path
+//            String backdropPath = null;
+//            String jsonBackdropPath = baseJsonResponse.optString(KEY_BACKDROP_PATH);
+//            if (jsonBackdropPath != null) {
+//                backdropPath = NetworkUtils.buildUrlPoster(
+//                        jsonBackdropPath.substring(1),
+//                        NetworkUtils.URL_BACKDROP_SIZE_VALUE);
+//            }
+
+            // Check if title exists
+            String title = null;
+            title = baseJsonResponse.optString(KEY_TITLE);
+            Log.e(LOG_TAG, "getTitle() is functioning" + title);
+
+            // Check if release date exists
+            String releaseDate = null;
+            releaseDate = baseJsonResponse.optString(KEY_RELEASE_DATE);
+
+            // Check if genres exist
+            List<String> jsonGenres = new ArrayList<>();
+            JSONArray jsonGenresArray = baseJsonResponse.optJSONArray(DETAIL_GENRES);
+            if (jsonGenresArray != null) {
+                for (int i = 0; i < Math.min(baseJsonResponse.length(), 2); i++) {
+                    JSONObject jsonCurrentMovie = jsonGenresArray.getJSONObject(i);
+                    jsonGenres.add(jsonCurrentMovie.optString(KEY_GENRE_NAME));
+                }
+                Log.e(LOG_TAG, "getGenres() is functioning" + jsonGenres);
+            }
+
+            // Check if budget exists
+            int budget = 0;
+            budget = baseJsonResponse.optInt(DETAIL_BUDGET);
+
+            // Check if voteAverage number exists
+            String voteAverage = null;
+            voteAverage = baseJsonResponse.optString(DETAIL_VOTE_AVERAGE);
+
+            // Check if overview exists
+            String overview = null;
+            overview = baseJsonResponse.optString(KEY_OVERVIEW);
+
+            // Check if total revenue exists
+            int revenue = 0;
+            revenue = baseJsonResponse.optInt(DETAIL_REVENUE);
+
+            // Check if runtime exists
+            String runtime = null;
+            runtime = baseJsonResponse.optString(DETAIL_RUNTIME);
+
+            // Check for Cast members
+//            List<CastMember> jsonCastMembers = new ArrayList<>();
+//            JSONObject jsonCredits = baseJsonResponse.getJSONObject(DETAIL_CREDITS);
+//            JSONArray jsonCastArray = jsonCredits.getJSONArray(DETAIL_CAST);
+//            if (jsonCastArray.length() > 0) {
+//                for (int i = 0; i < Math.min(jsonCastArray.length(), 5); i++) {
+//                    JSONObject jsonCast = jsonCastArray.optJSONObject(i);
+//                    String jsonCastActorName = jsonCast.optString(CAST_ACTOR_NAME);
+//                    String jsonCastCharName = jsonCast.optString(CAST_CHARACTER_NAME);
+//
+//                    String jsonCastProfilePath = jsonCast.optString(CAST_PROFILE_PATH);
+//                    String jsonCastProfile = null;
+//                    if (jsonCastProfilePath != null) {
+//                        jsonCastProfile = NetworkUtils.buildUrlPoster
+//                                (jsonCastProfilePath.substring(1),
+//                                        NetworkUtils.URL_PROFILE_SIZE_VALUE);
+//                    }
+//                    jsonCastMembers.add(new CastMember(jsonCastActorName,
+//                            jsonCastCharName,
+//                            jsonCastProfile));
+//                }
+//            }
+
+            // Check for crewMembers
+//            List<CastMember> jsonCrewMembers = new ArrayList<>();
+//            JSONArray jsonCrewArray = jsonCredits.getJSONArray(DETAIL_CREW);
+//            String jsonCrewDirector = null;
+//            String jsonCrewProducer = null;
+//            if (jsonCrewArray.length() > 0) {
+//                for (int i = 0; i < jsonCrewArray.length(); i++) {
+//                    JSONObject jsonCrew = jsonCrewArray.getJSONObject(i);
+//                    String jsonCrewJob = jsonCrew.optString(CREW_JOB);
+//                    if (!(jsonCrewJob.equals(CREW_JOB_DIRECTOR) || jsonCrewJob.equals
+//                            (CREW_JOB_WRITER) || jsonCrewJob.equals(CREW_JOB_PRODUCER)))
+//                        continue;
+//
+//                    String jsonCrewPersonName = jsonCrew.optString(CREW_PERSON_NAME);
+//
+//                    if (jsonCrewJob.equals(CREW_JOB_DIRECTOR)) {
+//                        jsonCrewDirector = jsonCrew.optString(CREW_PERSON_NAME);
+//                    }
+//
+//                    if (jsonCrewProducer.equals(CREW_JOB_PRODUCER)) {
+//                        jsonCrewProducer = jsonCrew.optString(CREW_PERSON_NAME);
+//                    }
+//
+//                    String jsonCrewProfilePath = jsonCrew.optString(CREW_PROFILE_PATH);
+//                    if (jsonCrewPersonName == null || jsonCrewProfilePath == null) {
+//                        continue;
+//                    }
+//
+//                    String jsonCrewProfile = NetworkUtils.buildUrlPoster(
+//                            jsonCrewProfilePath.substring(1),
+//                            NetworkUtils.URL_PROFILE_SIZE_VALUE);
+//
+//                    jsonCrewMembers.add(new CastMember(jsonCrewPersonName, jsonCrewJob,
+//                            jsonCrewProfile));
+//                }
+//            } else {
+//                jsonCrewMembers = null;
+//            }
+
+            // Check if reviews exist
+//            List<ReviewItem> jsonReviewItems = new ArrayList<>();
+//            JSONObject jsonReview = baseJsonResponse.getJSONObject(URL_PATH_REVIEWS);
+//            JSONArray jsonReviewResults = jsonReview.optJSONArray(DETAIL_REVIEW_RESULTS);
+//            if (jsonReviewResults.length() > 0) {
+//                for (int i = 0; i < Math.min(jsonReviewResults.length(), 4); i++) {
+//                    JSONObject jsonReviewItem = jsonReviewResults.getJSONObject(i);
+//                    String jsonReviewAuthor = jsonReview.optString(DETAIL_REVIEW_AUTHOR_NAME);
+//                    String jsonReviewContent = jsonReview.optString(DETAIL_REVIEW_CONTENT);
+//                    jsonReviewItems.add(new ReviewItem(jsonReviewAuthor, jsonReviewContent));
+//                }
+//            } else {
+//                jsonReviewItems = null;
+//            }
+
+            movieList = new MovieItem(null,
+                    jsonID,
+                    null,
+                    title,
+                    releaseDate,
+                    jsonGenres,
+                    0,
+                    null,
+                    overview,
+                    0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
+
+            return movieList;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+}
+
