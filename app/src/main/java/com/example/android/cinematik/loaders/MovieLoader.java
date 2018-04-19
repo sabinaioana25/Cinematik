@@ -2,6 +2,7 @@ package com.example.android.cinematik.loaders;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.util.Log;
 
 import com.example.android.cinematik.pojos.MovieItem;
 import com.example.android.cinematik.utilities.MovieJsonUtils;
@@ -30,8 +31,8 @@ public class MovieLoader extends AsyncTaskLoader<List<MovieItem>> {
 
     @Override
     public List<MovieItem> loadInBackground() {
-
         List<MovieItem> movieList = MovieJsonUtils.getMovieData(url, getContext());
+        Log.e(LOG_TAG, "is the loader working??");
         return movieList;
     }
 }

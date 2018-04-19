@@ -25,6 +25,7 @@ public class MovieItem {
     private String movieProducer;
     private List<CastMember> movieCrewMembers;
     private List<ReviewItem> movieReviewItems;
+    private String videoId;
 
     // constructor
     public MovieItem(String poster,
@@ -42,7 +43,8 @@ public class MovieItem {
                      String movieDirector,
                      String movieProducer,
                      List<CastMember> movieCrewMembers,
-                     List<ReviewItem> movieReviewItems) {
+                     List<ReviewItem> movieReviewItems,
+                     String videoId) {
         this.poster = poster;
         this.movieId = movieId;
         this.backdropPath = backdropPath;
@@ -59,6 +61,7 @@ public class MovieItem {
         this.movieProducer = movieProducer;
         this.movieCrewMembers = movieCrewMembers;
         this.movieReviewItems = movieReviewItems;
+        this.videoId = videoId;
     }
 
     // getter methods
@@ -103,4 +106,7 @@ public class MovieItem {
     public List<CastMember> getMovieCrewMembers() { return movieCrewMembers; }
 
     public List<ReviewItem> getMovieReviewItems() { return movieReviewItems; }
+
+    public String getVideoId() { return videoId; }
+
 }

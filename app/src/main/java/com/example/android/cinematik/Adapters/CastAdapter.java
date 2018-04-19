@@ -6,15 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.example.android.cinematik.Interfaces.CircleTransform;
 import com.example.android.cinematik.R;
 import com.example.android.cinematik.pojos.CastMember;
-import com.example.android.cinematik.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
 /**
  * Created by Sabina on 4/8/2018.
@@ -38,7 +40,6 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
         View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout
                 .grid_item_cast, null);
         CastViewHolder castViewHolder = null;
-
         castViewHolder = new CastViewHolder(layout);
         return castViewHolder;
     }
@@ -46,12 +47,17 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
     @Override
     public void onBindViewHolder(CastViewHolder holder, int position) {
 
-        final String profileUrl = NetworkUtils.buildUrlPoster(castList.get(position)
-                .getCastProfile().substring(1), NetworkUtils.URL_PROFILE_SIZE_VALUE);
-        Picasso.with(context)
-                .load(profileUrl)
-                .transform(new CircleTransform())
-                .into(holder.profileImageView);
+        Transformation transformation = new CropCircleTransformation();
+
+        Picasso.with(this.context)
+                .load(castList.get(position).getCastProfile())
+                .transform(transformation)
+                .resize(200,280)
+                .centerCrop()
+                .into(holder.castProfilePath);
+
+        holder.castActorName.setText(castList.get(position).getCastActorName());
+        holder.castCharacterName.setText(castList.get(position).getCastCharName());
     }
 
     @Override
@@ -62,20 +68,23 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
         return 0;
     }
 
-    public void addList(List<CastMember> castMembers) {
-        this.castList.addAll(castMembers);
-        notifyDataSetChanged();
-    }
-
-
     public class CastViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView profileImageView;
+        private ImageView castProfilePath;
+        private TextView castActorName;
+        private TextView castCharacterName;
 
         public CastViewHolder(View itemView) {
             super(itemView);
 
-            profileImageView = itemView.findViewById(R.id.imageViewProfile);
+            castProfilePath = itemView.findViewById(R.id.imageViewProfile);
+            castActorName = itemView.findViewById(R.id.actor_name);
+            castCharacterName = itemView.findViewById(R.id.character_name);
         }
+    }
+
+    public void addList(List<CastMember> castMembers) {
+        this.castList = castMembers;
+        notifyDataSetChanged();
     }
 }

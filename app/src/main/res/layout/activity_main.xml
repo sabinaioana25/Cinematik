@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.android.cinematik.MovieActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_movies"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/discover_swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="4dp" />
-</LinearLayout>
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_movies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#9800000b"
+            android:clipToPadding="false"
+            android:padding="@dimen/item_offset" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

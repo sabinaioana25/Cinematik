@@ -1,46 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayoutCastDetail"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:layout_marginLeft="16dp"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:padding="4dp"
     tools:context="com.example.android.cinematik.DetailMovieActivity">
 
     <ImageView
         android:id="@+id/imageViewProfile"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:contentDescription="@string/todo"
-        android:scaleType="fitXY"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/poster_baby_driver" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+        android:fitsSystemWindows="true"
+        tools:layout_editor_absoluteX="100dp"
+        tools:layout_editor_absoluteY="8dp"
+        android:src="@drawable/placeholder_image" />
 
     <TextView
         android:id="@+id/actor_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewProfile"
-        app:layout_constraintTop_toTopOf="@id/imageView"
-        android:text="Robert Downey Jr" />
+        android:layout_height="16dp"
+        android:layout_below="@id/imageViewProfile"
+        android:gravity="center_horizontal"
+        android:maxLines="2"
+        android:maxWidth="100dp"
+
+        android:textSize="12sp"
+        android:textStyle="bold"
+        tools:text="Robert Downey Jr" />
 
     <TextView
         android:id="@+id/character_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/actor_name"
-        app:layout_constraintTop_toBottomOf="@+id/actor_name"
-        android:text="Sherlock Holmes" />
+        android:layout_below="@id/actor_name"
+        android:gravity="center_horizontal"
+        android:maxLines="2"
+        android:maxWidth="80dp"
 
+        android:textSize="12sp"
+        tools:layout_editor_absoluteX="142dp"
+        tools:layout_editor_absoluteY="307dp"
+        tools:text="Sherlock Holmes" />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

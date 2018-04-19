@@ -4,7 +4,9 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.android.cinematik.pojos.CastMember;
 import com.example.android.cinematik.pojos.MovieItem;
+import com.example.android.cinematik.pojos.ReviewItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +29,7 @@ public class MovieJsonUtils {
     /**
      * Specific keys for JSON Parsing
      */
-    private static final String KEY_ID = "id";
+    private static final String VIDEO_KEY = "key";
     private static final String KEY_POSTER = "poster_path";
 
     /*
@@ -40,7 +42,6 @@ public class MovieJsonUtils {
     /*
     DetailActivity components to extract from JSON
      */
-    private static final String KEY_MOVIE_ID = "id";
     private static final String KEY_RESULTS = "results";
     private static final String KEY_BACKDROP_PATH = "backdrop_path";
     private static final String KEY_TITLE = "title";
@@ -61,9 +62,9 @@ public class MovieJsonUtils {
     private static final String CREW_PERSON_NAME = "name";
     private static final String CREW_JOB = "job";
     private static final String CREW_JOB_DIRECTOR = "Director";
-    private static final String CREW_JOB_WRITER = "Writer";
     private static final String CREW_JOB_PRODUCER = "Producer";
     private static final String CREW_PROFILE_PATH = "profile_path";
+    private static final String DETAIL_VIDEOS = "videos";
 
     private MovieJsonUtils() {
     }
@@ -107,7 +108,7 @@ public class MovieJsonUtils {
                 poster = movieObject.optString(KEY_POSTER);
 
                 // Check if ID exists
-                id = movieObject.optInt(KEY_ID);
+                id = movieObject.optInt("id");
 
                 MovieItem movieItemMainActivity = new MovieItem(poster,
                         id,
@@ -119,6 +120,7 @@ public class MovieJsonUtils {
                         null,
                         null,
                         0,
+                        null,
                         null,
                         null,
                         null,
@@ -150,31 +152,22 @@ public class MovieJsonUtils {
         try {
             JSONObject baseJsonResponse = new JSONObject(jsonResponse);
 
-            // poster
-            String posterPath = null;
-//            String jsonPosterPath = baseJsonResponse.optString(KEY_POSTER);
-//            if (jsonPosterPath != null) {
-//                posterPath = NetworkUtils.buildUrlPoster(jsonPosterPath.substring(1),
-//                        NetworkUtils.URL_POSTER_SIZE_VALUE);
-//            }
-
             // ID
-            int jsonID = baseJsonResponse.getInt(KEY_ID);
-
+             int jsonID = baseJsonResponse.getInt("id");
 
             // backdrop_path
-//            String backdropPath = null;
-//            String jsonBackdropPath = baseJsonResponse.optString(KEY_BACKDROP_PATH);
-//            if (jsonBackdropPath != null) {
-//                backdropPath = NetworkUtils.buildUrlPoster(
-//                        jsonBackdropPath.substring(1),
-//                        NetworkUtils.URL_BACKDROP_SIZE_VALUE);
-//            }
+            String jsonBackdrop = null;
+            String jsonBackdropPath = baseJsonResponse.optString(KEY_BACKDROP_PATH);
+            if (jsonBackdropPath != null) {
+                jsonBackdrop = NetworkUtils.buildUrlImage(
+                        jsonBackdropPath.substring(1),
+                        NetworkUtils.URL_BACKDROP_SIZE_VALUE);
+                Log.e(LOG_TAG, "Image URL " + jsonBackdrop);
+            }
 
             // Check if title exists
             String title = null;
             title = baseJsonResponse.optString(KEY_TITLE);
-            Log.e(LOG_TAG, "getTitle() is functioning" + title);
 
             // Check if release date exists
             String releaseDate = null;
@@ -183,12 +176,11 @@ public class MovieJsonUtils {
             // Check if genres exist
             List<String> jsonGenres = new ArrayList<>();
             JSONArray jsonGenresArray = baseJsonResponse.optJSONArray(DETAIL_GENRES);
-            if (jsonGenresArray != null) {
-                for (int i = 0; i < Math.min(baseJsonResponse.length(), 2); i++) {
+            if (jsonGenresArray.length() != 0) {
+                for (int i = 0; i < Math.min(jsonGenresArray.length(), 3); i++) {
                     JSONObject jsonCurrentMovie = jsonGenresArray.getJSONObject(i);
                     jsonGenres.add(jsonCurrentMovie.optString(KEY_GENRE_NAME));
                 }
-                Log.e(LOG_TAG, "getGenres() is functioning" + jsonGenres);
             }
 
             // Check if budget exists
@@ -212,98 +204,105 @@ public class MovieJsonUtils {
             runtime = baseJsonResponse.optString(DETAIL_RUNTIME);
 
             // Check for Cast members
-//            List<CastMember> jsonCastMembers = new ArrayList<>();
-//            JSONObject jsonCredits = baseJsonResponse.getJSONObject(DETAIL_CREDITS);
-//            JSONArray jsonCastArray = jsonCredits.getJSONArray(DETAIL_CAST);
-//            if (jsonCastArray.length() > 0) {
-//                for (int i = 0; i < Math.min(jsonCastArray.length(), 5); i++) {
-//                    JSONObject jsonCast = jsonCastArray.optJSONObject(i);
-//                    String jsonCastActorName = jsonCast.optString(CAST_ACTOR_NAME);
-//                    String jsonCastCharName = jsonCast.optString(CAST_CHARACTER_NAME);
-//
-//                    String jsonCastProfilePath = jsonCast.optString(CAST_PROFILE_PATH);
-//                    String jsonCastProfile = null;
-//                    if (jsonCastProfilePath != null) {
-//                        jsonCastProfile = NetworkUtils.buildUrlPoster
-//                                (jsonCastProfilePath.substring(1),
-//                                        NetworkUtils.URL_PROFILE_SIZE_VALUE);
-//                    }
-//                    jsonCastMembers.add(new CastMember(jsonCastActorName,
-//                            jsonCastCharName,
-//                            jsonCastProfile));
-//                }
-//            }
+            List<CastMember> jsonCastMembers = new ArrayList<>();
+            JSONObject jsonCredits = baseJsonResponse.getJSONObject(DETAIL_CREDITS);
+            JSONArray jsonCastArray = jsonCredits.optJSONArray(DETAIL_CAST);
+            if (jsonCastArray.length() > 0) {
+                for (int i = 0; i < Math.min(jsonCastArray.length(), 10); i++) {
+                    JSONObject jsonCast = jsonCastArray.optJSONObject(i);
+                    String jsonCastActorName = jsonCast.optString(CAST_ACTOR_NAME);
+                    String jsonCastCharName = jsonCast.optString(CAST_CHARACTER_NAME);
+
+                    String jsonCastProfilePath = jsonCast.optString(CAST_PROFILE_PATH);
+                    String jsonCastProfile = null;
+                    if (jsonCastProfilePath != null) {
+                        jsonCastProfile = NetworkUtils.buildUrlImage
+                                (jsonCastProfilePath.substring(1),
+                                        NetworkUtils.URL_PROFILE_SIZE_VALUE);
+                    }
+                    jsonCastMembers.add(new CastMember(jsonCastActorName,
+                            jsonCastCharName,
+                            jsonCastProfile));
+                }
+            }
 
             // Check for crewMembers
-//            List<CastMember> jsonCrewMembers = new ArrayList<>();
-//            JSONArray jsonCrewArray = jsonCredits.getJSONArray(DETAIL_CREW);
-//            String jsonCrewDirector = null;
-//            String jsonCrewProducer = null;
-//            if (jsonCrewArray.length() > 0) {
-//                for (int i = 0; i < jsonCrewArray.length(); i++) {
-//                    JSONObject jsonCrew = jsonCrewArray.getJSONObject(i);
-//                    String jsonCrewJob = jsonCrew.optString(CREW_JOB);
-//                    if (!(jsonCrewJob.equals(CREW_JOB_DIRECTOR) || jsonCrewJob.equals
-//                            (CREW_JOB_WRITER) || jsonCrewJob.equals(CREW_JOB_PRODUCER)))
-//                        continue;
-//
-//                    String jsonCrewPersonName = jsonCrew.optString(CREW_PERSON_NAME);
-//
-//                    if (jsonCrewJob.equals(CREW_JOB_DIRECTOR)) {
-//                        jsonCrewDirector = jsonCrew.optString(CREW_PERSON_NAME);
-//                    }
-//
-//                    if (jsonCrewProducer.equals(CREW_JOB_PRODUCER)) {
-//                        jsonCrewProducer = jsonCrew.optString(CREW_PERSON_NAME);
-//                    }
-//
-//                    String jsonCrewProfilePath = jsonCrew.optString(CREW_PROFILE_PATH);
-//                    if (jsonCrewPersonName == null || jsonCrewProfilePath == null) {
-//                        continue;
-//                    }
-//
-//                    String jsonCrewProfile = NetworkUtils.buildUrlPoster(
-//                            jsonCrewProfilePath.substring(1),
-//                            NetworkUtils.URL_PROFILE_SIZE_VALUE);
-//
-//                    jsonCrewMembers.add(new CastMember(jsonCrewPersonName, jsonCrewJob,
-//                            jsonCrewProfile));
-//                }
-//            } else {
-//                jsonCrewMembers = null;
-//            }
+            List<CastMember> jsonCrewMembers = new ArrayList<>();
+            JSONArray jsonCrewArray = jsonCredits.optJSONArray(DETAIL_CREW);
+            String jsonCrewDirector = null;
+            String jsonCrewProducer = null;
+            if (jsonCrewArray.length() > 0) {
+                for (int i = 0; i < jsonCrewArray.length(); i++) {
+                    JSONObject jsonCrew = jsonCrewArray.optJSONObject(i);
+                    String jsonCrewJob = jsonCrew.optString(CREW_JOB);
+                    if (!(jsonCrewJob.equals(CREW_JOB_DIRECTOR) || jsonCrewJob.equals
+                            (CREW_JOB_PRODUCER)))
+                        continue;
+
+                    String jsonCrewName = jsonCrew.optString(CREW_PERSON_NAME);
+                    jsonCrewDirector = jsonCrew.optString(CREW_PERSON_NAME);
+                    jsonCrewProducer = jsonCrew.optString(CREW_PERSON_NAME);
+                    String jsonCrewProfilePath = jsonCrew.optString(CREW_PROFILE_PATH);
+                    if (jsonCrewProfilePath != null) {
+                        continue;
+                    }
+
+                    String jsonCrewProfileImage = NetworkUtils.buildUrlImage(
+                            jsonCrewProfilePath, NetworkUtils.URL_PROFILE_SIZE_VALUE);
+
+                    jsonCrewMembers.add(new CastMember(jsonCrewName, jsonCrewJob,
+                            jsonCrewProfileImage));
+                }
+            } else {
+                jsonCastMembers = null;
+            }
 
             // Check if reviews exist
-//            List<ReviewItem> jsonReviewItems = new ArrayList<>();
-//            JSONObject jsonReview = baseJsonResponse.getJSONObject(URL_PATH_REVIEWS);
-//            JSONArray jsonReviewResults = jsonReview.optJSONArray(DETAIL_REVIEW_RESULTS);
-//            if (jsonReviewResults.length() > 0) {
-//                for (int i = 0; i < Math.min(jsonReviewResults.length(), 4); i++) {
-//                    JSONObject jsonReviewItem = jsonReviewResults.getJSONObject(i);
-//                    String jsonReviewAuthor = jsonReview.optString(DETAIL_REVIEW_AUTHOR_NAME);
-//                    String jsonReviewContent = jsonReview.optString(DETAIL_REVIEW_CONTENT);
-//                    jsonReviewItems.add(new ReviewItem(jsonReviewAuthor, jsonReviewContent));
-//                }
-//            } else {
-//                jsonReviewItems = null;
-//            }
+            List<ReviewItem> jsonReviewItems = new ArrayList<>();
+            JSONObject jsonReview = baseJsonResponse.getJSONObject(URL_PATH_REVIEWS);
+            JSONArray jsonReviewResults = jsonReview.optJSONArray(DETAIL_REVIEW_RESULTS);
+            if (jsonReviewResults.length() > 0) {
+                for (int i = 0; i < Math.min(jsonReviewResults.length(), 5); i++) {
+                    JSONObject jsonReviewItem = jsonReviewResults.getJSONObject(i);
+                    String jsonReviewAuthor = jsonReviewItem.optString(DETAIL_REVIEW_AUTHOR_NAME);
+                    String jsonReviewContent = jsonReviewItem.optString(DETAIL_REVIEW_CONTENT);
 
+                    jsonReviewItems.add(new ReviewItem(jsonReviewAuthor, jsonReviewContent));
+                }
+            } else {
+                jsonReviewItems = null;
+            }
+
+            // Check if videos are available
+            JSONObject jsonVideosObject = baseJsonResponse.optJSONObject(DETAIL_VIDEOS);
+            JSONArray jsonVideosArray = jsonVideosObject.getJSONArray(KEY_RESULTS);
+            String jsonKeyTrailer = null;
+            if (jsonVideosArray.length() != 0) {
+                for (int i = 0; i < jsonVideosArray.length(); i++) {
+                    JSONObject jsonCurrentMovie = jsonVideosArray.getJSONObject(i);
+                    jsonKeyTrailer = jsonCurrentMovie.optString("key");
+                    Log.e(LOG_TAG, "mddhhefw " + jsonKeyTrailer);
+                }
+            }
+
+            // return movieList
             movieList = new MovieItem(null,
                     jsonID,
-                    null,
+                    jsonBackdrop,
                     title,
                     releaseDate,
                     jsonGenres,
                     0,
-                    null,
+                    voteAverage,
                     overview,
                     0,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null);
+                    runtime,
+                    jsonCastMembers,
+                    jsonCrewDirector,
+                    jsonCrewProducer,
+                    jsonCrewMembers,
+                    jsonReviewItems,
+                    jsonKeyTrailer);
 
             return movieList;
 

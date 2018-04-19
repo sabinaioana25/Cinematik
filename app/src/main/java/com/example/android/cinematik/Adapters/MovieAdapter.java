@@ -36,7 +36,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item_movie, null);
+        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item_movie,
+                null);
         MovieViewHolder movieViewHolder = null;
 
         movieViewHolder = new MovieViewHolder(layout);
@@ -46,27 +47,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(MovieViewHolder holder, final int position) {
 
-        final String imgUrl = NetworkUtils.buildUrlPoster(list.get(position).getPoster().substring(1), NetworkUtils.URL_POSTER_SIZE_VALUE);
+        final String imgUrl = NetworkUtils.buildUrlImage(list.get(position).getPoster()
+                .substring(1), NetworkUtils.URL_POSTER_SIZE_VALUE);
 
         Picasso.with(context).load(imgUrl).into(holder.posterImageView);
-
-//        holder.posterImageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                Toast.makeText(context, "onClick: clicked", Toast.LENGTH_SHORT).show();
-//
-//                Intent intent = new Intent(context, DetailMovieActivity.class);
-//                intent.putExtra("image_url", imgUrl);
-//                context.startActivity(intent);
-//            }
-//        });
-//
-//        Log.e(TAG, "bdfdsa " + imgUrl);
-
-//        holder.posterImageView.setImageResource(Integer.parseInt(list.get(position).getPoster()));
-//        holder.textViewTitle.setText(list.get(position).getTitle());
-//        holder.textViewOverview.setText(list.get(position).getOverview());
-//        holder.textViewReleaseDate.setText(list.get(position).getReleaseDate());
     }
 
     @Override
@@ -82,29 +66,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         notifyDataSetChanged();
     }
 
+    public void deleteItemsInList() {
+        this.list.clear();
+        notifyDataSetChanged();
+    }
+
     public static class MovieViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 
         ImageView posterImageView;
-//        TextView textViewTitle;
-//        TextView textViewOverview;
-//        TextView textViewReleaseDate;
-
         MovieViewHolder(View itemView) {
             super(itemView);
-
             posterImageView = itemView.findViewById(R.id.grid_view_image);
-//            posterImageView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-////                    Toast.makeText(view.getContext(),"Is this working", Toast.LENGTH_SHORT).show();
-//                    Intent goToDetailActivity = new Intent(view.getContext(), DetailMovieActivity.class);
-//                    startActivity
-//                }
-//            });
-//            textViewTitle = itemView.findViewById(R.id.grid_tv_title);
-//            textViewOverview = itemView.findViewById(R.id.grid_tv_overview);
-//            textViewReleaseDate = itemView.findViewById(R.id.grid_tv_release_date);
             itemView.setOnClickListener(this);
         }
 
