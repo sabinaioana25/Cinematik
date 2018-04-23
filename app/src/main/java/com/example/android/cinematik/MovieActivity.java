@@ -55,11 +55,11 @@ public class MovieActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.discover_swipe_refresh);
+        swipeRefreshLayout = findViewById(R.id.discover_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(MovieActivity.this);
         swipeRefreshLayout.setColorScheme(android.R.color.holo_red_dark);
 
-        movieListRV = (RecyclerView) findViewById(R.id.recycler_view_movies);
+        movieListRV = findViewById(R.id.recycler_view_movies);
         movieListRV.setLayoutManager(gridLayoutManager);
         movieListRV.setHasFixedSize(true);
 

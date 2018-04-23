@@ -18,7 +18,8 @@
             android:paddingTop="@dimen/cast_activity_profile_image_padding_top"
             android:src="@drawable/ic_account_circle_24px"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/review_activity_user_profile" />
 
         <TextView
             android:id="@+id/review_author_id"

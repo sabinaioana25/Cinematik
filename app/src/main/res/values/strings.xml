@@ -43,6 +43,8 @@
     <string name="detail_activity_producer_label">Producer</string>
     <string name="detail_activity_reviews_label">Reviews</string>
     <string name="detail_activity_cast_label">Cast</string>
+    <string name="main_poster_description">main poster</string>
+    <string name="review_activity_user_profile">Profile image</string>
 
 </resources>
 

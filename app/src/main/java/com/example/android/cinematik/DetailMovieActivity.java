@@ -54,14 +54,14 @@ public class DetailMovieActivity extends AppCompatActivity
         id = getMovieDetails.getExtras().getInt(MovieActivity.MOVIE_ID);
 
         // CastAdapter
-        castListRecyclerView = (RecyclerView) findViewById(R.id.detail_activity_recycler_view_cast_id);
+        castListRecyclerView = findViewById(R.id.detail_activity_recycler_view_cast_id);
         castListRecyclerView.setLayoutManager(castLinearLayoutManager);
         castListRecyclerView.setHasFixedSize(true);
         castAdapter = new CastAdapter(this, id);
         castListRecyclerView.setAdapter(castAdapter);
 
         // ReviewAdapter
-        reviewListRecyclerView = (RecyclerView) findViewById(R.id.detail_activity_recycler_view_reviews_id);
+        reviewListRecyclerView = findViewById(R.id.detail_activity_recycler_view_reviews_id);
         reviewListRecyclerView.setLayoutManager(reviewLinearLayoutManager);
         reviewListRecyclerView.setHasFixedSize(false);
         reviewAdapter = new ReviewAdapter(this, id);
@@ -81,30 +81,30 @@ public class DetailMovieActivity extends AppCompatActivity
             (Loader<MovieItem> loader, MovieItem data) {
 
         // backdropImage
-        ImageView backdropPhoto = (ImageView) findViewById(R.id.detail_activity_backdrop_image_id);
+        ImageView backdropPhoto = findViewById(R.id.detail_activity_backdrop_image_id);
 
         Picasso.with(this)
                 .load(data.getBackdropPath())
                 .into(backdropPhoto);
 
         // title
-        TextView title = (TextView) findViewById(R.id.detail_activity_title_movie_id);
+        TextView title = findViewById(R.id.detail_activity_title_movie_id);
         title.setText(data.getTitle());
 
         // releaseDate
-        TextView releaseDate = (TextView) findViewById(R.id.detail_activity_release_date_id);
+        TextView releaseDate = findViewById(R.id.detail_activity_release_date_id);
         releaseDate.setText(data.getReleaseDate().substring(0, 4));
 
         // voteAverage
-        TextView voteAverage = (TextView) findViewById(R.id.detail_activity_imdb_rating_id);
+        TextView voteAverage = findViewById(R.id.detail_activity_imdb_rating_id);
         voteAverage.setText(data.getVoteAverage());
 
         // overview
-        TextView overview = (TextView) findViewById(R.id.detail_activity_overview_text_id);
+        TextView overview = findViewById(R.id.detail_activity_overview_text_id);
         overview.setText(data.getOverview());
 
         // genres
-        TextView genresTextView = (TextView) findViewById(R.id.detail_activity_genres_id);
+        TextView genresTextView = findViewById(R.id.detail_activity_genres_id);
         StringBuilder genreStringBuilder = new StringBuilder();
         if (data.getGenres().size() != 0) {
             for (String string : data.getGenres()) {
@@ -116,17 +116,17 @@ public class DetailMovieActivity extends AppCompatActivity
         }
 
         // runtime
-        TextView runtime = (TextView) findViewById(R.id.detail_activity_runtime_id);
+        TextView runtime = findViewById(R.id.detail_activity_runtime_id);
         StringBuilder minStringBuilder = new StringBuilder();
         runtime.setText(minStringBuilder.append(data.getRuntime()).append(" ").append
                 (KEY_STRING_MIN).toString());
 
         // crew director
-        TextView director = (TextView) findViewById(R.id.detail_activity_director_value_id);
+        TextView director = findViewById(R.id.detail_activity_director_value_id);
         director.setText(data.getMovieDirector());
 
         // crew producer
-        TextView producer = (TextView) findViewById(R.id.detail_activity_producer_value_id);
+        TextView producer = findViewById(R.id.detail_activity_producer_value_id);
         producer.setText(data.getMovieProducer());
 
         // cast
