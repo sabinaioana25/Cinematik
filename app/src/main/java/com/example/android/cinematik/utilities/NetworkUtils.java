@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.example.android.cinematik.BuildConfig;
 import com.example.android.cinematik.R;
 
 import java.io.BufferedReader;
@@ -38,7 +39,7 @@ public class NetworkUtils {
     private static final String URL_PATH_VERSION = "3";
     private static final String URL_PATH_DISCOVER = "discover";
     private static final String URL_PATH_MOVIES = "movie";
-    private static final String API_KEY = "9f1d1dfcda4410144eaa3fec1fea5d4a";
+    private static final String API_KEY = BuildConfig.API_KEY;
     private static final String API_KEY_PARAM = "api_key";
     private static final String URL_VOTE_COUNT_KEY = "vote_count.gte";
 
