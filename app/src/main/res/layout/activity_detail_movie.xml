@@ -30,8 +30,8 @@
                 android:id="@+id/button_play_trailer"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
-                android:onClick="playTrailer"
                 android:background="@drawable/ic_play_circle_outline_white_24dp"
+                android:onClick="playTrailer"
                 app:layout_constraintBottom_toTopOf="@id/detail_activity_frame_gradient"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -68,19 +68,6 @@
                 app:layout_constraintTop_toBottomOf="@id/id_title_movie"
                 tools:text="2001" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/floatingActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:background="#FF8F00"
-                android:src="#FF8F00"
-                app:layout_constraintBottom_toBottomOf="@id/detail_activity_frame_gradient"
-                app:layout_constraintRight_toRightOf="@id/detail_activity_frame_gradient"
-                app:srcCompat="@mipmap/ic_launcher_round"
-                tools:ignore="RtlHardcoded" />
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
