@@ -68,7 +68,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     }
 
     public void addList(List<ReviewItem> reviewItems) {
-        this.reviewList= reviewItems;
+        this.reviewList = reviewItems;
         notifyDataSetChanged();
     }
 }

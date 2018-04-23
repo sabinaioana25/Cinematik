@@ -34,11 +34,15 @@
     <string name="layout_breaker_line">layout_breaker</string>
     <string name="menu_general_settings">Settings</string>
     <string name="pref_vote_count_key">vote_count.gte</string>
-
-<!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_settings">Settings</string>
     <string name="menu_refresh">Refresh</string>
+    <string name="detail_activity_first_separator">First Separator</string>
+    <string name="detail_activity_crew_label">Crew</string>
+    <string name="detail_activity_director_label">Director</string>
+    <string name="detail_activity_producer_label">Producer</string>
+    <string name="detail_activity_reviews_label">Reviews</string>
+    <string name="detail_activity_cast_label">Cast</string>
 
 </resources>
 

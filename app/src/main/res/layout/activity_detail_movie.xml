@@ -9,208 +9,224 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="4dp">
+        android:paddingBottom="@dimen/detail_activity_linear_layout_padding_bottom">
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/detail_activity_constraint_layout_one_id"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/backdrop_image"
+                android:id="@+id/detail_activity_backdrop_image_id"
                 android:layout_width="wrap_content"
-                android:layout_height="240dp"
+                android:layout_height="@dimen/detail_activity_poster_height"
                 android:contentDescription="@string/content_description_poster"
                 android:scaleType="centerCrop"
                 tools:background="@drawable/backdrop_beauty_beast" />
 
             <Button
-                android:id="@+id/button_play_trailer"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
+                android:id="@+id/detail_activity_button_play_trailer_id"
+                android:layout_width="@dimen/detail_activity_play_button_width"
+                android:layout_height="@dimen/detail_activity_play_button_height"
                 android:background="@drawable/ic_play_circle_outline_white_24dp"
                 android:onClick="playTrailer"
-                app:layout_constraintBottom_toTopOf="@id/detail_activity_frame_gradient"
+                app:layout_constraintBottom_toTopOf="@id/detail_activity_frame_gradient_id"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
-                android:id="@+id/detail_activity_frame_gradient"
+                android:id="@+id/detail_activity_frame_gradient_id"
                 android:layout_width="wrap_content"
-                android:layout_height="64dp"
+                android:layout_height="@dimen/detail_activity_gradient_view_height"
                 android:background="@drawable/gradient"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
-                android:id="@+id/id_title_movie"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:id="@+id/detail_activity_title_movie_id"
+                android:layout_width="@dimen/detail_activity_title_width"
+                android:layout_height="@dimen/detail_activity_title_height"
                 android:maxLines="1"
-                android:paddingTop="8dp"
+                android:paddingLeft="@dimen/detail_activity_title_padding_left"
+                android:paddingStart="@dimen/detail_activity_title_padding_left"
+                android:paddingTop="@dimen/detail_activity_title_padding_top"
+                android:textAllCaps="true"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                app:layout_constraintTop_toTopOf="@id/detail_activity_frame_gradient"
-                app:layout_editor_absoluteX="16dp"
-                tools:text="TITLE" />
-
+                android:textSize="@dimen/detail_activity_title_size"
+                app:layout_constraintTop_toTopOf="@id/detail_activity_frame_gradient_id"
+                tools:text="title" />
 
             <TextView
-                android:id="@+id/id_release_date"
-                android:layout_width="wrap_content"
+                android:id="@+id/detail_activity_release_date_id"
+                android:layout_width="@dimen/detail_activity_title_width"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:textColor="@color/colorAccent"
-                android:textSize="18sp"
-                app:layout_constraintLeft_toLeftOf="@id/id_title_movie"
-                app:layout_constraintTop_toBottomOf="@id/id_title_movie"
+                android:paddingLeft="@dimen/detail_activity_title_padding_left"
+                android:paddingStart="@dimen/detail_activity_title_padding_left"
+                android:textAllCaps="true"
+                android:textColor="@color/colorTitle"
+                android:textSize="@dimen/detail_activity_title_size"
+                app:layout_constraintLeft_toLeftOf="@id/detail_activity_title_movie_id"
+                app:layout_constraintTop_toBottomOf="@id/detail_activity_title_movie_id"
                 tools:text="2001" />
-
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="4dp">
+            android:layout_marginBottom="@dimen/detail_activity_layout_banner_margin_bottom">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="19dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="@dimen/detail_activity_layout_banner_height"
+                android:layout_marginBottom="@dimen/detail_activity_layout_banner_margin_bottom"
+                android:layout_marginTop="@dimen/detail_activity_layout_banner_margin_top"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/id_runtime"
+                    android:id="@+id/detail_activity_runtime_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="@dimen/detail_activity_layout_banner_weight"
                     android:gravity="center"
                     tools:text="Runtime" />
 
                 <TextView
-                    android:id="@+id/id_genres"
+                    android:id="@+id/detail_activity_genres_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="@dimen/detail_activity_layout_banner_weight_two"
                     android:gravity="center"
                     tools:text="Genres" />
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/detail_activity_imdb_rating_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/id_imdb_rating"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        tools:text="Vote average" />
-                </LinearLayout>
+                    android:layout_weight="@dimen/detail_activity_layout_banner_weight"
+                    android:gravity="center"
+                    tools:text="Vote average" />
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
 
-        <ImageView
+        <View
             android:layout_width="match_parent"
-            android:layout_height="8dp"
-            android:background="@drawable/shape_line"
-            android:contentDescription="TODO"
-            android:padding="4dp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/id_overview_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:text="@string/overview_label" />
-
-            <TextView
-                android:id="@+id/id_overview_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in libero tincidunt, finibus dolor non, tristique ligula. Cras sit amet scelerisque dui, quis hendrerit quam. Curabitur eu sollicitudin sapien. Donec sagittis nulla lorem." />
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_height="@dimen/detail_activity_small_view_height"
+            android:layout_marginLeft="@dimen/detail_activity_small_view_margin_left"
+            android:layout_marginRight="@dimen/detail_activity_small_view_margin_right"
             android:background="@drawable/shape_line_transparent"
-            android:padding="4dp" />
+            android:padding="@dimen/detail_activity_small_view_padding" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="4dp">
+            android:padding="@dimen/detail_activity_overview_padding">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Crew" />
+                android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
+                android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
+                android:text="@string/overview_label"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/detail_activity_overview_text_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
+                android:layout_marginRight="@dimen/detail_activity_overview_text_margin_right"
+                android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in libero tincidunt, finibus dolor non, tristique ligula. Cras sit amet scelerisque dui, quis hendrerit quam. Curabitur eu sollicitudin sapien. Donec sagittis nulla lorem." />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/detail_activity_small_view_height"
+            android:layout_marginLeft="@dimen/detail_activity_small_view_margin_left"
+            android:layout_marginRight="@dimen/detail_activity_small_view_margin_right"
+            android:background="@drawable/shape_line_transparent"
+            android:padding="@dimen/detail_activity_small_view_padding" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/detail_activity_linear_layout_padding_bottom">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
+                android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
+                android:paddingLeft="@dimen/detail_activity_overview_padding"
+                android:paddingTop="@dimen/detail_activity_overview_padding"
+                android:text="@string/detail_activity_crew_label"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimary" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
+                android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/detail_activity_overview_padding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1
-"
-                    android:text="Director" />
+                    android:layout_weight="@dimen/detail_activity_crew_label_weight"
+                    android:text="@string/detail_activity_director_label" />
 
                 <TextView
-                    android:id="@+id/id_director_value"
+                    android:id="@+id/detail_activity_director_value_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
+                    android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
+                    android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
+                    android:layout_weight="@dimen/detail_activity_crew_value_weight"
                     tools:text="@string/directors_label" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
+                android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/detail_activity_overview_padding">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Producer" />
+                    android:layout_weight="@dimen/detail_activity_crew_label_weight"
+                    android:paddingBottom="@dimen/detail_activity_linear_layout_padding_bottom"
+                    android:text="@string/detail_activity_producer_label" />
 
                 <TextView
-                    android:id="@+id/id_producer_value"
+                    android:id="@+id/detail_activity_producer_value_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4"
+                    android:layout_weight="@dimen/detail_activity_crew_value_weight"
                     tools:text="Producer" />
             </LinearLayout>
 
-            <ImageView
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/shape_line_transparent" />
+                android:layout_height="@dimen/detail_activity_small_view_height"
+                android:layout_marginLeft="@dimen/detail_activity_small_view_margin_left"
+                android:layout_marginRight="@dimen/detail_activity_small_view_margin_right"
+                android:background="@drawable/shape_line_transparent"
+                android:padding="@dimen/detail_activity_small_view_padding" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -220,22 +236,32 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cast" />
+                    android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
+                    android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
+                    android:paddingLeft="@dimen/detail_activity_overview_padding"
+                    android:paddingTop="@dimen/detail_activity_overview_padding"
+                    android:text="@string/detail_activity_cast_label"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/colorPrimary" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/id_recycler_view_cast"
+                    android:id="@+id/detail_activity_recycler_view_cast_id"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal" />
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
+                    android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/detail_activity_overview_padding" />
             </LinearLayout>
         </LinearLayout>
 
-        <ImageView
+        <View
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/shape_line_transparent" />
+            android:layout_height="@dimen/detail_activity_small_view_height"
+            android:layout_marginLeft="@dimen/detail_activity_small_view_margin_left"
+            android:layout_marginRight="@dimen/detail_activity_small_view_margin_right"
+            android:background="@drawable/shape_line_transparent"
+            android:padding="@dimen/detail_activity_small_view_padding" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -243,33 +269,28 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/review_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reviews" />
+                android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
+                android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
+                android:paddingLeft="@dimen/detail_activity_overview_padding"
+                android:paddingTop="@dimen/detail_activity_overview_padding"
+                android:text="@string/detail_activity_reviews_label"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimary" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/id_recycler_view_reviews"
+                android:id="@+id/detail_activity_recycler_view_reviews_id"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
+                android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/detail_activity_overview_padding"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimary">
 
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/shape_line_transparent"
-            android:padding="4dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Trailer" />
-
-
     </LinearLayout>
 </ScrollView>

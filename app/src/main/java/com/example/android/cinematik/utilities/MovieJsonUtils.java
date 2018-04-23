@@ -189,7 +189,7 @@ public class MovieJsonUtils {
 
             // Check if voteAverage number exists
             String voteAverage = null;
-            voteAverage = baseJsonResponse.optString(DETAIL_VOTE_AVERAGE);
+            voteAverage = "IMDB " + baseJsonResponse.optString(DETAIL_VOTE_AVERAGE);
 
             // Check if overview exists
             String overview = null;
@@ -271,6 +271,7 @@ public class MovieJsonUtils {
                 }
             } else {
                 jsonReviewItems = null;
+
             }
 
             // Check if videos are available

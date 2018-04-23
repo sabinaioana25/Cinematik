@@ -44,7 +44,6 @@ public class DetailMovieActivity extends AppCompatActivity
 
     // Play Button
     Button buttonPlayTrailer;
-    String videoKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,18 +54,14 @@ public class DetailMovieActivity extends AppCompatActivity
         id = getMovieDetails.getExtras().getInt(MovieActivity.MOVIE_ID);
 
         // CastAdapter
-        castListRecyclerView = (RecyclerView) findViewById(R.id.id_recycler_view_cast);
+        castListRecyclerView = (RecyclerView) findViewById(R.id.detail_activity_recycler_view_cast_id);
         castListRecyclerView.setLayoutManager(castLinearLayoutManager);
         castListRecyclerView.setHasFixedSize(true);
         castAdapter = new CastAdapter(this, id);
         castListRecyclerView.setAdapter(castAdapter);
-//
-//        RecyclerViewItemDecorator itemDecoratorCast = new
-//                RecyclerViewItemDecorator(context, R.dimen.item_offset);
-//        castListRecyclerView.addItemDecoration(itemDecoratorCast);
 
         // ReviewAdapter
-        reviewListRecyclerView = (RecyclerView) findViewById(R.id.id_recycler_view_reviews);
+        reviewListRecyclerView = (RecyclerView) findViewById(R.id.detail_activity_recycler_view_reviews_id);
         reviewListRecyclerView.setLayoutManager(reviewLinearLayoutManager);
         reviewListRecyclerView.setHasFixedSize(false);
         reviewAdapter = new ReviewAdapter(this, id);
@@ -86,30 +81,30 @@ public class DetailMovieActivity extends AppCompatActivity
             (Loader<MovieItem> loader, MovieItem data) {
 
         // backdropImage
-        ImageView backdropPhoto = (ImageView) findViewById(R.id.backdrop_image);
+        ImageView backdropPhoto = (ImageView) findViewById(R.id.detail_activity_backdrop_image_id);
 
         Picasso.with(this)
                 .load(data.getBackdropPath())
                 .into(backdropPhoto);
 
         // title
-        TextView title = (TextView) findViewById(R.id.id_title_movie);
+        TextView title = (TextView) findViewById(R.id.detail_activity_title_movie_id);
         title.setText(data.getTitle());
 
         // releaseDate
-        TextView releaseDate = (TextView) findViewById(R.id.id_release_date);
+        TextView releaseDate = (TextView) findViewById(R.id.detail_activity_release_date_id);
         releaseDate.setText(data.getReleaseDate().substring(0, 4));
 
         // voteAverage
-        TextView voteAverage = (TextView) findViewById(R.id.id_imdb_rating);
+        TextView voteAverage = (TextView) findViewById(R.id.detail_activity_imdb_rating_id);
         voteAverage.setText(data.getVoteAverage());
 
         // overview
-        TextView overview = (TextView) findViewById(R.id.id_overview_text);
+        TextView overview = (TextView) findViewById(R.id.detail_activity_overview_text_id);
         overview.setText(data.getOverview());
 
         // genres
-        TextView genresTextView = (TextView) findViewById(R.id.id_genres);
+        TextView genresTextView = (TextView) findViewById(R.id.detail_activity_genres_id);
         StringBuilder genreStringBuilder = new StringBuilder();
         if (data.getGenres().size() != 0) {
             for (String string : data.getGenres()) {
@@ -121,17 +116,17 @@ public class DetailMovieActivity extends AppCompatActivity
         }
 
         // runtime
-        TextView runtime = (TextView) findViewById(R.id.id_runtime);
+        TextView runtime = (TextView) findViewById(R.id.detail_activity_runtime_id);
         StringBuilder minStringBuilder = new StringBuilder();
         runtime.setText(minStringBuilder.append(data.getRuntime()).append(" ").append
                 (KEY_STRING_MIN).toString());
 
         // crew director
-        TextView director = (TextView) findViewById(R.id.id_director_value);
+        TextView director = (TextView) findViewById(R.id.detail_activity_director_value_id);
         director.setText(data.getMovieDirector());
 
         // crew producer
-        TextView producer = (TextView) findViewById(R.id.id_producer_value);
+        TextView producer = (TextView) findViewById(R.id.detail_activity_producer_value_id);
         producer.setText(data.getMovieProducer());
 
         // cast
@@ -146,7 +141,7 @@ public class DetailMovieActivity extends AppCompatActivity
 
         final String movieTrailerKey = data.getVideoId();
 
-        buttonPlayTrailer = findViewById(R.id.button_play_trailer);
+        buttonPlayTrailer = findViewById(R.id.detail_activity_button_play_trailer_id);
         buttonPlayTrailer.getBackground().setAlpha(128);
         buttonPlayTrailer.setOnClickListener(new View.OnClickListener() {
             @Override

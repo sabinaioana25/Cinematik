@@ -1,4 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>    >
+<resources>>
     <dimen name="item_offset">4dp</dimen>
+
+    // detail activity layout dimens
+    <dimen name="detail_activity_linear_layout_padding_bottom">4dp</dimen>
+    <dimen name="detail_activity_poster_height">240dp</dimen>
+    <dimen name="detail_activity_play_button_width">72dp</dimen>
+    <dimen name="detail_activity_play_button_height">72dp</dimen>
+    <dimen name="detail_activity_gradient_view_height">64dp</dimen>
+    <dimen name="detail_activity_title_height">36dp</dimen>
+    <dimen name="detail_activity_title_padding_top">8dp</dimen>
+    <dimen name="detail_activity_title_padding_left">24dp</dimen>
+    <dimen name="detail_activity_title_size">18sp</dimen>
+    <dimen name="detail_activity_layout_banner_margin_bottom">4dp</dimen>
+    <dimen name="detail_activity_layout_banner_margin_top">8dp</dimen>
+    <dimen name="detail_activity_layout_banner_weight">1</dimen>
+    <dimen name="detail_activity_layout_banner_height">20dp</dimen>
+    <dimen name="detail_activity_layout_banner_weight_two">3</dimen>
+    <dimen name="detail_activity_separator_view_padding">4dp</dimen>
+    <dimen name="detail_activity_view_separator_height">8dp</dimen>
+    <dimen name="detail_activity_overview_padding">4dp</dimen>
+    <dimen name="detail_activity_overview_text_margin_left">8dp</dimen>
+    <dimen name="detail_activity_overview_text_margin_right">8dp</dimen>
+    <dimen name="detail_activity_small_view_height">2dp</dimen>
+    <dimen name="detail_activity_small_view_margin_right">8dp</dimen>
+    <dimen name="detail_activity_small_view_margin_left">8dp</dimen>
+    <dimen name="detail_activity_small_view_padding">4dp</dimen>
+    <dimen name="detail_activity_crew_label_weight">1</dimen>
+    <dimen name="detail_activity_crew_value_weight">3</dimen>
+
+
+    // detail review activity layout dimens
+    <dimen name="cast_activity_profile_image_width">56dp</dimen>
+    <dimen name="cast_activity_profile_image_height">56dp</dimen>
+    <dimen name="cast_activity_profile_image_padding_top">8dp</dimen>
+    <dimen name="cast_activity_user_name_height">32dp</dimen>
+    <dimen name="cast_activity_user_name_margin">8dp</dimen>
+    <dimen name="cast_activity_user_name_size">24sp</dimen>
+    <dimen name="cast_activity_comment_width">0dp</dimen>
+    <dimen name="cast_activity_comment_margin_top">4dp</dimen>
+    <dimen name="cast_activity_comment_padding">4dp</dimen>
+
+    // cast detail activity layout dimens
+    <dimen name="detail_activity_cast_margin">8dp</dimen>
+    <dimen name="detail_activity_cast_actor_name_width">132dp</dimen>
+    <dimen name="detail_activity_cast_character_name_width">16dp</dimen>
+    <dimen name="detail_activity_cast_actor_name_size">16sp</dimen>
+    <dimen name="detail_activity_title_width">360dp</dimen>
+
+
 </resources>

@@ -6,6 +6,6 @@
         android:id="@+id/action_general_settings"
         android:title="@string/menu_general_settings"
         android:icon="@drawable/ic_more_vert_white_24dp"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
 </menu>

@@ -80,7 +80,6 @@ public class MovieActivity extends AppCompatActivity implements
                     getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null, MovieActivity
                             .this);
                 }
-
             }
         };
 
