@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/detail_activity_layout_banner_margin_bottom">
+
+    <LinearLayout
+        style="@style/segment_details_linear_layout_style"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            style="@style/segment_details_runtime_tv_style"
+            android:id="@+id/detail_activity_runtime_id"
+            tools:text="Runtime" />
+
+        <TextView
+            style="@style/segment_details_genres_tv_style"
+            android:id="@+id/detail_activity_genres_id"
+            tools:text="Genres" />
+
+        <TextView
+            style="@style/segment_details_rating_tv_style"
+            android:id="@+id/detail_activity_imdb_rating_id"
+            tools:text="Vote average" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

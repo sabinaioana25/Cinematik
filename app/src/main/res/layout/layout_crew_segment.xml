@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/detail_activity_linear_layout_padding_bottom">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/detail_activity_linear_layout_padding_bottom">
+
+            <TextView style="@style/segment_details_crew_label_tv_style" />
+
+            <LinearLayout style="@style/segment_details_crew_layout_style">
+
+                <TextView style="@style/segment_details_director_label_tv_style" />
+
+                <TextView
+                    android:id="@+id/detail_activity_director_value_id"
+                    style="@style/segment_details_director_value_tv_style"
+                    tools:text="@string/directors_label" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/segment_details_crew_layout_style">
+
+                <TextView style="@style/segment_details_producer_label_tv_style" />
+
+                <TextView
+                    android:id="@+id/detail_activity_producer_value_id"
+                    style="@style/segment_details_producer_value_tv_style"
+                    tools:text="Producer" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
