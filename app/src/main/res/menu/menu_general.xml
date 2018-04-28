@@ -3,9 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_general_settings"
-        android:title="@string/menu_general_settings"
-        android:icon="@drawable/ic_more_vert_white_24dp"
-        app:showAsAction="never" />
+        android:id="@+id/action_refresh"
+        android:icon="@drawable/ic_refresh_white_24dp"
+        android:title="@string/menu_refresh"
+        android:visible="true"
+        app:showAsAction="always" />
 
+    <item
+        android:id="@+id/action_general_settings"
+        android:icon="@drawable/ic_more_vert_white_24dp"
+        android:title="@string/menu_general_settings"
+        app:showAsAction="always" />
 </menu>

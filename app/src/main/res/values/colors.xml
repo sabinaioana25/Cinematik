@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#FF8F00</color>
     <color name="colorTitle">#50ffffff</color>
+    <color name="colorUpArrow">#fff</color>
+    <color name="main_rv_background">#9800000b</color>
 </resources>

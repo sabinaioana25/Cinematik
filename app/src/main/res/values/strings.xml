@@ -6,8 +6,8 @@
     <string name="pref_sort_by_key" translatable="false">sort_by</string>
     <string name="pref_sort_by_popularity_desc_label">Popularity</string>
     <string name="pref_sort_by_rating_desc_label">Rating</string>
-    <string name="pref_sort_by_popularity_desc" translatable="false">popularity.desc</string>
-    <string name="pref_sort_by_rating_desc" translatable="false">vote_average.desc</string>
+    <string name="pref_sort_by_popularity" translatable="false">popular</string>
+    <string name="pref_sort_by_rating" translatable="false">top_rated</string>
     <string name="pref_vote_count_title">Vote Count</string>
     <string name="prev_vote_count_key">vote_count.gte</string>
     <string name="pref_vote_count_default_value">2000</string>
@@ -45,6 +45,9 @@
     <string name="detail_activity_cast_label">Cast</string>
     <string name="main_poster_description">main poster</string>
     <string name="review_activity_user_profile">Profile image</string>
+    <string name="no_movies_found">No movies found.\nPlease check internet connection"</string>
+    <string name="movie_name">Dummy name</string>
+    <string name="actor_profile_image">Actor profile</string>
 
 </resources>
 

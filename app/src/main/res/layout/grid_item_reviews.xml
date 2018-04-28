@@ -13,21 +13,14 @@
 
         <ImageView
             android:id="@+id/cast_activity_user_profile"
-            android:layout_width="@dimen/cast_activity_profile_image_width"
-            android:layout_height="@dimen/cast_activity_profile_image_height"
-            android:paddingTop="@dimen/cast_activity_profile_image_padding_top"
-            android:src="@drawable/ic_account_circle_24px"
+            style="@style/review_grid_item_image_style"
+            android:contentDescription="@string/review_activity_user_profile"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/review_activity_user_profile" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/review_author_id"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/cast_activity_user_name_height"
-            android:layout_margin="@dimen/cast_activity_user_name_margin"
-            android:textSize="@dimen/cast_activity_user_name_size"
-            android:textStyle="italic"
+            style="@style/review_grid_item_tv_name_style"
             app:layout_constraintBottom_toTopOf="@+id/review_content_id"
             app:layout_constraintStart_toEndOf="@+id/cast_activity_user_profile"
             app:layout_constraintTop_toTopOf="parent"
@@ -35,18 +28,9 @@
 
         <TextView
             android:id="@+id/review_content_id"
-            android:layout_width="@dimen/cast_activity_comment_width"
-            android:layout_height="240dp"
-            android:layout_marginTop="@dimen/cast_activity_comment_margin_top"
-            android:gravity="start"
+            style="@style/review_grid_item_tv_content_style"
             android:padding="@dimen/cast_activity_comment_padding"
-            android:textAlignment="viewStart"
-            android:ellipsize="end"
-            android:maxLines="10"
-            android:textAllCaps="false"
-            android:typeface="monospace"
             app:layout_constraintTop_toBottomOf="@+id/cast_activity_user_profile"
             tools:text="Doesn't matter how you look at it, this movie is darn good fun. I loved it from opening credits to the close. So what if the acting ... " />
-
     </android.support.constraint.ConstraintLayout>
 </LinearLayout>

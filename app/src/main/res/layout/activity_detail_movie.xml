@@ -1,160 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.android.cinematik.DetailMovieActivity">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/detail_activity_toolbar"
+        style="@style/toolbar_style" />
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/detail_activity_toolbar"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/detail_activity_linear_layout_padding_bottom">
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/detail_activity_constraint_layout_one_id"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/detail_activity_backdrop_image_id"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/detail_activity_poster_height"
-                android:contentDescription="@string/content_description_poster"
-                android:scaleType="centerCrop"
-                tools:background="@drawable/backdrop_beauty_beast" />
-
-            <Button
-                android:id="@+id/detail_activity_button_play_trailer_id"
-                android:layout_width="@dimen/detail_activity_play_button_width"
-                android:layout_height="@dimen/detail_activity_play_button_height"
-                android:background="@drawable/ic_play_circle_outline_white_24dp"
-                android:onClick="playTrailer"
-                app:layout_constraintBottom_toTopOf="@id/detail_activity_frame_gradient_id"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/detail_activity_frame_gradient_id"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/detail_activity_gradient_view_height"
-                android:background="@drawable/gradient"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <TextView
-                android:id="@+id/detail_activity_title_movie_id"
-                android:layout_width="@dimen/detail_activity_title_width"
-                android:layout_height="@dimen/detail_activity_title_height"
-                android:maxLines="1"
-                android:paddingLeft="@dimen/detail_activity_title_padding_left"
-                android:paddingStart="@dimen/detail_activity_title_padding_left"
-                android:paddingTop="@dimen/detail_activity_title_padding_top"
-                android:textAllCaps="true"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/detail_activity_title_size"
-                app:layout_constraintTop_toTopOf="@id/detail_activity_frame_gradient_id"
-                tools:text="title" />
-
-            <TextView
-                android:id="@+id/detail_activity_release_date_id"
-                android:layout_width="@dimen/detail_activity_title_width"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:paddingLeft="@dimen/detail_activity_title_padding_left"
-                android:paddingStart="@dimen/detail_activity_title_padding_left"
-                android:textAllCaps="true"
-                android:textColor="@color/colorTitle"
-                android:textSize="@dimen/detail_activity_title_size"
-                app:layout_constraintLeft_toLeftOf="@id/detail_activity_title_movie_id"
-                app:layout_constraintTop_toBottomOf="@id/detail_activity_title_movie_id"
-                tools:text="2001" />
-        </android.support.constraint.ConstraintLayout>
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/detail_activity_layout_banner_margin_bottom">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/detail_activity_layout_banner_height"
-                android:layout_marginBottom="@dimen/detail_activity_layout_banner_margin_bottom"
-                android:layout_marginTop="@dimen/detail_activity_layout_banner_margin_top"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/detail_activity_runtime_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@dimen/detail_activity_layout_banner_weight"
-                    android:gravity="center"
-                    tools:text="Runtime" />
-
-                <TextView
-                    android:id="@+id/detail_activity_genres_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@dimen/detail_activity_layout_banner_weight_two"
-                    android:gravity="center"
-                    tools:text="Genres" />
-
-                <TextView
-                    android:id="@+id/detail_activity_imdb_rating_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@dimen/detail_activity_layout_banner_weight"
-                    android:gravity="center"
-                    tools:text="Vote average" />
-            </LinearLayout>
-        </android.support.constraint.ConstraintLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/detail_activity_small_view_height"
-            android:layout_marginLeft="@dimen/detail_activity_small_view_margin_left"
-            android:layout_marginRight="@dimen/detail_activity_small_view_margin_right"
-            android:background="@drawable/shape_line_transparent"
-            android:padding="@dimen/detail_activity_small_view_padding" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/detail_activity_overview_padding">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
-                android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
-                android:text="@string/overview_label"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/colorPrimary" />
-
-            <TextView
-                android:id="@+id/detail_activity_overview_text_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
-                android:layout_marginRight="@dimen/detail_activity_overview_text_margin_right"
-                android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
-                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in libero tincidunt, finibus dolor non, tristique ligula. Cras sit amet scelerisque dui, quis hendrerit quam. Curabitur eu sollicitudin sapien. Donec sagittis nulla lorem." />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/detail_activity_small_view_height"
-            android:layout_marginLeft="@dimen/detail_activity_small_view_margin_left"
-            android:layout_marginRight="@dimen/detail_activity_small_view_margin_right"
-            android:background="@drawable/shape_line_transparent"
-            android:padding="@dimen/detail_activity_small_view_padding" />
+        tools:context="com.example.android.cinematik.DetailMovieActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -162,135 +22,39 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/detail_activity_linear_layout_padding_bottom">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
-                android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
-                android:paddingLeft="@dimen/detail_activity_overview_padding"
-                android:paddingTop="@dimen/detail_activity_overview_padding"
-                android:text="@string/detail_activity_crew_label"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/colorPrimary" />
+            <include layout="@layout/layout_poster_title_segment" />
 
-            <LinearLayout
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
-                android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/detail_activity_overview_padding">
+                android:clipToPadding="false"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@dimen/detail_activity_crew_label_weight"
-                    android:text="@string/detail_activity_director_label" />
-
-                <TextView
-                    android:id="@+id/detail_activity_director_value_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
-                    android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
-                    android:layout_weight="@dimen/detail_activity_crew_value_weight"
-                    tools:text="@string/directors_label" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
-                android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/detail_activity_overview_padding">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@dimen/detail_activity_crew_label_weight"
-                    android:paddingBottom="@dimen/detail_activity_linear_layout_padding_bottom"
-                    android:text="@string/detail_activity_producer_label" />
-
-                <TextView
-                    android:id="@+id/detail_activity_producer_value_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@dimen/detail_activity_crew_value_weight"
-                    tools:text="Producer" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/detail_activity_small_view_height"
-                android:layout_marginLeft="@dimen/detail_activity_small_view_margin_left"
-                android:layout_marginRight="@dimen/detail_activity_small_view_margin_right"
-                android:background="@drawable/shape_line_transparent"
-                android:padding="@dimen/detail_activity_small_view_padding" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
-                    android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
-                    android:paddingLeft="@dimen/detail_activity_overview_padding"
-                    android:paddingTop="@dimen/detail_activity_overview_padding"
-                    android:text="@string/detail_activity_cast_label"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/colorPrimary" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/detail_activity_recycler_view_cast_id"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
-                    android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/detail_activity_overview_padding" />
-            </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/layout_details_segment" />
+
+                    <View style="@style/divider_style" />
+
+                    <include layout="@layout/layout_overview_segment" />
+
+                    <View style="@style/divider_style" />
+
+                    <include layout="@layout/layout_crew_segment" />
+
+                    <View style="@style/divider_style" />
+
+                    <include layout="@layout/layout_cast_segment" />
+
+                    <View style="@style/divider_style" />
+
+                    <include layout="@layout/layout_review_segment" />
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/detail_activity_small_view_height"
-            android:layout_marginLeft="@dimen/detail_activity_small_view_margin_left"
-            android:layout_marginRight="@dimen/detail_activity_small_view_margin_right"
-            android:background="@drawable/shape_line_transparent"
-            android:padding="@dimen/detail_activity_small_view_padding" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
-                android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
-                android:paddingLeft="@dimen/detail_activity_overview_padding"
-                android:paddingTop="@dimen/detail_activity_overview_padding"
-                android:text="@string/detail_activity_reviews_label"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/colorPrimary" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/detail_activity_recycler_view_reviews_id"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/detail_activity_overview_text_margin_left"
-                android:layout_marginStart="@dimen/detail_activity_overview_text_margin_left"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/detail_activity_overview_padding"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/colorPrimary">
-
-            </android.support.v7.widget.RecyclerView>
-        </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</RelativeLayout>

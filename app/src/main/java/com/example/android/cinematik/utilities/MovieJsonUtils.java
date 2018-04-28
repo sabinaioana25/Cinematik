@@ -2,7 +2,6 @@ package com.example.android.cinematik.utilities;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.example.android.cinematik.pojos.CastMember;
 import com.example.android.cinematik.pojos.MovieItem;
@@ -153,7 +152,7 @@ public class MovieJsonUtils {
             JSONObject baseJsonResponse = new JSONObject(jsonResponse);
 
             // ID
-             int jsonID = baseJsonResponse.getInt("id");
+            int jsonID = baseJsonResponse.getInt("id");
 
             // backdrop_path
             String jsonBackdrop = null;
@@ -162,7 +161,6 @@ public class MovieJsonUtils {
                 jsonBackdrop = NetworkUtils.buildUrlImage(
                         jsonBackdropPath.substring(1),
                         NetworkUtils.URL_BACKDROP_SIZE_VALUE);
-                Log.e(LOG_TAG, "Image URL " + jsonBackdrop);
             }
 
             // Check if title exists
@@ -282,7 +280,6 @@ public class MovieJsonUtils {
                 for (int i = 0; i < jsonVideosArray.length(); i++) {
                     JSONObject jsonCurrentMovie = jsonVideosArray.getJSONObject(i);
                     jsonKeyTrailer = jsonCurrentMovie.optString("key");
-                    Log.e(LOG_TAG, "mddhhefw " + jsonKeyTrailer);
                 }
             }
 

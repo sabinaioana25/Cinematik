@@ -1,12 +1,340 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColor">#000</item>
         <!-- Customize your theme here. -->
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_18dp</item>
+        <item name="android:fitsSystemWindows">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
+    <!-- main activity style tv -->
+    <style name="main_activity_tv_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="text">@string/no_movies_found</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- main activity style swipe refresh -->
+    <style name="main_activity_swipe_refresh_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@id/settings_activity_toolbar</item>
+    </style>
+
+    <!-- main activity style rv -->
+    <style name="main_activity_rv_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/main_rv_background</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:paddingLeft">@dimen/item_offset</item>
+    </style>
+
+    <!-- DividerView style -->
+    <style name="divider_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/detail_activity_small_view_height</item>
+        <item name="android:layout_marginLeft">@dimen/detail_activity_small_view_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/detail_activity_small_view_margin_right
+        </item>
+        <item name="android:background">@drawable/shape_line_transparent</item>
+        <item name="android:padding">@dimen/detail_activity_small_view_padding</item>
+    </style>
+
+    <!-- Toolbar style -->
+    <style name="toolbar_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@android:color/black</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+    </style>
+
+    <!--  poster style -->
+    <style name="segment_poster_style_image">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/detail_activity_poster_height</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <!--  play button style -->
+    <style name="segment_poster_style_button">
+        <item name="android:layout_width">@dimen/detail_activity_play_button_width</item>
+        <item name="android:layout_height">@dimen/detail_activity_play_button_height</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_marginBottom">@dimen/detail_activity_margin_button</item>
+        <item name="android:layout_marginTop">@dimen/detail_activity_margin_button</item>
+        <item name="android:background">@drawable/ic_play_circle_outline_white_24dp</item>
+    </style>
+
+    <!-- rectangular separator -->
+    <style name="segment_shape_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/detail_activity_gradient_view_height</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:background">@drawable/gradient</item>
+    </style>
+
+    <!-- title text view -->
+    <style name="segment_title_tv_style">
+        <item name="android:layout_width">@dimen/detail_activity_title_width</item>
+        <item name="android:layout_height">@dimen/detail_activity_title_height</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:layout_marginBottom">@dimen/title_tv_margin_bottom</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingLeft">@dimen/detail_activity_title_padding_left</item>
+        <item name="android:paddingTop">@dimen/detail_activity_title_padding_top</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/detail_activity_title_size</item>
+    </style>
+
+    <!-- subtitle text view-->
+    <style name="segment_subtitle_tv_style">
+        <item name="android:layout_width">@dimen/detail_activity_title_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingLeft">@dimen/detail_activity_title_padding_left</item>
+        <item name="android:textColor">@color/colorTitle</item>
+        <item name="android:textSize">@dimen/detail_activity_title_size</item>
+    </style>
+
+    <!-- details layout-->
+    <style name="segment_details_linear_layout_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/detail_activity_layout_banner_height</item>
+        <item name="android:layout_marginBottom">
+            @dimen/detail_activity_layout_banner_margin_bottom
+        </item>
+        <item name="android:layout_marginTop">@dimen/detail_activity_layout_banner_margin_top</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <!-- runtime tv -->
+    <style name="segment_details_runtime_tv_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">@dimen/detail_activity_layout_banner_weight</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- genres tv -->
+    <style name="segment_details_genres_tv_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">@dimen/detail_activity_layout_banner_weight_two</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- rating tv -->
+    <style name="segment_details_rating_tv_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">@dimen/detail_activity_layout_banner_weight</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- details overview label -->
+    <style name="segment_details_overview_label_tv_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/detail_activity_overview_text_margin_left
+        </item>
+        <item name="android:text">@string/overview_label</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <!-- details overview text-->
+    <style name="segment_details_overview_descr_tv_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/detail_activity_overview_text_margin_left
+        </item>
+        <item name="android:layout_marginRight">@dimen/detail_activity_overview_text_margin_right
+        </item>
+    </style>
+
+    <!-- details crew layout -->
+    <style name="segment_details_crew_layout_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/detail_activity_overview_text_margin_left
+        </item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingLeft">@dimen/detail_activity_overview_padding</item>
+    </style>
+
+    <!-- details crew label tv-->
+    <style name="segment_details_crew_label_tv_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/detail_activity_overview_text_margin_left
+        </item>
+        <item name="android:paddingLeft">@dimen/detail_activity_overview_padding</item>
+        <item name="android:paddingTop">@dimen/detail_activity_overview_padding</item>
+        <item name="android:text">@string/detail_activity_crew_label</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <!-- details director label tv-->
+    <style name="segment_details_director_label_tv_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">@dimen/detail_activity_crew_label_weight</item>
+        <item name="android:text">@string/detail_activity_director_label</item>
+    </style>
+
+    <!-- details director value tv-->
+    <style name="segment_details_director_value_tv_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">@dimen/detail_activity_crew_value_weight</item>
+        <item name="android:text">@string/detail_activity_director_label</item>
+        <item name="android:layout_marginLeft">@dimen/detail_activity_overview_text_margin_left
+        </item>
+    </style>
+
+    <!-- details producer label -->
+    <style name="segment_details_producer_label_tv_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">@dimen/detail_activity_crew_label_weight</item>
+        <item name="android:paddingBottom">@dimen/detail_activity_linear_layout_padding_bottom
+        </item>
+        <item name="android:text">@string/detail_activity_producer_label</item>
+    </style>
+
+    <!-- details producer value tv -->
+    <style name="segment_details_producer_value_tv_style">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">@dimen/detail_activity_crew_value_weight</item>
+    </style>
+
+    <!-- details cast label tv -->
+    <style name="segment_details_cast_label_tv_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/detail_activity_overview_text_margin_left
+        </item>
+        <item name="android:paddingLeft">@dimen/detail_activity_overview_padding</item>
+        <item name="android:paddingTop">@dimen/detail_activity_overview_padding</item>
+        <item name="android:text">@string/detail_activity_cast_label</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <!-- details cast list rv -->
+    <style name="segment_details_cast_rv_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">@dimen/detail_activity_overview_text_margin_left
+        </item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingLeft">@dimen/detail_activity_overview_padding</item>
+    </style>
+
+    <!-- details review label tv -->
+    <style name="segment_details_review_label_tv_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/detail_activity_overview_text_margin_left
+        </item>
+        <item name="android:paddingLeft">@dimen/detail_activity_overview_padding</item>
+        <item name="android:paddingTop">@dimen/detail_activity_overview_padding</item>
+        <item name="android:text">@string/detail_activity_reviews_label</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <!-- details review list rv -->
+    <style name="segment_details_review_rv_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">@dimen/detail_activity_overview_text_margin_left
+        </item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingLeft">@dimen/detail_activity_overview_padding</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Medium</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <!-- grid item cast imageview -->
+    <style name="cast_grid_item_image_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/detail_activity_cast_margin</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:src">@drawable/placeholder_image</item>
+    </style>
+
+    <!-- grid item cast tv actor name -->
+    <style name="cast_grid_item_tv_actor_name_style">
+        <item name="android:layout_width">@dimen/detail_activity_cast_actor_name_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@id/imageViewProfile</item>
+        <item name="android:layout_marginTop">@dimen/detail_activity_cast_margin</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textSize">@dimen/detail_activity_cast_actor_name_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- grid item cast tv char name -->
+    <style name="cast_grid_item_tv_char_name_style">
+        <item name="android:layout_width">@dimen/detail_activity_cast_actor_name_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@id/actor_name</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:textSize">@dimen/detail_activity_cast_actor_name_size</item>
+    </style>
+
+    <!-- grid item reviews image -->
+    <style name="review_grid_item_image_style">
+        <item name="android:layout_width">@dimen/cast_activity_profile_image_width</item>
+        <item name="android:layout_height">@dimen/cast_activity_profile_image_height</item>
+        <item name="android:paddingTop">@dimen/cast_activity_profile_image_padding_top</item>
+        <item name="android:src">@drawable/ic_account_circle_24px</item>
+    </style>
+
+    <!-- grid item reviews tv name -->
+    <style name="review_grid_item_tv_name_style">
+        <item type="attr" name="android:padding">2dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/cast_activity_user_name_height</item>
+        <item name="android:layout_margin">@dimen/cast_activity_user_name_margin</item>
+        <item name="android:textSize">@dimen/cast_activity_user_name_size</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <!-- grid item reviews tv content -->
+    <style name="review_grid_item_tv_content_style">
+        <item name="android:layout_width">@dimen/review_activity_comment_width</item>
+        <item name="android:layout_height">@dimen/review_activity_comment_height</item>
+        <item name="android:layout_marginTop">@dimen/review_activity_comment_margin_top</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">start</item>
+        <item name="android:maxLines">10</item>
+        <item name="padding">@dimen/cast_activity_comment_padding</item>
+        <item name="android:typeface">monospace</item>
+    </style>
 </resources>
+
+
+
+
+
+

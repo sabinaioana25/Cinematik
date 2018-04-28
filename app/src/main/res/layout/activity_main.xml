@@ -3,19 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.android.cinematik.MovieActivity">
+
+    tools:context="com.example.android.cinematik.MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/settings_activity_toolbar"
+        style="@style/Theme.AppCompat.Light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        android:fitsSystemWindows="true"
+        android:minHeight="?attr/actionBarSize" />
+
+    <TextView
+        android:id="@+id/no_movies_found_tv"
+        style="@style/main_activity_tv_style" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/discover_swipe_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        style="@style/main_activity_swipe_refresh_style">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_movies"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#9800000b"
-            android:clipToPadding="false"
-            android:padding="@dimen/item_offset" />
+            style="@style/main_activity_rv_style" />
     </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

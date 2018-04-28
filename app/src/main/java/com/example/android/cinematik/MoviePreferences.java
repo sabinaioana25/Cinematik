@@ -14,7 +14,7 @@ public class MoviePreferences {
         SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(context);
         String sortByKey = context.getString(R.string.pref_sort_by_key);
-        String defaultValue = context.getString(R.string.pref_sort_by_popularity_desc);
+        String defaultValue = context.getString(R.string.pref_sort_by_popularity);
         return sharedPreferences.getString(sortByKey, defaultValue);
     }
 }

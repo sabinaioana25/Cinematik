@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -12,24 +13,27 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 
 import com.example.android.cinematik.Adapters.MovieAdapter;
 import com.example.android.cinematik.Interfaces.MovieDetailClickHandler;
 import com.example.android.cinematik.loaders.MovieLoader;
 import com.example.android.cinematik.pojos.MovieItem;
+import com.example.android.cinematik.utilities.NetworkDetection;
 import com.example.android.cinematik.utilities.NetworkUtils;
 
 import java.util.List;
 
-public class MovieActivity extends AppCompatActivity implements
+public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<List<MovieItem>>,
         MovieDetailClickHandler, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String TAG = MovieActivity.class.getSimpleName();
+    private static final String TAG = MainActivity.class.getSimpleName();
     public static final String MOVIE_ID = "id";
 
     public RecyclerView movieListRV;
@@ -42,9 +46,11 @@ public class MovieActivity extends AppCompatActivity implements
     // adapter
     private MovieAdapter adapter;
 
-    SwipeRefreshLayout swipeRefreshLayout;
-    private boolean isLoading = false;
+    // detect internet connection
+    NetworkDetection networkDetection;
 
+    // swipe to refresh
+    SwipeRefreshLayout swipeRefreshLayout;
 
     // sortOption
     String sortOption = null;
@@ -55,8 +61,14 @@ public class MovieActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = findViewById(R.id.settings_activity_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+
+        networkDetection = new NetworkDetection(this);
+
         swipeRefreshLayout = findViewById(R.id.discover_swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(MovieActivity.this);
+        swipeRefreshLayout.setOnRefreshListener(MainActivity.this);
         swipeRefreshLayout.setColorScheme(android.R.color.holo_red_dark);
 
         movieListRV = findViewById(R.id.recycler_view_movies);
@@ -76,8 +88,8 @@ public class MovieActivity extends AppCompatActivity implements
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 Log.e(TAG, "message " + key);
                 if (key.equals(getString(R.string.pref_sort_by_key))) {
-                    isLoading = true;
-                    getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null, MovieActivity
+
+                    getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null, MainActivity
                             .this);
                 }
             }
@@ -90,26 +102,37 @@ public class MovieActivity extends AppCompatActivity implements
     @Override
     public Loader<List<MovieItem>> onCreateLoader(int i, Bundle args) {
 
-        if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
-                .pref_sort_by_popularity_desc))) {
+        String urlMovieActivity = null;
+
+        if (MoviePreferences.getSortByPreference(context).equals(
+                getString(R.string.pref_sort_by_popularity))) {
             sortOption = NetworkUtils.MOST_POPULAR_PARAM;
-        } else if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
-                .pref_sort_by_rating_desc))) {
+            urlMovieActivity = NetworkUtils.buildUrlMovieActivity(context, sortOption);
+        } else if (MoviePreferences.getSortByPreference(context).equals(
+                getString(R.string.pref_sort_by_rating))) {
             sortOption = NetworkUtils.TOP_RATED_PARAM;
+            urlMovieActivity = NetworkUtils.buildUrlMovieActivity(context, sortOption);
         }
-        String urlPopularMovieActivity = NetworkUtils.buildUrlMovieActivity(context, sortOption);
-        Log.e(TAG, urlPopularMovieActivity);
-        return new MovieLoader(this, urlPopularMovieActivity);
+        return new MovieLoader(this, urlMovieActivity);
     }
 
     @Override
     public void onLoadFinished(Loader<List<MovieItem>> loader, List<MovieItem> movieItems) {
-        adapter.InsertList(movieItems);
+
+        TextView noMoviesMessage = findViewById(R.id.no_movies_found_tv);
+
+        if (networkDetection.isConnected()) {
+            adapter.InsertList(movieItems);
+            noMoviesMessage.setVisibility(View.GONE);
+        } else {
+            noMoviesMessage.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onLoaderReset(Loader<List<MovieItem>> loader) {
         adapter.InsertList(null);
+
     }
 
     @Override
@@ -121,7 +144,6 @@ public class MovieActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_refresh, menu);
         getMenuInflater().inflate(R.menu.menu_general, menu);
         return true;
     }
@@ -135,10 +157,8 @@ public class MovieActivity extends AppCompatActivity implements
             startActivity(goToSetting);
             return true;
         } else if (id == R.id.action_refresh) {
-            Toast.makeText(context, "bla bla reload", Toast.LENGTH_SHORT).show();
-            getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null, MovieActivity.this);
+            onRefresh();
         }
-
         return super.onOptionsItemSelected(menuItem);
     }
 
@@ -147,14 +167,15 @@ public class MovieActivity extends AppCompatActivity implements
      */
     @Override
     public void onRefresh() {
+
         adapter.deleteItemsInList();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(false);
             }
-        }, 500);
-        getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES,  null,this);
-        Log.e(TAG, "Swipe refresh");
+        }, 0);
+        getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null, this);
+        adapter.notifyDataSetChanged();
     }
 }

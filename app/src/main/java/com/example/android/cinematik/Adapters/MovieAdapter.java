@@ -30,7 +30,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     public MovieAdapter(Context context, MovieDetailClickHandler onClickHandler) {
         this.context = context;
-        this.onClickHandler = onClickHandler;
+        MovieAdapter.onClickHandler = onClickHandler;
     }
 
     @Override
@@ -62,12 +62,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public void InsertList(List<MovieItem> movies) {
-        this.list.addAll(movies);
+        list.addAll(movies);
         notifyDataSetChanged();
     }
 
     public void deleteItemsInList() {
-        this.list.clear();
+        list.clear();
         notifyDataSetChanged();
     }
 

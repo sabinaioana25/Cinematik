@@ -6,8 +6,8 @@
     </string-array>
 
     <string-array name="pref_sort_values">
-        <item>@string/pref_sort_by_popularity_desc</item>
-        <item>@string/pref_sort_by_rating_desc</item>
+        <item>@string/pref_sort_by_popularity</item>
+        <item>@string/pref_sort_by_rating</item>
     </string-array>
 
 </resources>

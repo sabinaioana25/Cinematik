@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.example.android.cinematik.BuildConfig;
-import com.example.android.cinematik.R;
+import com.example.android.cinematik.MoviePreferences;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,20 +28,28 @@ public class NetworkUtils {
      The query parameters allow sorting of the movies by popularity, rating and genre
     */
     public static final String SORT_BY_PARAM = "sort_by";
-    public static final String TOP_RATED_PARAM = "vote_average.desc";
-    public static final String MOST_POPULAR_PARAM = "popularity.desc";
+    public static final String TOP_RATED_PARAM = "top_rated";
+    public static final String MOST_POPULAR_PARAM = "popular";
 
     /*
      Main API URL components
      */
-    private static final String URL_SCHEME = "https";
+    private static final String URL_SCHEME = "http";
     private static final String URL_AUTHORITY = "api.themoviedb.org";
+
+    //    private static final String URL_PATH_DISCOVER = "discover";
     private static final String URL_PATH_VERSION = "3";
-    private static final String URL_PATH_DISCOVER = "discover";
     private static final String URL_PATH_MOVIES = "movie";
-    private static final String API_KEY = BuildConfig.API_KEY;
+
+    // api key details
     private static final String API_KEY_PARAM = "api_key";
-    private static final String URL_VOTE_COUNT_KEY = "vote_count.gte";
+    private static final String API_KEY = BuildConfig.API_KEY;
+
+    //    private static final String URL_VOTE_COUNT_KEY = "vote_count.gte";
+    //    public static final String URL_VOTE_COUNT = "2500";
+
+    private static final int READ_TIME_OUT = 10000;
+    private static final int CONN_TIME_OUT = 10000;
 
     /*
      Poster API URL components
@@ -52,8 +60,6 @@ public class NetworkUtils {
     public static final String URL_POSTER_SIZE_VALUE = "w500";
     public static final String URL_BACKDROP_SIZE_VALUE = "original";
     public static final String URL_PROFILE_SIZE_VALUE = "original";
-    public static final String URL_VOTE_COUNT = "2500";
-
     /*
      Keys to call on values from the API
      */
@@ -86,8 +92,8 @@ public class NetworkUtils {
 
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(10000);
+            urlConnection.setReadTimeout(READ_TIME_OUT);
+            urlConnection.setConnectTimeout(CONN_TIME_OUT);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
@@ -123,6 +129,7 @@ public class NetworkUtils {
         return output.toString();
     }
 
+
     private static URL buildUrl(String uri) {
         try {
             return new URL(uri);
@@ -133,17 +140,15 @@ public class NetworkUtils {
     }
 
     public static String buildUrlMovieActivity(Context context, String sort_by) {
-        Uri.Builder uriBuilderPopular = new Uri.Builder();
-        uriBuilderPopular.scheme(URL_SCHEME)
+        Uri.Builder uriBuilderMovieList = new Uri.Builder();
+        uriBuilderMovieList.scheme(URL_SCHEME)
                 .authority(URL_AUTHORITY)
                 .appendPath(URL_PATH_VERSION)
-                .appendPath(URL_PATH_DISCOVER)
                 .appendPath(URL_PATH_MOVIES)
+                .appendPath(MoviePreferences.getSortByPreference(context))
                 .appendQueryParameter(API_KEY_PARAM, API_KEY)
-                .appendQueryParameter(context.getString(R.string.pref_sort_by_key), sort_by)
-                .appendQueryParameter(URL_VOTE_COUNT_KEY, URL_VOTE_COUNT)
                 .build();
-        return uriBuilderPopular.toString();
+        return uriBuilderMovieList.toString();
     }
 
     public static URL buildUrlDetailActivity(int id) {

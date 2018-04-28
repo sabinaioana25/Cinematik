@@ -1,14 +1,18 @@
 package com.example.android.cinematik;
 
+import android.annotation.SuppressLint;
 import android.app.LoaderManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -37,7 +41,6 @@ public class DetailMovieActivity extends AppCompatActivity
     private LinearLayoutManager reviewLinearLayoutManager = new LinearLayoutManager(this,
             LinearLayoutManager.HORIZONTAL, false);
 
-    Context context;
     // adapters
     private CastAdapter castAdapter;
     private ReviewAdapter reviewAdapter;
@@ -45,13 +48,25 @@ public class DetailMovieActivity extends AppCompatActivity
     // Play Button
     Button buttonPlayTrailer;
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_movie);
 
+        Toolbar toolbar = findViewById(R.id.detail_activity_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitleTextColor(Color.WHITE);
+
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_18dp);
+        upArrow.setColorFilter(getResources().getColor(R.color.colorUpArrow), PorterDuff.Mode.DST_IN);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
         Intent getMovieDetails = getIntent();
-        id = getMovieDetails.getExtras().getInt(MovieActivity.MOVIE_ID);
+
+        id = getMovieDetails.getExtras().getInt(MainActivity.MOVIE_ID);
 
         // CastAdapter
         castListRecyclerView = findViewById(R.id.detail_activity_recycler_view_cast_id);
@@ -73,7 +88,6 @@ public class DetailMovieActivity extends AppCompatActivity
     @Override
     public Loader<MovieItem> onCreateLoader(int i, Bundle bundle) {
         return new DetailMovieLoader(this, id);
-
     }
 
     @Override
@@ -155,8 +169,6 @@ public class DetailMovieActivity extends AppCompatActivity
 
     @Override
     public void onLoaderReset(Loader<MovieItem> loader) {
-
     }
 
-    public void playTrailer(View view) {}
 }
