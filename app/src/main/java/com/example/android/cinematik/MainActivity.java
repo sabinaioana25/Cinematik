@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements
     public Loader<List<MovieItem>> onCreateLoader(int i, Bundle args) {
         String urlMovieActivity = null;
 
+
         if (MoviePreferences.getSortByPreference(context).equals(
                 getString(R.string.pref_sort_by_popularity))) {
             sortOption = NetworkUtils.MOST_POPULAR_PARAM;
