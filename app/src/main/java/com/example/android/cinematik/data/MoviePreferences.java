@@ -1,8 +1,10 @@
-package com.example.android.cinematik;
+package com.example.android.cinematik.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import com.example.android.cinematik.R;
 
 /**
  * Created by Sabina on 4/15/2018.

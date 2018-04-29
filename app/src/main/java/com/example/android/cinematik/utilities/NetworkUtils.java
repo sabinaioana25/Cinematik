@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.example.android.cinematik.BuildConfig;
-import com.example.android.cinematik.MoviePreferences;
+import com.example.android.cinematik.data.MoviePreferences;
 
 import java.io.BufferedReader;
 import java.io.IOException;

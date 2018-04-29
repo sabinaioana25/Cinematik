@@ -82,6 +82,19 @@
         <item name="android:background">@drawable/gradient</item>
     </style>
 
+    <!-- detail activity favourite icon style -->
+    <style name="segment_favourite_icon_style">
+        <item name="android:layout_width">@dimen/detail_activity_favourite_button_width</item>
+        <item name="android:layout_height">@dimen/detail_activity_favourite_button_height</item>
+        <item name="android:background">@drawable/selector</item>
+        <item name="android:layout_marginBottom">
+            @dimen/detail_activity_favourite_button_margin_bottom
+        </item>
+        <item name="android:layout_marginRight">
+            @dimen/detail_activitity_favourite_button_margin_right
+        </item>
+    </style>
+
     <!-- title text view -->
     <style name="segment_title_tv_style">
         <item name="android:layout_width">@dimen/detail_activity_title_width</item>
@@ -114,6 +127,7 @@
         <item name="android:layout_marginBottom">
             @dimen/detail_activity_layout_banner_margin_bottom
         </item>
+        <item name="android:layout_marginRight">@dimen/detail_activity_overview_text_margin_right</item>
         <item name="android:layout_marginTop">@dimen/detail_activity_layout_banner_margin_top</item>
         <item name="android:orientation">horizontal</item>
     </style>
@@ -138,7 +152,7 @@
     <style name="segment_details_rating_tv_style">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">@dimen/detail_activity_layout_banner_weight</item>
+        <item name="android:layout_weight">3</item>
         <item name="android:gravity">center</item>
     </style>
 
@@ -312,7 +326,7 @@
 
     <!-- grid item reviews tv name -->
     <style name="review_grid_item_tv_name_style">
-        <item type="attr" name="android:padding">2dp</item>
+        <item name="android:padding" type="attr">2dp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/cast_activity_user_name_height</item>
         <item name="android:layout_margin">@dimen/cast_activity_user_name_margin</item>
@@ -331,6 +345,8 @@
         <item name="padding">@dimen/cast_activity_comment_padding</item>
         <item name="android:typeface">monospace</item>
     </style>
+
+
 </resources>
 
 

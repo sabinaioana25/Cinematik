@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,12 +24,17 @@ import android.widget.TextView;
 
 import com.example.android.cinematik.Adapters.MovieAdapter;
 import com.example.android.cinematik.Interfaces.MovieDetailClickHandler;
+import com.example.android.cinematik.data.MoviePreferences;
+import com.example.android.cinematik.data.MoviesDbHelper;
 import com.example.android.cinematik.loaders.MovieLoader;
 import com.example.android.cinematik.pojos.MovieItem;
 import com.example.android.cinematik.utilities.NetworkDetection;
 import com.example.android.cinematik.utilities.NetworkUtils;
+import com.facebook.stetho.Stetho;
 
 import java.util.List;
+
+import static com.example.android.cinematik.data.MoviesContract.MovieEntry;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<List<MovieItem>>,
@@ -56,14 +63,29 @@ public class MainActivity extends AppCompatActivity implements
     String sortOption = null;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
+    private final String[] projection = new String[]{
+            MovieEntry.COLUMN_MOVIE_ID,
+            MovieEntry.COLUMN_MOVIE_POSTER
+    };
+
+    // local filed member of type SQLiteDatabase called mDb
+    private SQLiteDatabase mDb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Stetho.initializeWithDefaults(this);
+
         Toolbar toolbar = findViewById(R.id.settings_activity_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
+
+        // MoviesDbHelper instance with "this" as context
+        MoviesDbHelper dbHelper = new MoviesDbHelper(this);
+        dbHelper.getReadableDatabase();
+
 
         networkDetection = new NetworkDetection(this);
 
@@ -101,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public Loader<List<MovieItem>> onCreateLoader(int i, Bundle args) {
-
         String urlMovieActivity = null;
 
         if (MoviePreferences.getSortByPreference(context).equals(
@@ -177,5 +198,17 @@ public class MainActivity extends AppCompatActivity implements
         }, 0);
         getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null, this);
         adapter.notifyDataSetChanged();
+    }
+
+    private Cursor getAllMovies() {
+        return mDb.query(
+                MovieEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                MovieEntry._ID
+        );
     }
 }

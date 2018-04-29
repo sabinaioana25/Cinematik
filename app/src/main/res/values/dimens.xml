@@ -51,6 +51,10 @@
     <dimen name="detail_activity_margin_button">8dp</dimen>
     <dimen name="title_tv_margin_bottom">24dp</dimen>
     <dimen name="review_activity_comment_height">240dp</dimen>
+    <dimen name="detail_activity_favourite_button_width">32dp</dimen>
+    <dimen name="detail_activity_favourite_button_height">32dp</dimen>
+    <dimen name="detail_activity_favourite_button_margin_bottom">16dp</dimen>
+    <dimen name="detail_activitity_favourite_button_margin_right">16dp</dimen>
 
 
 </resources>

@@ -14,7 +14,7 @@
         tools:background="@drawable/backdrop_beauty_beast" />
 
     <Button
-        android:id="@+id/detail_activity_button_play_trailer_id"
+        android:id="@+id/detail_activity_button_play_trailer"
         style="@style/segment_poster_style_button"
         android:layout_marginEnd="@dimen/detail_activity_margin_button"
         android:layout_marginStart="@dimen/detail_activity_margin_button"
@@ -44,4 +44,12 @@
         app:layout_constraintLeft_toLeftOf="@id/detail_activity_title_movie_id"
         app:layout_constraintTop_toBottomOf="@id/detail_activity_title_movie_id"
         tools:text="2001" />
+
+    <Button
+        android:id="@+id/detail_activity_button_favourites"
+        android:onClick="addFavourite"
+        style="@style/segment_favourite_icon_style"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/detail_activity_frame_gradient_id"
+        android:contentDescription="@string/detail_activity_fav_button_desc" />
 </android.support.constraint.ConstraintLayout>
