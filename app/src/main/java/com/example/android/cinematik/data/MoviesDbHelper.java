@@ -22,7 +22,6 @@ public class MoviesDbHelper extends SQLiteOpenHelper  {
                 "CREATE TABLE " + MovieEntry.TABLE_NAME + " (" +
                         MovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         MovieEntry.COLUMN_MOVIE_ID + " INTEGER, " +
-                        MovieEntry.COLUMN_MOVIE_POSTER + " TEXT NOT NULL, " +
                         MovieEntry.COLUMN_MOVIE_BACKDROP + " TEXT NOT NULL, " +
                         MovieEntry.COLUMN_MOVIE_TITLE + " TEXT NOT NULL, " +
                         MovieEntry.COLUMN_MOVIE_RELEASE_DATE + " TEXT NOT NULL, " +
@@ -30,7 +29,6 @@ public class MoviesDbHelper extends SQLiteOpenHelper  {
                         MovieEntry.COLUMN_MOVIE_GENRES + " TEXT, " +
                         MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE + " TEXT, " +
                         MovieEntry.COLUMN_MOVIE_OVERVIEW + " TEXT, " +
-                        MovieEntry.COLUMN_MOVIE_POPULARITY + " TEXT, " +
                         MovieEntry.COLUMN_MOVIE_DIRECTOR + " TEXT NOT NULL, " +
                         MovieEntry.COLUMN_MOVIE_PRODUCER + " TEXT NOT NULL, " +
                         MovieEntry.COLUMN_MOVIE_VIDEO_URL + " TEXT);";

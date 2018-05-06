@@ -27,7 +27,6 @@ public class MoviesContract {
         public static final String COLUMN_MOVIE_RUNTIME = "runtime";
         public static final String COLUMN_MOVIE_POSTER = "poster";
         public static final String COLUMN_MOVIE_OVERVIEW = "overview";
-        public static final String COLUMN_MOVIE_POPULARITY = "popularity";
         public static final String COLUMN_MOVIE_VOTE_AVERAGE = "voteAverage";
         public static final String COLUMN_MOVIE_DIRECTOR = "director";
         public static final String COLUMN_MOVIE_PRODUCER = "producer";

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
+
 import com.example.android.cinematik.data.MoviesContract.CastEntry;
 
 import static com.example.android.cinematik.data.MoviesContract.MOVIES_CONTENT_AUTHORTY;

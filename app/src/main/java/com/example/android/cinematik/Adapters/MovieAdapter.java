@@ -62,6 +62,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public void InsertList(List<MovieItem> movies) {
+        list.clear();
         list.addAll(movies);
         notifyDataSetChanged();
     }

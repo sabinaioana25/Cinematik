@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -34,8 +33,6 @@ import com.facebook.stetho.Stetho;
 
 import java.util.List;
 
-import static com.example.android.cinematik.data.MoviesContract.MovieEntry;
-
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<List<MovieItem>>,
         MovieDetailClickHandler, SwipeRefreshLayout.OnRefreshListener {
@@ -62,11 +59,6 @@ public class MainActivity extends AppCompatActivity implements
     // sortOption
     String sortOption = null;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
-
-    private final String[] projection = new String[]{
-            MovieEntry.COLUMN_MOVIE_ID,
-            MovieEntry.COLUMN_MOVIE_POSTER
-    };
 
     // local filed member of type SQLiteDatabase called mDb
     private SQLiteDatabase mDb;
@@ -124,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public Loader<List<MovieItem>> onCreateLoader(int i, Bundle args) {
         String urlMovieActivity = null;
-
 
         if (MoviePreferences.getSortByPreference(context).equals(
                 getString(R.string.pref_sort_by_popularity))) {
@@ -199,17 +190,5 @@ public class MainActivity extends AppCompatActivity implements
         }, 0);
         getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null, this);
         adapter.notifyDataSetChanged();
-    }
-
-    private Cursor getAllMovies() {
-        return mDb.query(
-                MovieEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                MovieEntry._ID
-        );
     }
 }

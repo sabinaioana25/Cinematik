@@ -1,7 +1,7 @@
 package com.example.android.cinematik;
 
-import android.annotation.SuppressLint;
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.Loader;
 import android.graphics.Color;
@@ -25,9 +25,7 @@ import com.example.android.cinematik.pojos.MovieItem;
 import com.example.android.cinematik.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
-import static com.example.android.cinematik.data.MoviesContract.CastEntry;
 import static com.example.android.cinematik.data.MoviesContract.MovieEntry;
-import static com.example.android.cinematik.data.MoviesContract.ReviewsEntry;
 
 public class DetailMovieActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<MovieItem> {
@@ -62,36 +60,34 @@ public class DetailMovieActivity extends AppCompatActivity
     // add to favourites button
     Button buttonFavouriteMovies;
 
-    // movie projection
-    private final String[] movieProjection = new String[] {
-            MovieEntry.COLUMN_MOVIE_ID,
-            MovieEntry.COLUMN_MOVIE_BACKDROP,
-            MovieEntry.COLUMN_MOVIE_POSTER,
-            MovieEntry.COLUMN_MOVIE_TITLE,
-            MovieEntry.COLUMN_MOVIE_RELEASE_DATE,
-            MovieEntry.COLUMN_MOVIE_RUNTIME,
-            MovieEntry.COLUMN_MOVIE_GENRES,
-            MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE,
-            MovieEntry.COLUMN_MOVIE_OVERVIEW,
-            MovieEntry.COLUMN_MOVIE_DIRECTOR,
-            MovieEntry.COLUMN_MOVIE_PRODUCER,
-            MovieEntry.COLUMN_MOVIE_VIDEO_URL};
+//    // movie projection
+//    private final String[] movieProjection = new String[] {
+//            MovieEntry.COLUMN_MOVIE_ID,
+//            MovieEntry.COLUMN_MOVIE_BACKDROP,
+//            MovieEntry.COLUMN_MOVIE_TITLE,
+//            MovieEntry.COLUMN_MOVIE_RELEASE_DATE,
+//            MovieEntry.COLUMN_MOVIE_RUNTIME,
+//            MovieEntry.COLUMN_MOVIE_GENRES,
+//            MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE,
+//            MovieEntry.COLUMN_MOVIE_OVERVIEW,
+//            MovieEntry.COLUMN_MOVIE_DIRECTOR,
+//            MovieEntry.COLUMN_MOVIE_PRODUCER,
+//            MovieEntry.COLUMN_MOVIE_VIDEO_URL};
+//
+//    // cast projection
+//    private final String[] castProjection = new String[] {
+//            CastEntry.COLUMN_CAST_MOVIE_ID,
+//            CastEntry.COLUMN_CAST_TYPE,
+//            CastEntry.COLUMN_CAST_NAME,
+//            CastEntry.COLUMN_CAST_SUBTITLE,
+//            CastEntry.COLUMN_CAST_PROFILE};
+//
+//    // reviews projection
+//    private final String[] reviewsProjection = new String[] {
+//            ReviewsEntry.COLUMN_REVIEWS_MOVIE_ID,
+//            ReviewsEntry.COLUMN_REVIEWS_AUTHOR,
+//            ReviewsEntry.COLUMN_REVIEWS_CONTENT};
 
-    // cast projection
-    private final String[] castProjection = new String[] {
-            CastEntry.COLUMN_CAST_MOVIE_ID,
-            CastEntry.COLUMN_CAST_TYPE,
-            CastEntry.COLUMN_CAST_NAME,
-            CastEntry.COLUMN_CAST_SUBTITLE,
-            CastEntry.COLUMN_CAST_PROFILE};
-
-    // reviews projection
-    private final String[] reviewsProjection = new String[] {
-            ReviewsEntry.COLUMN_REVIEWS_MOVIE_ID,
-            ReviewsEntry.COLUMN_REVIEWS_AUTHOR,
-            ReviewsEntry.COLUMN_REVIEWS_CONTENT};
-
-    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +115,8 @@ public class DetailMovieActivity extends AppCompatActivity
         });
 
         final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_18dp);
-        upArrow.setColorFilter(getResources().getColor(R.color.colorUpArrow), PorterDuff.Mode.DST_IN);
+        upArrow.setColorFilter(getResources().getColor(R.color.colorUpArrow), PorterDuff.Mode
+                .DST_IN);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         Intent getMovieDetails = getIntent();
@@ -178,11 +175,12 @@ public class DetailMovieActivity extends AppCompatActivity
         // genres
         TextView genresTextView = findViewById(R.id.detail_activity_genres_id);
         StringBuilder genreStringBuilder = new StringBuilder();
+        String genres = null;
         if (data.getGenres().size() != 0) {
             for (String string : data.getGenres()) {
                 genreStringBuilder.append(string).append(", ");
             }
-            String genres = genreStringBuilder.toString();
+            genres = genreStringBuilder.toString();
             genres = genres.substring(0, genres.length() - 2);
             genresTextView.setText(genres);
         }
@@ -223,6 +221,22 @@ public class DetailMovieActivity extends AppCompatActivity
                 startActivity(goToTrailer);
             }
         });
+
+        ContentValues values = new ContentValues();
+
+        values.put(MovieEntry.COLUMN_MOVIE_ID, data.getMovieId());
+        values.put(MovieEntry.COLUMN_MOVIE_BACKDROP, id);
+        values.put(MovieEntry.COLUMN_MOVIE_TITLE, data.getTitle());
+        values.put(MovieEntry.COLUMN_MOVIE_RELEASE_DATE, data.getReleaseDate());
+        values.put(MovieEntry.COLUMN_MOVIE_RUNTIME, data.getRuntime());
+        values.put(MovieEntry.COLUMN_MOVIE_GENRES, genres);
+        values.put(MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE, data.getVoteAverage());
+        values.put(MovieEntry.COLUMN_MOVIE_OVERVIEW, data.getOverview());
+        values.put(MovieEntry.COLUMN_MOVIE_DIRECTOR, data.getMovieDirector());
+        values.put(MovieEntry.COLUMN_MOVIE_PRODUCER, data.getMovieProducer());
+        values.put(MovieEntry.COLUMN_MOVIE_VIDEO_URL, movieTrailerKey);
+
+        getContentResolver().insert(MovieEntry.MOVIES_CONTENT_URI, values);
     }
 
     @Override
