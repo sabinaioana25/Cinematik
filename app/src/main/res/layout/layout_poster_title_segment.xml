@@ -47,7 +47,6 @@
 
     <Button
         android:id="@+id/detail_activity_button_favourites"
-        android:onClick="addFavourite"
         style="@style/segment_favourite_icon_style"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/detail_activity_frame_gradient_id"

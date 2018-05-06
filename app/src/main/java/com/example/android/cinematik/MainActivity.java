@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements
         MoviesDbHelper dbHelper = new MoviesDbHelper(this);
         dbHelper.getReadableDatabase();
 
-
         networkDetection = new NetworkDetection(this);
 
         swipeRefreshLayout = findViewById(R.id.discover_swipe_refresh);
@@ -145,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<List<MovieItem>> loader) {
         adapter.InsertList(null);
-
     }
 
     @Override

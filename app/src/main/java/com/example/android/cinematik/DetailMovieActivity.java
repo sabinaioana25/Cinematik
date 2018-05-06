@@ -60,33 +60,9 @@ public class DetailMovieActivity extends AppCompatActivity
     // add to favourites button
     Button buttonFavouriteMovies;
 
-//    // movie projection
-//    private final String[] movieProjection = new String[] {
-//            MovieEntry.COLUMN_MOVIE_ID,
-//            MovieEntry.COLUMN_MOVIE_BACKDROP,
-//            MovieEntry.COLUMN_MOVIE_TITLE,
-//            MovieEntry.COLUMN_MOVIE_RELEASE_DATE,
-//            MovieEntry.COLUMN_MOVIE_RUNTIME,
-//            MovieEntry.COLUMN_MOVIE_GENRES,
-//            MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE,
-//            MovieEntry.COLUMN_MOVIE_OVERVIEW,
-//            MovieEntry.COLUMN_MOVIE_DIRECTOR,
-//            MovieEntry.COLUMN_MOVIE_PRODUCER,
-//            MovieEntry.COLUMN_MOVIE_VIDEO_URL};
-//
-//    // cast projection
-//    private final String[] castProjection = new String[] {
-//            CastEntry.COLUMN_CAST_MOVIE_ID,
-//            CastEntry.COLUMN_CAST_TYPE,
-//            CastEntry.COLUMN_CAST_NAME,
-//            CastEntry.COLUMN_CAST_SUBTITLE,
-//            CastEntry.COLUMN_CAST_PROFILE};
-//
-//    // reviews projection
-//    private final String[] reviewsProjection = new String[] {
-//            ReviewsEntry.COLUMN_REVIEWS_MOVIE_ID,
-//            ReviewsEntry.COLUMN_REVIEWS_AUTHOR,
-//            ReviewsEntry.COLUMN_REVIEWS_CONTENT};
+    boolean buttonIsSelected = false;
+
+    ContentValues values = new ContentValues();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,12 +81,20 @@ public class DetailMovieActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 // clear state
-                buttonFavouriteMovies.setSelected(false);
-                buttonFavouriteMovies.setPressed(true);
+                if (!buttonIsSelected) {
+                    buttonFavouriteMovies.setSelected(true);
+                    buttonIsSelected = true;
+                    getContentResolver().insert(MovieEntry.MOVIES_CONTENT_URI, values);
 
-                // change state
-                buttonFavouriteMovies.setSelected(true);
-                buttonFavouriteMovies.setPressed(true);
+                } else {
+                    // change state
+                    buttonFavouriteMovies.setSelected(false);
+                    buttonIsSelected = false;
+
+                    String selection = MovieEntry.COLUMN_MOVIE_ID + "=?";
+                    String[] selArgs = new String[] {String.valueOf(id)};
+                    getContentResolver().delete(MovieEntry.MOVIES_CONTENT_URI, selection, selArgs);
+                }
             }
         });
 
@@ -222,8 +206,6 @@ public class DetailMovieActivity extends AppCompatActivity
             }
         });
 
-        ContentValues values = new ContentValues();
-
         values.put(MovieEntry.COLUMN_MOVIE_ID, data.getMovieId());
         values.put(MovieEntry.COLUMN_MOVIE_BACKDROP, id);
         values.put(MovieEntry.COLUMN_MOVIE_TITLE, data.getTitle());
@@ -235,8 +217,6 @@ public class DetailMovieActivity extends AppCompatActivity
         values.put(MovieEntry.COLUMN_MOVIE_DIRECTOR, data.getMovieDirector());
         values.put(MovieEntry.COLUMN_MOVIE_PRODUCER, data.getMovieProducer());
         values.put(MovieEntry.COLUMN_MOVIE_VIDEO_URL, movieTrailerKey);
-
-        getContentResolver().insert(MovieEntry.MOVIES_CONTENT_URI, values);
     }
 
     @Override
