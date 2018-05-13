@@ -21,13 +21,6 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         toolbar.setTitleTextColor(Color.WHITE);
-
-
-//        ActionBar actionBar = this.getSupportActionBar();
-//
-//        if (actionBar != null) {
-//            actionBar.setDisplayHomeAsUpEnabled(true);
-//        }
     }
 
     @Override

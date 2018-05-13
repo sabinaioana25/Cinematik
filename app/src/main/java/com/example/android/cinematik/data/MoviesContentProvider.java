@@ -173,10 +173,10 @@ public class MoviesContentProvider extends ContentProvider {
                         selection, selectionArgs);
                 break;
 
-//            case CODE_CAST:
-//                rowsDeleted = database.delete(CastEntry.CAST_TABLE_NAME,
-//                        selection, selectionArgs);
-//                break;
+            case CODE_CAST:
+                rowsDeleted = database.delete(CastEntry.CAST_TABLE_NAME,
+                        selection, selectionArgs);
+                break;
 //
 //            case CODE_REVIEW:
 //                rowsDeleted = database.delete(ReviewsEntry.REVIEWS_TABLE_NAME,

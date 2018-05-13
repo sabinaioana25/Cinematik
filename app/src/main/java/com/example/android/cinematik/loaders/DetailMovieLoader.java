@@ -2,7 +2,6 @@ package com.example.android.cinematik.loaders;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
-import android.util.Log;
 
 import com.example.android.cinematik.pojos.MovieItem;
 import com.example.android.cinematik.utilities.MovieJsonUtils;
@@ -18,7 +17,7 @@ import java.net.URL;
 public class DetailMovieLoader extends AsyncTaskLoader<MovieItem> {
 
     private static final String LOG_TAG = DetailMovieLoader.class.getSimpleName();
-    private int id;
+    private final int id;
 
     public DetailMovieLoader(Context context, int id) {
         super(context);
@@ -39,7 +38,6 @@ public class DetailMovieLoader extends AsyncTaskLoader<MovieItem> {
             String jsonResponse = NetworkUtils.makeHttpRequest(url, getContext());
             return MovieJsonUtils.extractDetailsFromJson(jsonResponse);
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Http request failed " + e);
             return null;
         }
     }

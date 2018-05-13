@@ -43,6 +43,7 @@ public class MovieJsonUtils {
      */
     private static final String KEY_RESULTS = "results";
     private static final String KEY_BACKDROP_PATH = "backdrop_path";
+    private static final String KEY_MOVIE_ID = "id";
     private static final String KEY_TITLE = "title";
     private static final String KEY_OVERVIEW = "overview";
     private static final String KEY_RELEASE_DATE = "release_date";
@@ -107,7 +108,7 @@ public class MovieJsonUtils {
                 poster = movieObject.optString(KEY_POSTER);
 
                 // Check if ID exists
-                id = movieObject.optInt("id");
+                id = movieObject.optInt(KEY_MOVIE_ID);
 
                 MovieItem movieItemMainActivity = new MovieItem(poster,
                         id,
@@ -115,10 +116,7 @@ public class MovieJsonUtils {
                         null,
                         null,
                         null,
-                        0,
                         null,
-                        null,
-                        0,
                         null,
                         null,
                         null,
@@ -152,7 +150,7 @@ public class MovieJsonUtils {
             JSONObject baseJsonResponse = new JSONObject(jsonResponse);
 
             // ID
-            int jsonID = baseJsonResponse.getInt("id");
+            int jsonID = baseJsonResponse.getInt(KEY_MOVIE_ID);
 
             // backdrop_path
             String jsonBackdrop = null;
@@ -179,11 +177,9 @@ public class MovieJsonUtils {
                     JSONObject jsonCurrentMovie = jsonGenresArray.getJSONObject(i);
                     jsonGenres.add(jsonCurrentMovie.optString(KEY_GENRE_NAME));
                 }
+            } else {
+                jsonGenres = null;
             }
-
-            // Check if budget exists
-            int budget = 0;
-            budget = baseJsonResponse.optInt(DETAIL_BUDGET);
 
             // Check if voteAverage number exists
             String voteAverage = null;
@@ -192,10 +188,6 @@ public class MovieJsonUtils {
             // Check if overview exists
             String overview = null;
             overview = baseJsonResponse.optString(KEY_OVERVIEW);
-
-            // Check if total revenue exists
-            int revenue = 0;
-            revenue = baseJsonResponse.optInt(DETAIL_REVENUE);
 
             // Check if runtime exists
             String runtime = null;
@@ -290,15 +282,12 @@ public class MovieJsonUtils {
                     title,
                     releaseDate,
                     jsonGenres,
-                    0,
                     voteAverage,
                     overview,
-                    0,
                     runtime,
                     jsonCastMembers,
                     jsonCrewDirector,
                     jsonCrewProducer,
-                    jsonCrewMembers,
                     jsonReviewItems,
                     jsonKeyTrailer);
 

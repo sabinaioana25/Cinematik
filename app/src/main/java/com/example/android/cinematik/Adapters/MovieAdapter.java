@@ -50,7 +50,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         final String imgUrl = NetworkUtils.buildUrlImage(list.get(position).getPoster()
                 .substring(1), NetworkUtils.URL_POSTER_SIZE_VALUE);
 
-        Picasso.with(context).load(imgUrl).into(holder.posterImageView);
+        Picasso.with(context)
+                .load(imgUrl)
+                .into(holder.posterImageView);
     }
 
     @Override

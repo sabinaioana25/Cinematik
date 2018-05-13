@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,6 +23,7 @@ import android.widget.TextView;
 import com.example.android.cinematik.Adapters.MovieAdapter;
 import com.example.android.cinematik.Interfaces.MovieDetailClickHandler;
 import com.example.android.cinematik.data.MoviePreferences;
+import com.example.android.cinematik.data.MoviesContract;
 import com.example.android.cinematik.data.MoviesDbHelper;
 import com.example.android.cinematik.loaders.MovieLoader;
 import com.example.android.cinematik.pojos.MovieItem;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements
         MovieDetailClickHandler, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
-    public static final String MOVIE_ID = "id";
+    public static final String MOVIE_ID = "movieId";
 
     public RecyclerView movieListRV;
     private GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
@@ -60,8 +60,11 @@ public class MainActivity extends AppCompatActivity implements
     String sortOption = null;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
-    // local filed member of type SQLiteDatabase called mDb
-    private SQLiteDatabase mDb;
+    // movie projection
+    private final String[] projection = new String[] {
+            MoviesContract.MovieEntry.COLUMN_MOVIE_ID,
+            MoviesContract.MovieEntry.COLUMN_MOVIE_POSTER
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,9 +150,9 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onSelectedItem(int id) {
+    public void onSelectedItem(int movieId) {
         Intent goToDetailActivity = new Intent(this, DetailMovieActivity.class);
-        goToDetailActivity.putExtra(MOVIE_ID, id);
+        goToDetailActivity.putExtra(MOVIE_ID, movieId);
         startActivity(goToDetailActivity);
     }
 

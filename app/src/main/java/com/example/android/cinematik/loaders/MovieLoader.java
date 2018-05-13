@@ -11,6 +11,7 @@ import java.util.List;
 public class MovieLoader extends AsyncTaskLoader<List<MovieItem>> {
 
     private String url;
+    private static final String TAG = MovieLoader.class.getSimpleName();
 
     public MovieLoader(Context context, String url) {
         super(context);

@@ -51,6 +51,7 @@
     <string name="movie_name">Dummy name</string>
     <string name="actor_profile_image">Actor profile</string>
     <string name="detail_activity_fav_button_desc">Favourite button</string>
+    <string name="detail_activity_no_genres_found_tv">No genres found</string>
 
 </resources>
 
