@@ -2,9 +2,11 @@ package com.example.android.cinematik;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,17 +16,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.android.cinematik.Adapters.MovieAdapter;
-import com.example.android.cinematik.Interfaces.MovieDetailClickHandler;
 import com.example.android.cinematik.data.MoviePreferences;
 import com.example.android.cinematik.data.MoviesContract;
-import com.example.android.cinematik.data.MoviesDbHelper;
 import com.example.android.cinematik.loaders.MovieLoader;
 import com.example.android.cinematik.pojos.MovieItem;
 import com.example.android.cinematik.utilities.NetworkDetection;
@@ -34,8 +33,8 @@ import com.facebook.stetho.Stetho;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<List<MovieItem>>,
-        MovieDetailClickHandler, SwipeRefreshLayout.OnRefreshListener {
+        LoaderManager.LoaderCallbacks,
+        MovieAdapter.MovieDetailClickHandler, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String MOVIE_ID = "movieId";
@@ -45,7 +44,8 @@ public class MainActivity extends AppCompatActivity implements
     Context context = this;
 
     // Loader IDs for loading the main API and the poster API, respectively
-    private static final int ID_LOADER_LIST_MOVIES = 44;
+    private static final int ID_LOADER_LIST_MOVIES = 1;
+    private static final int ID_LOADER_CURSOR = 2;
 
     // adapter
     private MovieAdapter adapter;
@@ -61,10 +61,12 @@ public class MainActivity extends AppCompatActivity implements
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
     // movie projection
-    private final String[] projection = new String[] {
+    private final String[] projection = new String[]{
             MoviesContract.MovieEntry.COLUMN_MOVIE_ID,
             MoviesContract.MovieEntry.COLUMN_MOVIE_POSTER
     };
+
+    Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +79,6 @@ public class MainActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
 
-        // MoviesDbHelper instance with "this" as context
-        MoviesDbHelper dbHelper = new MoviesDbHelper(this);
-        dbHelper.getReadableDatabase();
-
         networkDetection = new NetworkDetection(this);
 
         swipeRefreshLayout = findViewById(R.id.discover_swipe_refresh);
@@ -91,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements
         movieListRV.setLayoutManager(gridLayoutManager);
         movieListRV.setHasFixedSize(true);
 
-        adapter = new MovieAdapter(context, this);
+        adapter = new MovieAdapter(this, this);
         movieListRV.setAdapter(adapter);
 
         RecyclerViewItemDecorator itemDecorator = new RecyclerViewItemDecorator(context,
@@ -102,51 +100,67 @@ public class MainActivity extends AppCompatActivity implements
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                Log.e(TAG, "message " + key);
                 if (key.equals(getString(R.string.pref_sort_by_key))) {
-
-                    getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null, MainActivity
-                            .this);
+                    initializeloader();
                 }
             }
         };
-
         preferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
-        getLoaderManager().initLoader(ID_LOADER_LIST_MOVIES, null, this).forceLoad();
+        initializeloader();
     }
 
     @Override
-    public Loader<List<MovieItem>> onCreateLoader(int i, Bundle args) {
+    public Loader onCreateLoader(int id, Bundle args) {
         String urlMovieActivity = null;
 
-        if (MoviePreferences.getSortByPreference(context).equals(
-                getString(R.string.pref_sort_by_popularity))) {
-            sortOption = NetworkUtils.MOST_POPULAR_PARAM;
-            urlMovieActivity = NetworkUtils.buildUrlMovieActivity(context, sortOption);
-        } else if (MoviePreferences.getSortByPreference(context).equals(
-                getString(R.string.pref_sort_by_rating))) {
-            sortOption = NetworkUtils.TOP_RATED_PARAM;
-            urlMovieActivity = NetworkUtils.buildUrlMovieActivity(context, sortOption);
+        switch (id) {
+            case ID_LOADER_CURSOR:
+
+                return new CursorLoader(context, MoviesContract.MovieEntry.MOVIES_CONTENT_URI,
+                        projection, null, null, null);
+
+            case ID_LOADER_LIST_MOVIES:
+                urlMovieActivity = NetworkUtils.buildUrlMovieActivity(context, sortOption);
+                return new MovieLoader(this, urlMovieActivity);
+
+            default:
+                return null;
         }
-        return new MovieLoader(this, urlMovieActivity);
     }
 
     @Override
-    public void onLoadFinished(Loader<List<MovieItem>> loader, List<MovieItem> movieItems) {
-
+    public void onLoadFinished(Loader loader, Object data) {
         TextView noMoviesMessage = findViewById(R.id.no_movies_found_tv);
+        switch (loader.getId()) {
+            case ID_LOADER_CURSOR:
+                adapter.InsertList(data);
+                getLoaderManager().destroyLoader(ID_LOADER_CURSOR);
+                break;
 
-        if (networkDetection.isConnected()) {
-            adapter.InsertList(movieItems);
-            noMoviesMessage.setVisibility(View.GONE);
-        } else {
-            noMoviesMessage.setVisibility(View.VISIBLE);
+            case ID_LOADER_LIST_MOVIES:
+                //noinspection unchecked
+                List<MovieItem> movieItems = (List<MovieItem>) data;
+                if (networkDetection.isConnected()) {
+                    noMoviesMessage.setVisibility(View.GONE);
+                    adapter.InsertList(movieItems);
+                } else {
+                    noMoviesMessage.setVisibility(View.VISIBLE);
+                }
+
+                getLoaderManager().destroyLoader(ID_LOADER_LIST_MOVIES);
+                break;
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<List<MovieItem>> loader) {
-        adapter.InsertList(null);
+    public void onLoaderReset(Loader loader) {
+        switch (loader.getId()) {
+            case ID_LOADER_CURSOR:
+                break;
+            case ID_LOADER_LIST_MOVIES:
+                adapter.InsertList(null);
+                break;
+        }
     }
 
     @Override
@@ -161,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements
         getMenuInflater().inflate(R.menu.menu_general, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
@@ -181,7 +194,6 @@ public class MainActivity extends AppCompatActivity implements
      */
     @Override
     public void onRefresh() {
-
         adapter.deleteItemsInList();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -189,7 +201,51 @@ public class MainActivity extends AppCompatActivity implements
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 0);
-        getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null, this);
+        restartloader();
         adapter.notifyDataSetChanged();
+    }
+
+    private void restartloader() {
+        if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
+                .pref_sort_by_favourite))) {
+            getLoaderManager().restartLoader(ID_LOADER_CURSOR, null, MainActivity
+                    .this);
+        }
+
+        if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
+                .pref_sort_by_popularity))) {
+            sortOption = NetworkUtils.MOST_POPULAR_PARAM;
+            getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null,
+                    MainActivity.this);
+        }
+
+        if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
+                .pref_sort_by_rating))) {
+            sortOption = NetworkUtils.TOP_RATED_PARAM;
+            getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null,
+                    MainActivity.this);
+        }
+    }
+
+    public void initializeloader() {
+        if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
+                .pref_sort_by_favourite))) {
+            getLoaderManager().initLoader(ID_LOADER_CURSOR, null, MainActivity
+                    .this);
+        }
+
+        if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
+                .pref_sort_by_popularity))) {
+            sortOption = NetworkUtils.MOST_POPULAR_PARAM;
+            getLoaderManager().initLoader(ID_LOADER_LIST_MOVIES, null,
+                    MainActivity.this);
+        }
+
+        if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
+                .pref_sort_by_rating))) {
+            sortOption = NetworkUtils.TOP_RATED_PARAM;
+            getLoaderManager().initLoader(ID_LOADER_LIST_MOVIES, null,
+                    MainActivity.this);
+        }
     }
 }

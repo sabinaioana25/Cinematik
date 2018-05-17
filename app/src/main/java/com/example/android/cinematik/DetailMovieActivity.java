@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,7 +37,7 @@ import static com.example.android.cinematik.data.MoviesContract.MovieEntry;
 public class DetailMovieActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks {
 
-    private static final String LOG_TAG = DetailMovieActivity.class.getSimpleName();
+    private static final String TAG = DetailMovieActivity.class.getSimpleName();
     private static final int ID_LOADER_DETAIL_MOVIES = 45;
     private static final int ID_CURSOR_LOADER = 47;
 //    private static final int ID_CAST_CURSOR_LOADER = 2;
@@ -59,7 +60,6 @@ public class DetailMovieActivity extends AppCompatActivity
     Button buttonFavouriteMovies;
     Button buttonPlayTrailer;
     boolean buttonIsSelected = false;
-    ContentValues values = new ContentValues();
 
     // detail activity components
     private String movieBackdrop = null;
@@ -151,7 +151,7 @@ public class DetailMovieActivity extends AppCompatActivity
 
         switch (loaderID) {
             case ID_CURSOR_LOADER:
-                String movieSelection = MovieEntry.COLUMN_MOVIE_ID + "=?";
+                String movieSelection = MovieEntry.COLUMN_MOVIE_ID + " = ?";
                 String[] movieSelectionArgs = new String[]{String.valueOf(movieId)};
                 return new CursorLoader(getApplicationContext(),
                         MovieEntry.MOVIES_CONTENT_URI,
@@ -239,6 +239,7 @@ public class DetailMovieActivity extends AppCompatActivity
                         (MovieEntry.COLUMN_MOVIE_VIDEO_URL));
                 moviePoster = movieCursor.getString(movieCursor.getColumnIndex
                         (MovieEntry.COLUMN_MOVIE_POSTER));
+                Log.e(TAG, " image in vurdorsa " + moviePoster);
                 break;
 
             case ID_LOADER_DETAIL_MOVIES:
@@ -248,7 +249,6 @@ public class DetailMovieActivity extends AppCompatActivity
                 movieTitle = movieItem.getTitle();
                 movieReleaseDate = movieItem.getReleaseDate();
                 movieRuntime = movieItem.getRuntime();
-
                 List<String> movieGenresList = movieItem.getGenres();
                 StringBuilder genresBuilder = new StringBuilder();
                 if (movieGenresList != null) {
@@ -265,7 +265,6 @@ public class DetailMovieActivity extends AppCompatActivity
                 movieProducer = movieItem.getMovieProducer();
                 movieVideoUrl = movieItem.getVideoId();
                 moviePoster = movieItem.getPoster();
-
                 break;
         }
 
@@ -349,7 +348,7 @@ public class DetailMovieActivity extends AppCompatActivity
     }
 
     private void deleteFromTable() {
-        String selection = MovieEntry.COLUMN_MOVIE_ID + "=?";
+        String selection = MovieEntry.COLUMN_MOVIE_ID + " = ? ";
         String[] selArgs = new String[]{String.valueOf(movieId)};
         getContentResolver().delete(MovieEntry.MOVIES_CONTENT_URI, selection, selArgs);
     }

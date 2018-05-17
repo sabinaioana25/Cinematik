@@ -48,7 +48,6 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
     public void onBindViewHolder(CastViewHolder holder, int position) {
 
         Transformation transformation = new CropCircleTransformation();
-
         Picasso.with(this.context)
                 .load(castList.get(position).getCastProfile())
                 .transform(transformation)

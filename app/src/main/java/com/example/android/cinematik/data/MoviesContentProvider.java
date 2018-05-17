@@ -52,8 +52,8 @@ public class MoviesContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
 
-        SQLiteDatabase database = dbHelper.getReadableDatabase();
         Cursor cursor;
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
 
         switch (uriMatcher.match(uri)) {
             case CODE_MOVIES:
@@ -229,6 +229,5 @@ public class MoviesContentProvider extends ContentProvider {
     @Override
     public void shutdown() {
         dbHelper.close();
-        super.shutdown();
     }
 }

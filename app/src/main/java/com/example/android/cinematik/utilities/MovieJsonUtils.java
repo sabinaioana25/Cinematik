@@ -23,15 +23,9 @@ import java.util.List;
 
 public class MovieJsonUtils {
 
-    private static final String LOG_TAG = MovieJsonUtils.class.getSimpleName();
+    private static final String TAG = MovieJsonUtils.class.getSimpleName();
 
-    /**
-     * Specific keys for JSON Parsing
-     */
-    private static final String VIDEO_KEY = "key";
-    private static final String KEY_POSTER = "poster_path";
-
-    /*
+      /*
      * DetailActivity review components
      */
     private static final String URL_PATH_REVIEWS = "reviews";
@@ -42,6 +36,7 @@ public class MovieJsonUtils {
     DetailActivity components to extract from JSON
      */
     private static final String KEY_RESULTS = "results";
+    private static final String KEY_POSTER = "poster_path";
     private static final String KEY_BACKDROP_PATH = "backdrop_path";
     private static final String KEY_MOVIE_ID = "id";
     private static final String KEY_TITLE = "title";
@@ -49,9 +44,7 @@ public class MovieJsonUtils {
     private static final String KEY_RELEASE_DATE = "release_date";
     private static final String DETAIL_GENRES = "genres";
     private static final String KEY_GENRE_NAME = "name";
-    private static final String DETAIL_BUDGET = "budget";
     private static final String DETAIL_VOTE_AVERAGE = "vote_average";
-    private static final String DETAIL_REVENUE = "revenue";
     private static final String DETAIL_RUNTIME = "runtime";
     private static final String DETAIL_CREDITS = "credits";
     private static final String DETAIL_CAST = "cast";
@@ -151,6 +144,9 @@ public class MovieJsonUtils {
 
             // ID
             int jsonID = baseJsonResponse.getInt(KEY_MOVIE_ID);
+
+            String poster = null;
+            poster = baseJsonResponse.optString(KEY_POSTER);
 
             // backdrop_path
             String jsonBackdrop = null;
@@ -276,7 +272,7 @@ public class MovieJsonUtils {
             }
 
             // return movieList
-            movieList = new MovieItem(null,
+            movieList = new MovieItem(poster,
                     jsonID,
                     jsonBackdrop,
                     title,

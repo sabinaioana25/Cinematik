@@ -16,7 +16,7 @@ import java.net.URL;
 
 public class DetailMovieLoader extends AsyncTaskLoader<MovieItem> {
 
-    private static final String LOG_TAG = DetailMovieLoader.class.getSimpleName();
+    private static final String TAG = DetailMovieLoader.class.getSimpleName();
     private final int id;
 
     public DetailMovieLoader(Context context, int id) {
