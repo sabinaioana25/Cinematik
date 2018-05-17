@@ -3,7 +3,6 @@ package com.example.android.cinematik.Adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,17 +47,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        Log.e(TAG, "cursor " + cursor);
         String imgUrl = null;
         if (mCursor) {
-
-            this.cursor.moveToPosition(position);
-            Log.e(TAG, "position " + position);
+            cursor.moveToPosition(position);
             imgUrl = cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_POSTER));
-            Log.e(TAG, "Cursor image eee " + imgUrl);
-            Picasso.with(context)
-                    .load(imgUrl)
-                    .into(holder.posterImageView);
         } else if (!mCursor) {
             imgUrl = NetworkUtils.buildUrlImage(list.get(position).getPoster()
                     .substring(1), NetworkUtils.URL_POSTER_SIZE_VALUE);}

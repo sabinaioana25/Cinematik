@@ -6,7 +6,6 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -62,11 +61,9 @@ public class MainActivity extends AppCompatActivity implements
 
     // movie projection
     private final String[] projection = new String[]{
-            MoviesContract.MovieEntry.COLUMN_MOVIE_ID,
-            MoviesContract.MovieEntry.COLUMN_MOVIE_POSTER
+            MoviesContract.MovieEntry.COLUMN_MOVIE_POSTER,
+            MoviesContract.MovieEntry.COLUMN_MOVIE_ID
     };
-
-    Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -17,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -188,7 +187,7 @@ public class DetailMovieActivity extends AppCompatActivity
                 } else {
                     getLoaderManager().initLoader(ID_LOADER_DETAIL_MOVIES, null, this);
                 }
-                break;
+                return;
 
             case ID_LOADER_DETAIL_MOVIES:
                 populateMovieItems(loader.getContext(), data, ID_LOADER_DETAIL_MOVIES);
@@ -239,7 +238,6 @@ public class DetailMovieActivity extends AppCompatActivity
                         (MovieEntry.COLUMN_MOVIE_VIDEO_URL));
                 moviePoster = movieCursor.getString(movieCursor.getColumnIndex
                         (MovieEntry.COLUMN_MOVIE_POSTER));
-                Log.e(TAG, " image in vurdorsa " + moviePoster);
                 break;
 
             case ID_LOADER_DETAIL_MOVIES:

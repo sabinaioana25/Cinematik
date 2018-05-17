@@ -52,8 +52,8 @@ public class MoviesContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
 
-        Cursor cursor;
         SQLiteDatabase database = dbHelper.getReadableDatabase();
+        Cursor cursor;
 
         switch (uriMatcher.match(uri)) {
             case CODE_MOVIES:
