@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.android.cinematik.R;
+import com.example.android.cinematik.data.MoviesContract;
 import com.example.android.cinematik.pojos.MovieItem;
 import com.example.android.cinematik.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
@@ -29,8 +30,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private Context context;
     private final List<MovieItem> list = new ArrayList<>();
     private Cursor cursor;
-    private boolean mCursor = true;
-
+    private ArrayList<String> cursorPosterList = new ArrayList<>();
+    private boolean mCursor = false;
 
     public MovieAdapter(Context context, MovieDetailClickHandler onClickHandler) {
         this.context = context;
@@ -49,11 +50,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void onBindViewHolder(MovieViewHolder holder, int position) {
         String imgUrl = null;
         if (mCursor) {
-            cursor.moveToPosition(position);
-            imgUrl = cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_POSTER));
+            this.cursor.moveToPosition(position);
+            imgUrl = "http://image.tmdb.org/t/p/w500/" + cursor.getString(cursor.getColumnIndex
+                    (MovieEntry.COLUMN_MOVIE_POSTER));
         } else if (!mCursor) {
             imgUrl = NetworkUtils.buildUrlImage(list.get(position).getPoster()
-                    .substring(1), NetworkUtils.URL_POSTER_SIZE_VALUE);}
+                    .substring(1), NetworkUtils.URL_POSTER_SIZE_VALUE);
+        }
         Picasso.with(context)
                 .load(imgUrl)
                 .into(holder.posterImageView);
@@ -72,18 +75,22 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public void InsertList(Object movies) {
-        list.clear();
         if (movies != null) {
             if (movies instanceof Cursor) {
-                mCursor = true;
+                //Testing here
                 this.cursor = (Cursor) movies;
+                for (int i = 0; i < cursor.getCount(); i++) {
+                    cursor.moveToPosition(i);
+                    cursorPosterList.add(cursor.getString(cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_MOVIE_POSTER)));
+                }
+                mCursor = true;
             } else {
                 mCursor = false;
                 //noinspection unchecked
                 this.list.addAll((List<MovieItem>) movies);
             }
-        }
-        notifyDataSetChanged();
+
+        }    notifyDataSetChanged();
     }
 
     public void deleteItemsInList() {
@@ -98,6 +105,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public class MovieViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         private final ImageView posterImageView;
+
         MovieViewHolder(View itemView) {
             super(itemView);
             posterImageView = itemView.findViewById(R.id.grid_view_image);

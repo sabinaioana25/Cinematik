@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
-
 import com.example.android.cinematik.data.MoviesContract.CastEntry;
 
 import static com.example.android.cinematik.data.MoviesContract.MOVIES_CONTENT_AUTHORTY;
@@ -113,7 +112,6 @@ public class MoviesContentProvider extends ContentProvider {
         switch (match) {
             case CODE_MOVIES:
                 return MoviesContract.MOVIES_CONTENT_LIST_TYPE;
-
             case CODE_MOVIES_ID:
                 return MoviesContract.MOVIES_CONTENT_ITEM_TYPE;
             default:
@@ -177,11 +175,11 @@ public class MoviesContentProvider extends ContentProvider {
                 rowsDeleted = database.delete(CastEntry.CAST_TABLE_NAME,
                         selection, selectionArgs);
                 break;
-//
-//            case CODE_REVIEW:
-//                rowsDeleted = database.delete(ReviewsEntry.REVIEWS_TABLE_NAME,
-//                        selection, selectionArgs);
-//                break;
+
+            case CODE_REVIEW:
+                rowsDeleted = database.delete(ReviewsEntry.REVIEWS_TABLE_NAME,
+                        selection, selectionArgs);
+                break;
 
             default:
                 throw new IllegalArgumentException("Delete is not possible for " + uri);

@@ -33,7 +33,6 @@ public class DetailMovieLoader extends AsyncTaskLoader<MovieItem> {
     @Override
     public MovieItem loadInBackground() {
         URL url = NetworkUtils.buildUrlDetailActivity(id);
-
         try {
             String jsonResponse = NetworkUtils.makeHttpRequest(url, getContext());
             return MovieJsonUtils.extractDetailsFromJson(jsonResponse);

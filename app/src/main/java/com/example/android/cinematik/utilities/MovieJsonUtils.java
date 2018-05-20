@@ -25,9 +25,9 @@ public class MovieJsonUtils {
 
     private static final String TAG = MovieJsonUtils.class.getSimpleName();
 
-      /*
-     * DetailActivity review components
-     */
+    /*
+   * DetailActivity review components
+   */
     private static final String URL_PATH_REVIEWS = "reviews";
     private static final String DETAIL_REVIEW_RESULTS = "results";
     private static final String DETAIL_REVIEW_AUTHOR_NAME = "author";
@@ -196,19 +196,19 @@ public class MovieJsonUtils {
             if (jsonCastArray.length() > 0) {
                 for (int i = 0; i < Math.min(jsonCastArray.length(), 10); i++) {
                     JSONObject jsonCast = jsonCastArray.optJSONObject(i);
+                    String jsonCastProfilePath = jsonCast.optString(CAST_PROFILE_PATH);
                     String jsonCastActorName = jsonCast.optString(CAST_ACTOR_NAME);
                     String jsonCastCharName = jsonCast.optString(CAST_CHARACTER_NAME);
 
-                    String jsonCastProfilePath = jsonCast.optString(CAST_PROFILE_PATH);
                     String jsonCastProfile = null;
                     if (jsonCastProfilePath != null) {
                         jsonCastProfile = NetworkUtils.buildUrlImage
                                 (jsonCastProfilePath.substring(1),
                                         NetworkUtils.URL_PROFILE_SIZE_VALUE);
                     }
-                    jsonCastMembers.add(new CastMember(jsonCastActorName,
-                            jsonCastCharName,
-                            jsonCastProfile));
+                    jsonCastMembers.add(new CastMember(jsonCastProfile,
+                            jsonCastActorName,
+                            jsonCastCharName));
                 }
             }
 
@@ -240,7 +240,7 @@ public class MovieJsonUtils {
                             jsonCrewProfileImage));
                 }
             } else {
-                jsonCastMembers = null;
+                jsonCrewMembers = null;
             }
 
             // Check if reviews exist

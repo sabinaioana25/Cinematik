@@ -40,10 +40,10 @@ public class MoviesContract {
 
         public static final String CAST_TABLE_NAME = "cast";
         public static final String COLUMN_CAST_MOVIE_ID = "movieId";
-        public static final String COLUMN_CAST_TYPE = "type";
+        public static final String COLUMN_CAST_PROFILE = "profile";
         public static final String COLUMN_CAST_NAME = "name";
         public static final String COLUMN_CAST_SUBTITLE = "subtitle";
-        public static final String COLUMN_CAST_PROFILE = "profile";
+
     }
 
     public static final class ReviewsEntry implements BaseColumns {

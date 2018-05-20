@@ -36,27 +36,29 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
 
     @Override
     public CastViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout
                 .grid_item_cast, null);
-        CastViewHolder castViewHolder = null;
-        castViewHolder = new CastViewHolder(layout);
-        return castViewHolder;
+        return new CastAdapter.CastViewHolder(layout);
     }
 
     @Override
     public void onBindViewHolder(CastViewHolder holder, int position) {
 
         Transformation transformation = new CropCircleTransformation();
-        Picasso.with(this.context)
-                .load(castList.get(position).getCastProfile())
+
+        String castProfilePic = castList.get(position).getCastProfile();
+        String castActorName = castList.get(position).getCastActorName();
+        String castCharName = castList.get(position).getCastCharName();
+
+        Picasso.with(context)
+                .load(castProfilePic)
                 .transform(transformation)
-                .resize(200,280)
+                .resize(200,200)
                 .centerCrop()
                 .into(holder.castProfilePath);
 
-        holder.castActorName.setText(castList.get(position).getCastActorName());
-        holder.castCharacterName.setText(castList.get(position).getCastCharName());
+        holder.castActorNameTV.setText(castActorName);
+        holder.castCharacterNameTV.setText(castCharName);
     }
 
     @Override
@@ -68,22 +70,21 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
     }
 
     public class CastViewHolder extends RecyclerView.ViewHolder {
-
         private ImageView castProfilePath;
-        private TextView castActorName;
-        private TextView castCharacterName;
+        private TextView castActorNameTV;
+        private TextView castCharacterNameTV;
 
         public CastViewHolder(View itemView) {
             super(itemView);
 
             castProfilePath = itemView.findViewById(R.id.imageViewProfile);
-            castActorName = itemView.findViewById(R.id.actor_name);
-            castCharacterName = itemView.findViewById(R.id.character_name);
+            castActorNameTV = itemView.findViewById(R.id.actor_name);
+            castCharacterNameTV = itemView.findViewById(R.id.character_name);
         }
     }
 
-    public void addList(List<CastMember> castMembers) {
-        this.castList = castMembers;
+    public void addMembers(List<CastMember> members) {
+        this.castList = members;
         notifyDataSetChanged();
     }
 }

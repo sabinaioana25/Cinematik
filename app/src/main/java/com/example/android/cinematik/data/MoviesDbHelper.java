@@ -41,10 +41,9 @@ public class MoviesDbHelper extends SQLiteOpenHelper  {
                 "CREATE TABLE " + CastEntry.CAST_TABLE_NAME + " (" +
                         CastEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         CastEntry.COLUMN_CAST_MOVIE_ID + " INTEGER, " +
-                        CastEntry.COLUMN_CAST_TYPE + " INTEGER, " +
+                        CastEntry.COLUMN_CAST_PROFILE + " TEXT, " +
                         CastEntry.COLUMN_CAST_NAME + " TEXT, " +
-                        CastEntry.COLUMN_CAST_SUBTITLE + " TEXT, " +
-                        CastEntry.COLUMN_CAST_PROFILE + " TEXT);";
+                        CastEntry.COLUMN_CAST_SUBTITLE + " TEXT);";
         sqLiteDatabase.execSQL(SQL_CREATE_CAST_TABLE);
 
         final String SQL_CREATE_REVIEWS_TABLE =

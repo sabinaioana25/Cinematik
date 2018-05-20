@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,11 +25,16 @@ import android.widget.TextView;
 
 import com.example.android.cinematik.Adapters.CastAdapter;
 import com.example.android.cinematik.Adapters.ReviewAdapter;
+import com.example.android.cinematik.data.MoviesContract.CastEntry;
+import com.example.android.cinematik.data.MoviesContract.ReviewsEntry;
 import com.example.android.cinematik.loaders.DetailMovieLoader;
+import com.example.android.cinematik.pojos.CastMember;
 import com.example.android.cinematik.pojos.MovieItem;
+import com.example.android.cinematik.pojos.ReviewItem;
 import com.example.android.cinematik.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.android.cinematik.data.MoviesContract.MovieEntry;
@@ -39,9 +45,8 @@ public class DetailMovieActivity extends AppCompatActivity
     private static final String TAG = DetailMovieActivity.class.getSimpleName();
     private static final int ID_LOADER_DETAIL_MOVIES = 45;
     private static final int ID_CURSOR_LOADER = 47;
-//    private static final int ID_CAST_CURSOR_LOADER = 2;
-//    private static final int ID_REVIEW_CURSOR_LOADER = 3;
-
+    private static final int ID_CAST_CURSOR_LOADER = 2;
+    private static final int ID_REVIEW_CURSOR_LOADER = 3;
     public static int movieId = 0;
 
     private RecyclerView castListRecyclerView;
@@ -72,6 +77,8 @@ public class DetailMovieActivity extends AppCompatActivity
     private String movieProducer = null;
     private String movieVideoUrl = null;
     private String moviePoster = null;
+    private List<CastMember> castMembers = null;
+    private List<ReviewItem> reviewsList = null;
 
     private final String[] movieProjection = new String[]{
             MovieEntry.COLUMN_MOVIE_ID,
@@ -86,6 +93,19 @@ public class DetailMovieActivity extends AppCompatActivity
             MovieEntry.COLUMN_MOVIE_PRODUCER,
             MovieEntry.COLUMN_MOVIE_VIDEO_URL,
             MovieEntry.COLUMN_MOVIE_POSTER
+    };
+
+    private final String[] castProjection = new String[]{
+            CastEntry.COLUMN_CAST_MOVIE_ID,
+            CastEntry.COLUMN_CAST_PROFILE,
+            CastEntry.COLUMN_CAST_NAME,
+            CastEntry.COLUMN_CAST_SUBTITLE
+    };
+
+    private final String[] reviewProjection = new String[]{
+            ReviewsEntry.COLUMN_REVIEWS_MOVIE_ID,
+            ReviewsEntry.COLUMN_REVIEWS_AUTHOR,
+            ReviewsEntry.COLUMN_REVIEWS_CONTENT
     };
 
     @Override
@@ -111,7 +131,9 @@ public class DetailMovieActivity extends AppCompatActivity
                 if (!buttonIsSelected) {
                     buttonFavouriteMovies.setSelected(true);
                     buttonIsSelected = true;
-                    addToDatabaseTable();
+                    addToDatabaseTable(ID_CURSOR_LOADER);
+                    addToDatabaseTable(ID_CAST_CURSOR_LOADER);
+                    addToDatabaseTable(ID_REVIEW_CURSOR_LOADER);
 
                 } else {
                     // change state
@@ -141,16 +163,14 @@ public class DetailMovieActivity extends AppCompatActivity
         reviewAdapter = new ReviewAdapter(this, movieId);
         reviewListRecyclerView.setAdapter(reviewAdapter);
 
-//        getLoaderManager().initLoader(ID_LOADER_DETAIL_MOVIES, null, this);
         getLoaderManager().initLoader(ID_CURSOR_LOADER, null, this);
     }
 
     @Override
     public Loader onCreateLoader(int loaderID, Bundle bundle) {
-
         switch (loaderID) {
             case ID_CURSOR_LOADER:
-                String movieSelection = MovieEntry.COLUMN_MOVIE_ID + " = ?";
+                String movieSelection = MovieEntry.COLUMN_MOVIE_ID + "=?";
                 String[] movieSelectionArgs = new String[]{String.valueOf(movieId)};
                 return new CursorLoader(getApplicationContext(),
                         MovieEntry.MOVIES_CONTENT_URI,
@@ -158,10 +178,19 @@ public class DetailMovieActivity extends AppCompatActivity
                         movieSelection,
                         movieSelectionArgs,
                         null);
-
+            case ID_CAST_CURSOR_LOADER:
+                String castSel = CastEntry.COLUMN_CAST_MOVIE_ID + "=?";
+                String[] castSelArg = new String[]{String.valueOf(movieId)};
+                Log.e(TAG, "fewfbewkjfew  +++++");
+                return new CursorLoader(this, CastEntry.CAST_CONTENT_URI,
+                        castProjection, castSel, castSelArg, null);
+            case ID_REVIEW_CURSOR_LOADER:
+                String reviewSel = ReviewsEntry.COLUMN_REVIEWS_MOVIE_ID + "=?";
+                String[] reviewSelArgs = new String[]{String.valueOf(movieId)};
+                return new CursorLoader(this, ReviewsEntry.REVIEWS_CONTENT_URI,
+                        reviewProjection, reviewSel, reviewSelArgs, null);
             case ID_LOADER_DETAIL_MOVIES:
                 return new DetailMovieLoader(this, movieId);
-
             default:
                 return null;
         }
@@ -170,7 +199,6 @@ public class DetailMovieActivity extends AppCompatActivity
     @Override
     public void onLoadFinished
             (Loader loader, Object data) {
-
         switch (loader.getId()) {
             case ID_CURSOR_LOADER:
                 Cursor movieCursor = (Cursor) data;
@@ -180,31 +208,35 @@ public class DetailMovieActivity extends AppCompatActivity
                     currentMovieId = movieCursor.getInt(movieCursor.getColumnIndex(MovieEntry
                             .COLUMN_MOVIE_ID));
                     if (currentMovieId == movieId) {
-                        populateMovieItems(loader.getContext(), movieCursor, ID_CURSOR_LOADER);
                         buttonFavouriteMovies.setSelected(true);
                         buttonIsSelected = true;
+                        populateMovieItems(loader.getContext(), movieCursor, ID_CURSOR_LOADER);
+                        getLoaderManager().initLoader(ID_CAST_CURSOR_LOADER, null, this);
+                        getLoaderManager().initLoader(ID_REVIEW_CURSOR_LOADER, null, this);
                     }
                 } else {
                     getLoaderManager().initLoader(ID_LOADER_DETAIL_MOVIES, null, this);
                 }
-                return;
+                break;
+            case ID_CAST_CURSOR_LOADER:
+                Cursor cursorCast = (Cursor) data;
+                Log.e(TAG, "IDcast cursor");
+                populateCastItems(cursorCast, ID_CAST_CURSOR_LOADER);
+                break;
 
+            case ID_REVIEW_CURSOR_LOADER:
+                Cursor cursorReviews = (Cursor) data;
+                populateReviewsItems(cursorReviews, ID_REVIEW_CURSOR_LOADER);
+                break;
             case ID_LOADER_DETAIL_MOVIES:
+                MovieItem movieItem = (MovieItem) data;
                 populateMovieItems(loader.getContext(), data, ID_LOADER_DETAIL_MOVIES);
+                populateCastItems(movieItem, ID_LOADER_DETAIL_MOVIES);
+                populateReviewsItems(data, ID_LOADER_DETAIL_MOVIES);
                 break;
         }
-
-
-//        // cast
-//        castAdapter.addList(.getMovieCastMembers());
-//
-//        // reviews
-//        if (data.getMovieReviewItems() != null) {
-//            reviewAdapter.addList(data.getMovieReviewItems());
-//        } else {
-//            reviewListRecyclerView.setVisibility(View.GONE);
-//        }
     }
+
 
     @Override
     public void onLoaderReset(Loader loader) {
@@ -239,7 +271,6 @@ public class DetailMovieActivity extends AppCompatActivity
                 moviePoster = movieCursor.getString(movieCursor.getColumnIndex
                         (MovieEntry.COLUMN_MOVIE_POSTER));
                 break;
-
             case ID_LOADER_DETAIL_MOVIES:
                 MovieItem movieItem = (MovieItem) object;
 
@@ -326,29 +357,130 @@ public class DetailMovieActivity extends AppCompatActivity
         }
     }
 
-    private void addToDatabaseTable() {
+    private void populateCastItems(Object castObject, int idType) {
+        switch (idType) {
+            case ID_CAST_CURSOR_LOADER:
+                Cursor castCursor = (Cursor) castObject;
+                String castProfile;
+                String castActorName;
+                String castCharName;
+                castMembers = new ArrayList<>();
+                for (int i = 0; i < castCursor.getCount(); i++) {
+                    castCursor.moveToPosition(i);
+                    castProfile = castCursor.getString(castCursor.getColumnIndex(CastEntry
+                            .COLUMN_CAST_PROFILE));
+                    castActorName = castCursor.getString(castCursor.getColumnIndex(CastEntry
+                            .COLUMN_CAST_NAME));
+                    castCharName = castCursor.getString(castCursor.getColumnIndex(CastEntry
+                            .COLUMN_CAST_SUBTITLE));
+                    castMembers.add(new CastMember(castProfile, castActorName, castCharName));
+                }
+                break;
+
+            case ID_LOADER_DETAIL_MOVIES:
+                MovieItem movieItem = (MovieItem) castObject;
+                castMembers = movieItem.getMovieCastMembers();
+                break;
+        }
+        if (castMembers != null) {
+            castAdapter.addMembers(castMembers);
+
+        } else {
+            castListRecyclerView.setVisibility(View.GONE);
+
+        }
+    }
+
+    private void populateReviewsItems(Object object, int idType) {
+        switch (idType) {
+
+            case ID_REVIEW_CURSOR_LOADER:
+                Cursor reviewsCursor = (Cursor) object;
+                String reviewAuthor;
+                String reviewContent;
+                reviewsList = new ArrayList<>();
+                for (int i = 0; i < reviewsCursor.getCount(); i++) {
+                    reviewsCursor.moveToPosition(i);
+                    reviewAuthor = reviewsCursor.getString(reviewsCursor.getColumnIndex
+                            (ReviewsEntry.COLUMN_REVIEWS_AUTHOR));
+                    reviewContent = reviewsCursor.getString(reviewsCursor.getColumnIndex
+                            (ReviewsEntry.COLUMN_REVIEWS_CONTENT));
+                    reviewsList.add(new ReviewItem(reviewAuthor, reviewContent));
+                }
+                break;
+            case ID_LOADER_DETAIL_MOVIES:
+                MovieItem movieItem = (MovieItem) object;
+                reviewsList = movieItem.getMovieReviewItems();
+                break;
+        }
+
+        if (reviewsList != null) {
+            reviewAdapter.addList(reviewsList);
+        } else {
+            reviewListRecyclerView.setVisibility(View.GONE);
+        }
+    }
+    private void addToDatabaseTable(int loaderType) {
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(MovieEntry.COLUMN_MOVIE_ID, movieId);
-        contentValues.put(MovieEntry.COLUMN_MOVIE_BACKDROP, movieBackdrop);
-        contentValues.put(MovieEntry.COLUMN_MOVIE_TITLE, movieTitle);
-        contentValues.put(MovieEntry.COLUMN_MOVIE_RELEASE_DATE, movieReleaseDate);
-        contentValues.put(MovieEntry.COLUMN_MOVIE_RUNTIME, movieRuntime);
-        contentValues.put(MovieEntry.COLUMN_MOVIE_GENRES, movieGenres);
-        contentValues.put(MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE, movieVote);
-        contentValues.put(MovieEntry.COLUMN_MOVIE_OVERVIEW, movieOverview);
-        contentValues.put(MovieEntry.COLUMN_MOVIE_DIRECTOR, movieDirector);
-        contentValues.put(MovieEntry.COLUMN_MOVIE_PRODUCER, movieProducer);
-        contentValues.put(MovieEntry.COLUMN_MOVIE_VIDEO_URL, movieVideoUrl);
-        contentValues.put(MovieEntry.COLUMN_MOVIE_POSTER, moviePoster);
+        switch (loaderType) {
+            case ID_CURSOR_LOADER:
+                contentValues.put(MovieEntry.COLUMN_MOVIE_ID, movieId);
+                contentValues.put(MovieEntry.COLUMN_MOVIE_BACKDROP, movieBackdrop);
+                contentValues.put(MovieEntry.COLUMN_MOVIE_TITLE, movieTitle);
+                contentValues.put(MovieEntry.COLUMN_MOVIE_RELEASE_DATE, movieReleaseDate);
+                contentValues.put(MovieEntry.COLUMN_MOVIE_RUNTIME, movieRuntime);
+                contentValues.put(MovieEntry.COLUMN_MOVIE_GENRES, movieGenres);
+                contentValues.put(MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE, movieVote);
+                contentValues.put(MovieEntry.COLUMN_MOVIE_OVERVIEW, movieOverview);
+                contentValues.put(MovieEntry.COLUMN_MOVIE_DIRECTOR, movieDirector);
+                contentValues.put(MovieEntry.COLUMN_MOVIE_PRODUCER, movieProducer);
+                contentValues.put(MovieEntry.COLUMN_MOVIE_VIDEO_URL, movieVideoUrl);
+                contentValues.put(MovieEntry.COLUMN_MOVIE_POSTER, moviePoster);
+                getContentResolver().insert(MovieEntry.MOVIES_CONTENT_URI, contentValues);
+                break;
 
-        getContentResolver().insert(MovieEntry.MOVIES_CONTENT_URI, contentValues);
+            case ID_CAST_CURSOR_LOADER:
+                String castActorNm;
+                String castCharNm;
+                String castProfilePic;
+                if (castMembers != null) {
+                    for (int i = 0; i < castMembers.size(); i++) {
+                        castProfilePic = castMembers.get(i).getCastProfile();
+                        castActorNm = castMembers.get(i).getCastActorName();
+                        castCharNm = castMembers.get(i).getCastCharName();
+                        contentValues.put(CastEntry.COLUMN_CAST_MOVIE_ID, movieId);
+                        contentValues.put(CastEntry.COLUMN_CAST_PROFILE, castProfilePic);
+                        contentValues.put(CastEntry.COLUMN_CAST_NAME, castActorNm);
+                        contentValues.put(CastEntry.COLUMN_CAST_SUBTITLE, castCharNm);
+                        getContentResolver().insert(CastEntry.CAST_CONTENT_URI, contentValues);
+                    }
+                }
+                break;
+
+            case ID_REVIEW_CURSOR_LOADER:
+                String reviewsAuthor;
+                String reviewsContent;
+                if (reviewsList != null) {
+                    for (int j = 0; j < reviewsList.size(); j++) {
+                        reviewsAuthor = reviewsList.get(j).getReviewAuthor();
+                        reviewsContent = reviewsList.get(j).getReviewContent();
+                        contentValues.put(ReviewsEntry.COLUMN_REVIEWS_MOVIE_ID, movieId);
+                        contentValues.put(ReviewsEntry.COLUMN_REVIEWS_AUTHOR, reviewsAuthor);
+                        contentValues.put(ReviewsEntry.COLUMN_REVIEWS_CONTENT, reviewsContent);
+                        getContentResolver().insert(ReviewsEntry.REVIEWS_CONTENT_URI,
+                                contentValues);
+                    }
+                }
+                break;
+        }
     }
 
     private void deleteFromTable() {
-        String selection = MovieEntry.COLUMN_MOVIE_ID + " = ? ";
+        String selection = MovieEntry.COLUMN_MOVIE_ID + "=?";
         String[] selArgs = new String[]{String.valueOf(movieId)};
         getContentResolver().delete(MovieEntry.MOVIES_CONTENT_URI, selection, selArgs);
+        getContentResolver().delete(CastEntry.CAST_CONTENT_URI, selection, selArgs);
     }
 }
 

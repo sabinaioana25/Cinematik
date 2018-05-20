@@ -93,16 +93,20 @@ public class MainActivity extends AppCompatActivity implements
                 R.dimen.item_offset);
         movieListRV.addItemDecoration(itemDecorator);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 if (key.equals(getString(R.string.pref_sort_by_key))) {
+//                    adapter.deleteItemsInList();
+                    onRefresh();
                     initializeloader();
                 }
+
             }
         };
         preferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+        onRefresh();
         initializeloader();
     }
 
@@ -112,14 +116,12 @@ public class MainActivity extends AppCompatActivity implements
 
         switch (id) {
             case ID_LOADER_CURSOR:
-
                 return new CursorLoader(context, MoviesContract.MovieEntry.MOVIES_CONTENT_URI,
                         projection, null, null, null);
 
             case ID_LOADER_LIST_MOVIES:
                 urlMovieActivity = NetworkUtils.buildUrlMovieActivity(context, sortOption);
                 return new MovieLoader(this, urlMovieActivity);
-
             default:
                 return null;
         }
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements
         switch (loader.getId()) {
             case ID_LOADER_CURSOR:
                 adapter.InsertList(data);
-                getLoaderManager().destroyLoader(ID_LOADER_CURSOR);
+//                getLoaderManager().destroyLoader(ID_LOADER_CURSOR);
                 break;
 
             case ID_LOADER_LIST_MOVIES:
@@ -143,8 +145,7 @@ public class MainActivity extends AppCompatActivity implements
                 } else {
                     noMoviesMessage.setVisibility(View.VISIBLE);
                 }
-
-                getLoaderManager().destroyLoader(ID_LOADER_LIST_MOVIES);
+//                getLoaderManager().destroyLoader(ID_LOADER_LIST_MOVIES);
                 break;
         }
     }
@@ -225,6 +226,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void initializeloader() {
+        adapter.deleteItemsInList();
         if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
                 .pref_sort_by_favourite))) {
             getLoaderManager().initLoader(ID_LOADER_CURSOR, null, MainActivity
