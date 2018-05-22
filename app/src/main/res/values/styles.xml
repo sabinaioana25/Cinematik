@@ -34,6 +34,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@color/main_rv_background</item>
         <item name="android:clipToPadding">false</item>
+        <item name="android:fitsSystemWindows">true</item>
         <item name="android:paddingLeft">@dimen/item_offset</item>
     </style>
 
@@ -62,6 +63,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/detail_activity_poster_height</item>
         <item name="android:scaleType">centerCrop</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <!--  play button style -->
@@ -127,7 +129,8 @@
         <item name="android:layout_marginBottom">
             @dimen/detail_activity_layout_banner_margin_bottom
         </item>
-        <item name="android:layout_marginRight">@dimen/detail_activity_overview_text_margin_right</item>
+        <item name="android:layout_marginRight">@dimen/detail_activity_overview_text_margin_right
+        </item>
         <item name="android:layout_marginTop">@dimen/detail_activity_layout_banner_margin_top</item>
         <item name="android:orientation">horizontal</item>
     </style>

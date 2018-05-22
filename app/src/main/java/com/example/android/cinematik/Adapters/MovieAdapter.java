@@ -1,7 +1,9 @@
 package com.example.android.cinematik.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +21,6 @@ import java.util.List;
 
 import static com.example.android.cinematik.data.MoviesContract.MovieEntry;
 
-/**
- * Created by Sabina on 3/11/2018.
- */
-
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private final static String TAG = MovieAdapter.class.getSimpleName();
@@ -38,16 +36,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         this.onClickHandler = onClickHandler;
     }
 
+    @NonNull
     @Override
-    public MovieViewHolder onCreateViewHolder(ViewGroup parent, int type) {
+    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int type) {
         //noinspection unchecked
-        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item_movie,
+        @SuppressLint("InflateParams") View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item_movie,
                 null);
         return new MovieViewHolder(layout);
     }
 
     @Override
-    public void onBindViewHolder(MovieViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         String imgUrl = null;
         if (mCursor) {
             this.cursor.moveToPosition(position);
@@ -81,7 +80,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 this.cursor = (Cursor) movies;
                 for (int i = 0; i < cursor.getCount(); i++) {
                     cursor.moveToPosition(i);
-                    cursorPosterList.add(cursor.getString(cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_MOVIE_POSTER)));
+                    cursorPosterList.add(cursor.getString(cursor.getColumnIndex(MoviesContract
+                            .MovieEntry.COLUMN_MOVIE_POSTER)));
                 }
                 mCursor = true;
             } else {
@@ -90,7 +90,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 this.list.addAll((List<MovieItem>) movies);
             }
 
-        }    notifyDataSetChanged();
+        }
+        notifyDataSetChanged();
     }
 
     public void deleteItemsInList() {

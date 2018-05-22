@@ -6,15 +6,18 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String MOVIE_ID = "movieId";
+
+    private final static String LIFECYCLE_CALLBACKS_LAYOUT_MANAGER_KEY = "KeyForLayoutManagerState";
+    Parcelable savedLayoutManagerState;
 
     public RecyclerView movieListRV;
     private GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
@@ -93,16 +99,15 @@ public class MainActivity extends AppCompatActivity implements
                 R.dimen.item_offset);
         movieListRV.addItemDecoration(itemDecorator);
 
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
+                (context);
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 if (key.equals(getString(R.string.pref_sort_by_key))) {
-//                    adapter.deleteItemsInList();
                     onRefresh();
                     initializeloader();
                 }
-
             }
         };
         preferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
@@ -111,8 +116,35 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        gridLayoutManager.setSpanCount(newConfig.orientation == Configuration
+                .ORIENTATION_LANDSCAPE ? 3 : 1);
+        gridLayoutManager.setSpanCount(newConfig.orientation == Configuration
+                .ORIENTATION_PORTRAIT ? 2 : 3);
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(LIFECYCLE_CALLBACKS_LAYOUT_MANAGER_KEY, gridLayoutManager
+                .onSaveInstanceState());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            savedLayoutManagerState = savedInstanceState.getParcelable
+                    (LIFECYCLE_CALLBACKS_LAYOUT_MANAGER_KEY);
+            movieListRV.getLayoutManager().onRestoreInstanceState(savedLayoutManagerState);
+            Log.e(TAG, "Is the restore working??");
+        }
+    }
+
+    @Override
     public Loader onCreateLoader(int id, Bundle args) {
-        String urlMovieActivity = null;
+        String urlMovieActivity;
 
         switch (id) {
             case ID_LOADER_CURSOR:
@@ -133,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements
         switch (loader.getId()) {
             case ID_LOADER_CURSOR:
                 adapter.InsertList(data);
-//                getLoaderManager().destroyLoader(ID_LOADER_CURSOR);
                 break;
 
             case ID_LOADER_LIST_MOVIES:
@@ -142,10 +173,10 @@ public class MainActivity extends AppCompatActivity implements
                 if (networkDetection.isConnected()) {
                     noMoviesMessage.setVisibility(View.GONE);
                     adapter.InsertList(movieItems);
+                    movieListRV.getLayoutManager().onRestoreInstanceState(savedLayoutManagerState);
                 } else {
                     noMoviesMessage.setVisibility(View.VISIBLE);
                 }
-//                getLoaderManager().destroyLoader(ID_LOADER_LIST_MOVIES);
                 break;
         }
     }

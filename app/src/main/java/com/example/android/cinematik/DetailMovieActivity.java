@@ -17,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -167,6 +166,21 @@ public class DetailMovieActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        outState.putString("message", "This is my message to be reloaded");
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+//            String message = savedInstanceState.getString("message");
+//            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
     public Loader onCreateLoader(int loaderID, Bundle bundle) {
         switch (loaderID) {
             case ID_CURSOR_LOADER:
@@ -181,7 +195,6 @@ public class DetailMovieActivity extends AppCompatActivity
             case ID_CAST_CURSOR_LOADER:
                 String castSel = CastEntry.COLUMN_CAST_MOVIE_ID + "=?";
                 String[] castSelArg = new String[]{String.valueOf(movieId)};
-                Log.e(TAG, "fewfbewkjfew  +++++");
                 return new CursorLoader(this, CastEntry.CAST_CONTENT_URI,
                         castProjection, castSel, castSelArg, null);
             case ID_REVIEW_CURSOR_LOADER:
@@ -220,7 +233,6 @@ public class DetailMovieActivity extends AppCompatActivity
                 break;
             case ID_CAST_CURSOR_LOADER:
                 Cursor cursorCast = (Cursor) data;
-                Log.e(TAG, "IDcast cursor");
                 populateCastItems(cursorCast, ID_CAST_CURSOR_LOADER);
                 break;
 
@@ -420,6 +432,7 @@ public class DetailMovieActivity extends AppCompatActivity
             reviewListRecyclerView.setVisibility(View.GONE);
         }
     }
+
     private void addToDatabaseTable(int loaderType) {
         ContentValues contentValues = new ContentValues();
 
