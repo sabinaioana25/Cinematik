@@ -29,8 +29,8 @@ public class MoviesContract {
         public static final String COLUMN_MOVIE_VOTE_AVERAGE = "voteAverage";
         public static final String COLUMN_MOVIE_DIRECTOR = "director";
         public static final String COLUMN_MOVIE_PRODUCER = "producer";
-        public static final String COLUMN_MOVIE_VIDEO_URL = "videoKey";
         public static final String COLUMN_MOVIE_POSTER = "poster";
+        public static final String COLUMN_MOVIE_VIDEO_URL = "videoKey";
     }
 
     public static final class CastEntry implements BaseColumns {

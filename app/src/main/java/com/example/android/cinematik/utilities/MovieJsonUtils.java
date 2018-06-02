@@ -2,6 +2,7 @@ package com.example.android.cinematik.utilities;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.android.cinematik.pojos.CastMember;
 import com.example.android.cinematik.pojos.MovieItem;
@@ -59,6 +60,8 @@ public class MovieJsonUtils {
     private static final String CREW_PROFILE_PATH = "profile_path";
     private static final String DETAIL_VIDEOS = "videos";
 
+    private final static String DETAIL_VIDEOS_KEY = "key";
+
     private MovieJsonUtils() {
     }
 
@@ -67,7 +70,7 @@ public class MovieJsonUtils {
         String jsonResponse = null;
 
         try {
-            jsonResponse = NetworkUtils.makeHttpRequest(url, context);
+            jsonResponse = NetworkUtils.makeHttpRequest(url);
         } catch (IOException e) {
         }
 
@@ -260,16 +263,16 @@ public class MovieJsonUtils {
 
             }
 
-            // Check if videos are available
-            JSONObject jsonVideosObject = baseJsonResponse.optJSONObject(DETAIL_VIDEOS);
-            JSONArray jsonVideosArray = jsonVideosObject.getJSONArray(KEY_RESULTS);
-            String jsonKeyTrailer = null;
-            if (jsonVideosArray.length() != 0) {
-                for (int i = 0; i < jsonVideosArray.length(); i++) {
-                    JSONObject jsonCurrentMovie = jsonVideosArray.getJSONObject(i);
-                    jsonKeyTrailer = jsonCurrentMovie.optString("key");
-                }
-            }
+//            // Check if videos are available
+//            JSONObject jsonVideosObject = baseJsonResponse.optJSONObject(DETAIL_VIDEOS);
+//            JSONArray jsonVideosArray = jsonVideosObject.getJSONArray(KEY_RESULTS);
+//            String jsonKeyTrailer = null;
+//            if (jsonVideosArray.length() != 0) {
+//                for (int i = 0; i < jsonVideosArray.length(); i++) {
+//                    JSONObject jsonCurrentMovie = jsonVideosArray.getJSONObject(i);
+//                    jsonKeyTrailer = jsonCurrentMovie.optString("key");
+//                }
+//            }
 
             // return movieList
             movieList = new MovieItem(poster,
@@ -285,12 +288,50 @@ public class MovieJsonUtils {
                     jsonCrewDirector,
                     jsonCrewProducer,
                     jsonReviewItems,
-                    jsonKeyTrailer);
+                    null);
 
             return movieList;
 
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Object extractVideoFromJson(String jsonResponse) {
+        if (jsonResponse == null) {
+            Log.e(TAG, "Error here???"+ jsonResponse);
+            return null;
+        }
+
+        MovieItem movieItem;
+        try {
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+            JSONArray jsonArray;
+            String jsonKey = null;
+            if (jsonObject.getJSONArray(KEY_RESULTS).length() > 0) {
+                jsonArray = jsonObject.getJSONArray(KEY_RESULTS);
+                JSONObject jsonObjectMovie = jsonArray.optJSONObject(0);
+                jsonKey = jsonObjectMovie.optString(DETAIL_VIDEOS_KEY);
+            }
+            movieItem = new MovieItem(null,
+                    0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    jsonKey
+            );
+            return movieItem;
+        } catch (JSONException e) {
+            Log.e(TAG, "Error parsing JSON results", e);
         }
         return null;
     }

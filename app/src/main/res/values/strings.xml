@@ -53,5 +53,7 @@
     <string name="detail_activity_fav_button_desc">Favourite button</string>
     <string name="detail_activity_no_genres_found_tv">No genres found</string>
 
+    // column number when in landscape mode
+    <string name="movie_column_number">4</string>
 </resources>
 

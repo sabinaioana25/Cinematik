@@ -64,7 +64,9 @@ public class NetworkUtils {
      Keys to call on values from the API
      */
     private static final String URL_APPEND_TO_RESPONSE_KEY = "append_to_response";
-    private static final String URL_APPEND_TO_RESPONSE_VALUE = "credits,reviews,videos";
+    private static final String URL_APPEND_TO_RESPONSE_VALUE_CREDITS = "credits";
+    private static final String URL_APPEND_TO_RESPONSE_REVIEWS = "reviews";
+    private static final String URL_APPEND_TO_RESPONSE_VIDEOS = "videos";
     private static final String URL_YOUTUBE_AUTHORITY = "www.youtube.com";
     private static final String URL_YOUTUBE_PATH = "watch";
     private static final String URL_APPEND_TO_RESPONSE_VIDEO_KEY = "v";
@@ -82,7 +84,7 @@ public class NetworkUtils {
         return url;
     }
 
-    public static String makeHttpRequest(URL url, Context context) throws IOException {
+    public static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = null;
         if (url == null) {
             return null;
@@ -129,10 +131,9 @@ public class NetworkUtils {
         return output.toString();
     }
 
-
-    private static URL buildUrl(String uri) {
+    private static URL buildUrl(Uri.Builder uri) {
         try {
-            return new URL(uri);
+            return new URL(uri.toString());
         } catch (MalformedURLException e) {
             Log.e(LOG_TAG, "Request could not be completed ", e);
         }
@@ -159,9 +160,9 @@ public class NetworkUtils {
                 .appendPath(URL_PATH_MOVIES)
                 .appendPath(String.valueOf(id))
                 .appendQueryParameter(API_KEY_PARAM, API_KEY)
-                .appendQueryParameter(URL_APPEND_TO_RESPONSE_KEY, URL_APPEND_TO_RESPONSE_VALUE)
+                .appendQueryParameter(URL_APPEND_TO_RESPONSE_KEY, URL_APPEND_TO_RESPONSE_VALUE_CREDITS + "," + URL_APPEND_TO_RESPONSE_REVIEWS)
                 .build();
-        return buildUrl(uriBuildDetailActivity.toString());
+        return buildUrl(uriBuildDetailActivity);
     }
 
     public static String buildUrlImage(String path, String size) {
@@ -176,12 +177,25 @@ public class NetworkUtils {
         return uriBuilderPoster.toString();
     }
 
-    public static String buildUrlVideo(String videoId) {
+    public static URL buildUrlVideo(int id) {
+        Uri.Builder uriBuilderVideo = new Uri.Builder();
+        uriBuilderVideo.scheme(URL_SCHEME)
+                .authority(URL_AUTHORITY)
+                .appendPath(URL_PATH_VERSION)
+                .appendPath(URL_PATH_MOVIES)
+                .appendPath(String.valueOf(id))
+                .appendPath(URL_APPEND_TO_RESPONSE_VIDEOS)
+                .appendQueryParameter(API_KEY_PARAM, API_KEY)
+                .build();
+        return buildUrl(uriBuilderVideo);
+    }
+
+    public static String buildUrlVideoFromYoutube(String videoKey) {
         Uri.Builder uriBuilderVideos = new Uri.Builder();
         uriBuilderVideos.scheme(URL_SCHEME)
                 .authority(URL_YOUTUBE_AUTHORITY)
                 .path(URL_YOUTUBE_PATH)
-                .appendQueryParameter(URL_APPEND_TO_RESPONSE_VIDEO_KEY, videoId)
+                .appendQueryParameter(URL_APPEND_TO_RESPONSE_VIDEO_KEY, videoKey)
                 .build();
         return uriBuilderVideos.toString();
     }

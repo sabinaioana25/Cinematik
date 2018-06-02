@@ -6,7 +6,6 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,10 +16,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import com.example.android.cinematik.Adapters.MovieAdapter;
@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity implements
     Parcelable savedLayoutManagerState;
 
     public RecyclerView movieListRV;
-    private GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+    private GridLayoutManager gridLayoutManager =
+            new GridLayoutManager(this, 1);
     Context context = this;
 
     // Loader IDs for loading the main API and the poster API, respectively
@@ -92,6 +93,13 @@ public class MainActivity extends AppCompatActivity implements
         movieListRV.setLayoutManager(gridLayoutManager);
         movieListRV.setHasFixedSize(true);
 
+        ViewTreeObserver viewTreeObserver = movieListRV.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                calculateSize();
+            }
+        });
         adapter = new MovieAdapter(this, this);
         movieListRV.setAdapter(adapter);
 
@@ -104,24 +112,28 @@ public class MainActivity extends AppCompatActivity implements
         preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                adapter.deleteItemsInList();
                 if (key.equals(getString(R.string.pref_sort_by_key))) {
-                    onRefresh();
                     initializeloader();
                 }
             }
         };
         preferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
-        onRefresh();
         initializeloader();
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        gridLayoutManager.setSpanCount(newConfig.orientation == Configuration
-                .ORIENTATION_LANDSCAPE ? 3 : 1);
-        gridLayoutManager.setSpanCount(newConfig.orientation == Configuration
-                .ORIENTATION_PORTRAIT ? 2 : 3);
-        super.onConfigurationChanged(newConfig);
+    private static final int sColumnWidth = 200;
+
+    private void calculateSize() {
+        int spanCount = (int) Math.floor(movieListRV.getWidth() / convertDPToPixels(sColumnWidth));
+        ((GridLayoutManager) movieListRV.getLayoutManager()).setSpanCount(spanCount);
+    }
+
+    private float convertDPToPixels(int dp) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        float logicalDensity = metrics.density;
+        return dp * logicalDensity;
     }
 
     @Override
@@ -138,7 +150,6 @@ public class MainActivity extends AppCompatActivity implements
             savedLayoutManagerState = savedInstanceState.getParcelable
                     (LIFECYCLE_CALLBACKS_LAYOUT_MANAGER_KEY);
             movieListRV.getLayoutManager().onRestoreInstanceState(savedLayoutManagerState);
-            Log.e(TAG, "Is the restore working??");
         }
     }
 
@@ -260,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements
         adapter.deleteItemsInList();
         if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
                 .pref_sort_by_favourite))) {
-            getLoaderManager().initLoader(ID_LOADER_CURSOR, null, MainActivity
+            getLoaderManager().restartLoader(ID_LOADER_CURSOR, null, MainActivity
                     .this);
         }
 
