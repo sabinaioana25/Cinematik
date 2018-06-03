@@ -25,6 +25,12 @@ repositories {
     jcenter()
 }
 
+
+ext {
+    supportLibVersion = '27.1.1'
+    constraintLayoutLibVersion = '1.1.0'
+    junitLibVersion = '4.12'
+}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'

@@ -265,10 +265,13 @@ public class MainActivity extends AppCompatActivity implements
             getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null,
                     MainActivity.this);
         }
+        adapter.notifyDataSetChanged();
     }
 
     public void initializeloader() {
-        adapter.deleteItemsInList();
+        // as per last review I attempted to refresh the UI by restarting the loader
+        restartloader();
+//        adapter.deleteItemsInList();
         if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
                 .pref_sort_by_favourite))) {
             getLoaderManager().restartLoader(ID_LOADER_CURSOR, null, MainActivity
@@ -277,6 +280,8 @@ public class MainActivity extends AppCompatActivity implements
 
         if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
                 .pref_sort_by_popularity))) {
+            onRefresh();
+
             sortOption = NetworkUtils.MOST_POPULAR_PARAM;
             getLoaderManager().initLoader(ID_LOADER_LIST_MOVIES, null,
                     MainActivity.this);
@@ -284,9 +289,13 @@ public class MainActivity extends AppCompatActivity implements
 
         if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
                 .pref_sort_by_rating))) {
+            onRefresh();
+
             sortOption = NetworkUtils.TOP_RATED_PARAM;
             getLoaderManager().initLoader(ID_LOADER_LIST_MOVIES, null,
                     MainActivity.this);
         }
+
+        adapter.notifyDataSetChanged();
     }
 }

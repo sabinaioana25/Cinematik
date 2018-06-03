@@ -67,7 +67,7 @@ public class NetworkUtils {
     private static final String URL_APPEND_TO_RESPONSE_VALUE_CREDITS = "credits";
     private static final String URL_APPEND_TO_RESPONSE_REVIEWS = "reviews";
     private static final String URL_APPEND_TO_RESPONSE_VIDEOS = "videos";
-    private static final String URL_YOUTUBE_AUTHORITY = "www.youtube.com";
+    private static final String URL_YOUTUBE_AUTHORITY = "youtube.com";
     private static final String URL_YOUTUBE_PATH = "watch";
     private static final String URL_APPEND_TO_RESPONSE_VIDEO_KEY = "v";
 
@@ -187,7 +187,8 @@ public class NetworkUtils {
                 .appendPath(URL_APPEND_TO_RESPONSE_VIDEOS)
                 .appendQueryParameter(API_KEY_PARAM, API_KEY)
                 .build();
-        return buildUrl(uriBuilderVideo);
+        Log.e(LOG_TAG, "gimme shelter " + uriBuilderVideo.toString())
+;        return buildUrl(uriBuilderVideo);
     }
 
     public static String buildUrlVideoFromYoutube(String videoKey) {

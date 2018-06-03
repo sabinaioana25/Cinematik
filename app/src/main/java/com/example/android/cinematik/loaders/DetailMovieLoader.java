@@ -41,6 +41,7 @@ public class DetailMovieLoader extends AsyncTaskLoader<Object> {
                 url = NetworkUtils.buildUrlDetailActivity(id);
                 try {
                     String movieJsonResponse = NetworkUtils.makeHttpRequest(url);
+                    Log.e(TAG, "ID Loader details " + url);
                     return MovieJsonUtils.extractDetailsFromJson(movieJsonResponse);
                 } catch (IOException e) {
                     Log.e(TAG, "Could not male Http request", e);
@@ -61,17 +62,6 @@ public class DetailMovieLoader extends AsyncTaskLoader<Object> {
                     default:
                         return null;
         }
-
-
-//        URL url = NetworkUtils.buildUrlDetailActivity(id);
-//        try {
-//            String jsonResponse = NetworkUtils.makeHttpRequest(url);
-//            return MovieJsonUtils.extractDetailsFromJson(jsonResponse);
-//        } catch (IOException e) {
-//            return null;
-//        }
-
-
     }
 
 }

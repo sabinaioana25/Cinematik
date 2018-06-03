@@ -38,7 +38,7 @@ public class MoviesContract {
                 .appendPath(MOVIES_PATH_CAST)
                 .build();
 
-        public static final String CAST_TABLE_NAME = "cast";
+        public static final String CAST_TABLE_NAME = "castMembers";
         public static final String COLUMN_CAST_MOVIE_ID = "movieId";
         public static final String COLUMN_CAST_PROFILE = "profile";
         public static final String COLUMN_CAST_NAME = "name";

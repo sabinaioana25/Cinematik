@@ -78,7 +78,7 @@ public class DetailMovieActivity extends AppCompatActivity
     private String movieOverview = null;
     private String movieDirector = null;
     private String movieProducer = null;
-    //    private String movieVideoUrl = null;
+    private String movieVideoUrl = null;
     private String moviePoster = null;
     private List<CastMember> castMembers = null;
     private List<ReviewItem> reviewsList = null;
@@ -94,8 +94,8 @@ public class DetailMovieActivity extends AppCompatActivity
             MovieEntry.COLUMN_MOVIE_OVERVIEW,
             MovieEntry.COLUMN_MOVIE_DIRECTOR,
             MovieEntry.COLUMN_MOVIE_PRODUCER,
-            MovieEntry.COLUMN_MOVIE_POSTER,
-            MovieEntry.COLUMN_MOVIE_VIDEO_URL
+            MovieEntry.COLUMN_MOVIE_VIDEO_URL,
+            MovieEntry.COLUMN_MOVIE_POSTER
     };
 
     private final String[] castProjection = new String[]{
@@ -135,6 +135,7 @@ public class DetailMovieActivity extends AppCompatActivity
                     buttonFavouriteMovies.setSelected(true);
                     buttonIsSelected = true;
                     addToDatabaseTable(ID_CURSOR_LOADER);
+                    addToDatabaseTable(ID_VIDEO_LOADER);
                     addToDatabaseTable(ID_CAST_CURSOR_LOADER);
                     addToDatabaseTable(ID_REVIEW_CURSOR_LOADER);
 
@@ -167,8 +168,6 @@ public class DetailMovieActivity extends AppCompatActivity
         reviewListRecyclerView.setAdapter(reviewAdapter);
 
         NetworkUtils.buildUrlVideo(movieId);
-        Log.e(TAG, "bla bla bla 1 ");
-
         getLoaderManager().initLoader(ID_CURSOR_LOADER, null, this);
     }
 
@@ -212,7 +211,6 @@ public class DetailMovieActivity extends AppCompatActivity
                 return new DetailMovieLoader(this, movieId, ID_LOADER_DETAIL_MOVIES);
 
             case ID_VIDEO_LOADER:
-                Log.e(TAG, "bla bla bla 2 ");
                 return new DetailMovieLoader(this, movieId, ID_VIDEO_LOADER);
 
             default:
@@ -254,15 +252,14 @@ public class DetailMovieActivity extends AppCompatActivity
                 populateReviewsItems(cursorReviews, ID_REVIEW_CURSOR_LOADER);
                 break;
             case ID_LOADER_DETAIL_MOVIES:
-                MovieItem movieItem = (MovieItem) data;
-                populateCastItems(movieItem, ID_LOADER_DETAIL_MOVIES);
+                populateMovieItems(loader.getContext(), data, ID_LOADER_DETAIL_MOVIES);
+                populateCastItems(data, ID_LOADER_DETAIL_MOVIES);
                 populateReviewsItems(data, ID_LOADER_DETAIL_MOVIES);
                 break;
 
             case ID_VIDEO_LOADER:
                 MovieItem movieItem1 = (MovieItem) data;
                 urlVideo = NetworkUtils.buildUrlVideoFromYoutube(movieItem1.getVideoId());
-                Log.e(TAG, "why url not working???" + urlVideo);
                 break;
         }
     }
@@ -273,6 +270,7 @@ public class DetailMovieActivity extends AppCompatActivity
 
     @SuppressLint("SetTextI18n")
     private void populateMovieItems(Context context, Object object, int type) {
+
 
         switch (type) {
             case ID_CURSOR_LOADER:
@@ -295,10 +293,8 @@ public class DetailMovieActivity extends AppCompatActivity
                         (MovieEntry.COLUMN_MOVIE_DIRECTOR));
                 movieProducer = movieCursor.getString(movieCursor.getColumnIndex
                         (MovieEntry.COLUMN_MOVIE_PRODUCER));
-//                urlVideo = movieCursor.getString(movieCursor.getColumnIndex
-//                        (MovieEntry.COLUMN_MOVIE_VIDEO_URL));
-//                Log.e(TAG, "bla bla bla 3 " + urlVideo);
-
+                movieVideoUrl = movieCursor.getString(movieCursor.getColumnIndex
+                        (MovieEntry.COLUMN_MOVIE_VIDEO_URL));
                 moviePoster = movieCursor.getString(movieCursor.getColumnIndex
                         (MovieEntry.COLUMN_MOVIE_POSTER));
                 break;
@@ -323,7 +319,7 @@ public class DetailMovieActivity extends AppCompatActivity
                 movieOverview = movieItem.getOverview();
                 movieDirector = movieItem.getMovieDirector();
                 movieProducer = movieItem.getMovieProducer();
-//                urlVideo = movieItem.getVideoId();
+                movieVideoUrl = movieItem.getVideoId();
                 moviePoster = movieItem.getPoster();
                 break;
         }
@@ -466,9 +462,10 @@ public class DetailMovieActivity extends AppCompatActivity
                 contentValues.put(MovieEntry.COLUMN_MOVIE_OVERVIEW, movieOverview);
                 contentValues.put(MovieEntry.COLUMN_MOVIE_DIRECTOR, movieDirector);
                 contentValues.put(MovieEntry.COLUMN_MOVIE_PRODUCER, movieProducer);
-                contentValues.put(MovieEntry.COLUMN_MOVIE_POSTER, moviePoster);
                 contentValues.put(MovieEntry.COLUMN_MOVIE_VIDEO_URL, urlVideo);
+                contentValues.put(MovieEntry.COLUMN_MOVIE_POSTER, moviePoster);
                 getContentResolver().insert(MovieEntry.MOVIES_CONTENT_URI, contentValues);
+
                 break;
 
             case ID_CAST_CURSOR_LOADER:

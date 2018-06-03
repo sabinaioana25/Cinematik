@@ -40,8 +40,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int type) {
         //noinspection unchecked
-        @SuppressLint("InflateParams") View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item_movie,
-                null);
+        @SuppressLint("InflateParams") View layout = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.grid_item_movie,
+                        null);
         return new MovieViewHolder(layout);
     }
 
@@ -52,7 +53,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             this.cursor.moveToPosition(position);
             imgUrl = "http://image.tmdb.org/t/p/w500/" + cursor.getString(cursor.getColumnIndex
                     (MovieEntry.COLUMN_MOVIE_POSTER));
-        } else if (!mCursor) {
+        } else {
             imgUrl = NetworkUtils.buildUrlImage(list.get(position).getPoster()
                     .substring(1), NetworkUtils.URL_POSTER_SIZE_VALUE);
         }
@@ -74,6 +75,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public void InsertList(Object movies) {
+        list.clear();
         if (movies != null) {
             if (movies instanceof Cursor) {
                 //Testing here
@@ -89,7 +91,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 //noinspection unchecked
                 this.list.addAll((List<MovieItem>) movies);
             }
-
         }
         notifyDataSetChanged();
     }

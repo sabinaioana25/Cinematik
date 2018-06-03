@@ -263,17 +263,6 @@ public class MovieJsonUtils {
 
             }
 
-//            // Check if videos are available
-//            JSONObject jsonVideosObject = baseJsonResponse.optJSONObject(DETAIL_VIDEOS);
-//            JSONArray jsonVideosArray = jsonVideosObject.getJSONArray(KEY_RESULTS);
-//            String jsonKeyTrailer = null;
-//            if (jsonVideosArray.length() != 0) {
-//                for (int i = 0; i < jsonVideosArray.length(); i++) {
-//                    JSONObject jsonCurrentMovie = jsonVideosArray.getJSONObject(i);
-//                    jsonKeyTrailer = jsonCurrentMovie.optString("key");
-//                }
-//            }
-
             // return movieList
             movieList = new MovieItem(poster,
                     jsonID,
@@ -289,7 +278,6 @@ public class MovieJsonUtils {
                     jsonCrewProducer,
                     jsonReviewItems,
                     null);
-
             return movieList;
 
         } catch (JSONException e) {
@@ -300,20 +288,20 @@ public class MovieJsonUtils {
 
     public static Object extractVideoFromJson(String jsonResponse) {
         if (jsonResponse == null) {
-            Log.e(TAG, "Error here???"+ jsonResponse);
             return null;
         }
 
         MovieItem movieItem;
         try {
-            JSONObject jsonObject = new JSONObject(jsonResponse);
-            JSONArray jsonArray;
-            String jsonKey = null;
-            if (jsonObject.getJSONArray(KEY_RESULTS).length() > 0) {
-                jsonArray = jsonObject.getJSONArray(KEY_RESULTS);
-                JSONObject jsonObjectMovie = jsonArray.optJSONObject(0);
-                jsonKey = jsonObjectMovie.optString(DETAIL_VIDEOS_KEY);
+            JSONObject cJsonResponse = new JSONObject(jsonResponse);
+            JSONArray videosJsonArray;
+            String videoJsonKey = null;
+            if (cJsonResponse.getJSONArray("results").length()>0) {
+                videosJsonArray = cJsonResponse.getJSONArray("results");
+                JSONObject videoJsonObject = videosJsonArray.optJSONObject(5);
+                videoJsonKey = videoJsonObject.optString("key");
             }
+
             movieItem = new MovieItem(null,
                     0,
                     null,
@@ -327,9 +315,12 @@ public class MovieJsonUtils {
                     null,
                     null,
                     null,
-                    jsonKey
+                    videoJsonKey
             );
+
+            Log.e(TAG, "IS video null ???" + videoJsonKey);
             return movieItem;
+
         } catch (JSONException e) {
             Log.e(TAG, "Error parsing JSON results", e);
         }
