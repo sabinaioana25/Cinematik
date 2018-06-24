@@ -14,7 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/detail_activity_linear_layout_padding_bottom">
+            android:paddingBottom="@dimen/detail_activity_linear_layout_padding_bottom"
+            tools:ignore="UselessParent">
 
             <TextView style="@style/segment_details_crew_label_tv_style" />
 

@@ -1,6 +1,8 @@
 package com.example.android.cinematik.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +20,7 @@ import java.util.List;
 
 import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 
-/**
- * Created by Sabina on 4/8/2018.
- */
-
+@SuppressWarnings("ALL")
 public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder> {
 
     private final static String TAG = CastAdapter.class.getSimpleName();
@@ -34,15 +33,16 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
         this.id = id;
     }
 
+    @NonNull
     @Override
-    public CastViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout
+    public CastViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        @SuppressLint("InflateParams") View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout
                 .grid_item_cast, null);
         return new CastAdapter.CastViewHolder(layout);
     }
 
     @Override
-    public void onBindViewHolder(CastViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CastViewHolder holder, int position) {
 
         Transformation transformation = new CropCircleTransformation();
 

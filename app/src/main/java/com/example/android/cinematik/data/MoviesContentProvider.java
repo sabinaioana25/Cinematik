@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.android.cinematik.data.MoviesContract.CastEntry;
@@ -48,7 +49,7 @@ public class MoviesContentProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection,
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
 
         SQLiteDatabase database = dbHelper.getReadableDatabase();
@@ -100,14 +101,13 @@ public class MoviesContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Could not query URI " + uri);
         }
-        if (getContext() != null) {
-            cursor.setNotificationUri(getContext().getContentResolver(), uri);
-        }
+
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
 
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         int match = uriMatcher.match(uri);
         switch (match) {
             case CODE_MOVIES:
@@ -120,7 +120,7 @@ public class MoviesContentProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
+    public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         long id;
 
@@ -152,11 +152,12 @@ public class MoviesContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Insert is not possible for " + uri);
         }
+        getContext().getContentResolver().notifyChange(uri, null);
         return ContentUris.withAppendedId(uri, id);
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         int rowsDeleted;
 
@@ -184,15 +185,12 @@ public class MoviesContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Delete is not possible for " + uri);
         }
-
-        if (rowsDeleted != 0 && getContext() != null) {
-            getContext().getContentResolver().notifyChange(uri, null);
-        }
+        getContext().getContentResolver().notifyChange(uri, null);
         return rowsDeleted;
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String
+    public int update(@NonNull Uri uri, ContentValues contentValues, String
             selection, String[] selectionArgs) {
         SQLiteDatabase database = dbHelper.getWritableDatabase();
         int rowsUpdated;
@@ -217,10 +215,7 @@ public class MoviesContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Update is not possible for " + uri);
         }
-
-        if (rowsUpdated != 0 && getContext() != null) {
-            getContext().getContentResolver().notifyChange(uri, null);
-        }
+        getContext().getContentResolver().notifyChange(uri, null);
         return rowsUpdated;
     }
 

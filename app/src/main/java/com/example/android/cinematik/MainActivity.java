@@ -8,7 +8,6 @@ import android.content.Loader;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -34,6 +33,7 @@ import com.facebook.stetho.Stetho;
 
 import java.util.List;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks,
         MovieAdapter.MovieDetailClickHandler, SwipeRefreshLayout.OnRefreshListener {
@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements
 
     // sortOption
     String sortOption = null;
-    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
     // movie projection
     private final String[] projection = new String[]{
@@ -109,10 +108,12 @@ public class MainActivity extends AppCompatActivity implements
 
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
                 (context);
-        preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new
+                SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
                 adapter.deleteItemsInList();
+                onRefresh();
                 if (key.equals(getString(R.string.pref_sort_by_key))) {
                     initializeloader();
                 }
@@ -155,8 +156,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public Loader onCreateLoader(int id, Bundle args) {
+        adapter.deleteItemsInList();
         String urlMovieActivity;
-
         switch (id) {
             case ID_LOADER_CURSOR:
                 return new CursorLoader(context, MoviesContract.MovieEntry.MOVIES_CONTENT_URI,
@@ -172,9 +173,11 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(Loader loader, Object data) {
+        adapter.deleteItemsInList();
         TextView noMoviesMessage = findViewById(R.id.no_movies_found_tv);
         switch (loader.getId()) {
             case ID_LOADER_CURSOR:
+                onRefresh();
                 adapter.InsertList(data);
                 break;
 
@@ -190,12 +193,14 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 break;
         }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoaderReset(Loader loader) {
         switch (loader.getId()) {
             case ID_LOADER_CURSOR:
+                adapter.InsertList(null);
                 break;
             case ID_LOADER_LIST_MOVIES:
                 adapter.InsertList(null);
@@ -235,17 +240,21 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onRefresh() {
         adapter.deleteItemsInList();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        }, 0);
+        swipeRefreshLayout.setRefreshing(false);
+
+        // commented out for functionality purposes
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//        }, 0);
         restartloader();
         adapter.notifyDataSetChanged();
     }
 
     private void restartloader() {
+        adapter.deleteItemsInList();
         if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
                 .pref_sort_by_favourite))) {
             getLoaderManager().restartLoader(ID_LOADER_CURSOR, null, MainActivity
@@ -269,9 +278,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void initializeloader() {
-        // as per last review I attempted to refresh the UI by restarting the loader
         restartloader();
-//        adapter.deleteItemsInList();
         if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
                 .pref_sort_by_favourite))) {
             getLoaderManager().restartLoader(ID_LOADER_CURSOR, null, MainActivity

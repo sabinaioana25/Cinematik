@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
+
+    <!-- not pretty and not what I had in mind for my app, but I guess design and getting only one trailer
+    isn't really the purpose here -->
+    <ImageView
+        android:layout_marginTop="@dimen/detail_activity_layout_banner_margin_top"
+        android:id="@+id/detail_activity_backdrop_second_image_id"
+        style="@style/segment_poster_style_image"
+        android:background="@drawable/watch_video_click"
+        android:contentDescription="@string/content_description_poster"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

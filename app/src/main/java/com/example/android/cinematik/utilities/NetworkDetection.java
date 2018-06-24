@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+@SuppressWarnings("WeakerAccess")
 public class NetworkDetection {
 
     Context context;

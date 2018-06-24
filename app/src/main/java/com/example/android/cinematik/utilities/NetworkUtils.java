@@ -16,10 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
-/**
- * Created by Sabina on 3/19/2018.
- */
-
+@SuppressWarnings("unused")
 public class NetworkUtils {
 
     private static final String LOG_TAG = NetworkUtils.class.getSimpleName();
@@ -160,7 +157,8 @@ public class NetworkUtils {
                 .appendPath(URL_PATH_MOVIES)
                 .appendPath(String.valueOf(id))
                 .appendQueryParameter(API_KEY_PARAM, API_KEY)
-                .appendQueryParameter(URL_APPEND_TO_RESPONSE_KEY, URL_APPEND_TO_RESPONSE_VALUE_CREDITS + "," + URL_APPEND_TO_RESPONSE_REVIEWS)
+                .appendQueryParameter(URL_APPEND_TO_RESPONSE_KEY,
+                        URL_APPEND_TO_RESPONSE_VALUE_CREDITS)
                 .build();
         return buildUrl(uriBuildDetailActivity);
     }
@@ -177,6 +175,19 @@ public class NetworkUtils {
         return uriBuilderPoster.toString();
     }
 
+    public static URL buildUrlReviewList(int id) {
+        Uri.Builder uriBuilderDetailReviewsList = new Uri.Builder();
+        uriBuilderDetailReviewsList.scheme(URL_SCHEME)
+                .authority(URL_AUTHORITY)
+                .appendPath(URL_PATH_VERSION)
+                .appendPath(URL_PATH_MOVIES)
+                .appendPath(String.valueOf(id))
+                .appendPath(URL_APPEND_TO_RESPONSE_REVIEWS)
+                .appendQueryParameter(API_KEY_PARAM, API_KEY)
+                .build();
+        return buildUrl(uriBuilderDetailReviewsList);
+    }
+
     public static URL buildUrlVideo(int id) {
         Uri.Builder uriBuilderVideo = new Uri.Builder();
         uriBuilderVideo.scheme(URL_SCHEME)
@@ -187,8 +198,7 @@ public class NetworkUtils {
                 .appendPath(URL_APPEND_TO_RESPONSE_VIDEOS)
                 .appendQueryParameter(API_KEY_PARAM, API_KEY)
                 .build();
-        Log.e(LOG_TAG, "gimme shelter " + uriBuilderVideo.toString())
-;        return buildUrl(uriBuilderVideo);
+        return buildUrl(uriBuilderVideo);
     }
 
     public static String buildUrlVideoFromYoutube(String videoKey) {

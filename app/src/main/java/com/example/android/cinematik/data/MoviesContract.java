@@ -3,6 +3,7 @@ package com.example.android.cinematik.data;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+@SuppressWarnings("WeakerAccess")
 public class MoviesContract {
     public static final String MOVIES_CONTENT_SCHEME = "content://";
     public static final String MOVIES_CONTENT_AUTHORTY = "com.example.android.cinematik";
@@ -21,6 +22,7 @@ public class MoviesContract {
         public static final String TABLE_NAME = "favourites";
         public static final String COLUMN_MOVIE_ID = "movieId";
         public static final String COLUMN_MOVIE_BACKDROP = "backdrop";
+        public static final String COLUMN_TRAILER_IMAGE = "trailerImage";
         public static final String COLUMN_MOVIE_TITLE = "title";
         public static final String COLUMN_MOVIE_RELEASE_DATE = "releaseDate";
         public static final String COLUMN_MOVIE_GENRES = "genres";
@@ -31,6 +33,7 @@ public class MoviesContract {
         public static final String COLUMN_MOVIE_PRODUCER = "producer";
         public static final String COLUMN_MOVIE_POSTER = "poster";
         public static final String COLUMN_MOVIE_VIDEO_URL = "videoKey";
+        public static final String COLUMN_MOVIE_VIDEO_TWO_URL = "videoTwoKey";
     }
 
     public static final class CastEntry implements BaseColumns {

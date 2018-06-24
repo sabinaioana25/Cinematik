@@ -8,6 +8,7 @@ import com.example.android.cinematik.utilities.MovieJsonUtils;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class MovieLoader extends AsyncTaskLoader<List<MovieItem>> {
 
     private String url;

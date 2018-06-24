@@ -9,12 +9,11 @@ import android.view.MenuItem;
 
 public class SettingsActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
 
+        setContentView(R.layout.activity_settings);
         Toolbar toolbar = findViewById(R.id.settings_activity_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Sort by -->
     <string name="app_name">Cinematik</string>
@@ -10,36 +10,36 @@
     <string name="pref_sort_by_popularity" translatable="false">popular</string>
     <string name="pref_sort_by_rating" translatable="false">top_rated</string>
     <string name="pref_sort_by_favourite" translatable="false">favourite</string>
-    <string name="pref_vote_count_title">Vote Count</string>
-    <string name="prev_vote_count_key">vote_count.gte</string>
-    <string name="pref_vote_count_default_value">2000</string>
+    <string name="pref_vote_count_title" tools:ignore="UnusedResources">Vote Count</string>
+    <string name="prev_vote_count_key" tools:ignore="UnusedResources">vote_count.gte</string>
+    <string name="pref_vote_count_default_value" tools:ignore="UnusedResources">2000</string>
 
     <!-- Detail Activity -->
-    <string name="IMDB">IMDB</string>
-    <string name="category_overview">Overview</string>
-    <string name="category_crew">Crew</string>
-    <string name="category_director">Director</string>
-    <string name="category_writers">Writers</string>
-    <string name="category_budget">Budget</string>
-    <string name="category_revenue">Revenue</string>
-    <string name="category_cast">Cast</string>
-    <string name="category_reviews">Reviews</string>
-    <string name="category_trailer">Trailer</string>
-    <string name="category_see_full_cast">See Full Cast</string>
-    <string name="category_see_all_reviews">See All Reviews</string>
+    <string name="IMDB" tools:ignore="UnusedResources">IMDB</string>
+    <string name="category_overview" tools:ignore="UnusedResources">Overview</string>
+    <string name="category_crew" tools:ignore="UnusedResources">Crew</string>
+    <string name="category_director" tools:ignore="UnusedResources">Director</string>
+    <string name="category_writers" tools:ignore="UnusedResources">Writers</string>
+    <string name="category_budget" tools:ignore="UnusedResources">Budget</string>
+    <string name="category_revenue" tools:ignore="UnusedResources">Revenue</string>
+    <string name="category_cast" tools:ignore="UnusedResources">Cast</string>
+    <string name="category_reviews" tools:ignore="UnusedResources">Reviews</string>
+    <string name="category_trailer" tools:ignore="UnusedResources">Trailer</string>
+    <string name="category_see_full_cast" tools:ignore="UnusedResources">See Full Cast</string>
+    <string name="category_see_all_reviews" tools:ignore="UnusedResources">See All Reviews</string>
     <string name="content_description_poster">Poster</string>
-    <string name="authors_label">Authors</string>
-    <string name="producers_label">Writers</string>
+    <string name="authors_label" tools:ignore="UnusedResources">Authors</string>
+    <string name="producers_label" tools:ignore="UnusedResources">Writers</string>
     <string name="directors_label">Director</string>
-    <string name="crew_label">Crew</string>
+    <string name="crew_label" tools:ignore="UnusedResources">Crew</string>
     <string name="overview_label">Overview</string>
-    <string name="layout_breaker_line">layout_breaker</string>
+    <string name="layout_breaker_line" tools:ignore="UnusedResources">layout_breaker</string>
     <string name="menu_general_settings">Settings</string>
-    <string name="pref_vote_count_key">vote_count.gte</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pref_vote_count_key" tools:ignore="UnusedResources">vote_count.gte</string>
+    <string name="hello_blank_fragment" tools:ignore="UnusedResources">Hello blank fragment</string>
     <string name="action_settings">Settings</string>
     <string name="menu_refresh">Refresh</string>
-    <string name="detail_activity_first_separator">First Separator</string>
+    <string name="detail_activity_first_separator" tools:ignore="UnusedResources">First Separator</string>
     <string name="detail_activity_crew_label">Crew</string>
     <string name="detail_activity_director_label">Director</string>
     <string name="detail_activity_producer_label">Producer</string>
@@ -48,12 +48,12 @@
     <string name="main_poster_description">main poster</string>
     <string name="review_activity_user_profile">Profile image</string>
     <string name="no_movies_found">No movies found.\nPlease check internet connection"</string>
-    <string name="movie_name">Dummy name</string>
+    <string name="movie_name" tools:ignore="UnusedResources">Dummy name</string>
     <string name="actor_profile_image">Actor profile</string>
     <string name="detail_activity_fav_button_desc">Favourite button</string>
     <string name="detail_activity_no_genres_found_tv">No genres found</string>
 
     // column number when in landscape mode
-    <string name="movie_column_number">4</string>
+    <string name="movie_column_number" tools:ignore="UnusedResources">4</string>
 </resources>
 

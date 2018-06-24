@@ -17,11 +17,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * Created by Sabina on 3/19/2018.
- */
-
+@SuppressWarnings({"WeakerAccess", "unused", "UnusedAssignment"})
 public class MovieJsonUtils {
 
     private static final String TAG = MovieJsonUtils.class.getSimpleName();
@@ -72,10 +68,9 @@ public class MovieJsonUtils {
         try {
             jsonResponse = NetworkUtils.makeHttpRequest(url);
         } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        List<MovieItem> movieItems = extractFeatureFromJson(jsonResponse);
-        return movieItems;
+        return extractFeatureFromJson(jsonResponse);
     }
 
     public static List<MovieItem> extractFeatureFromJson(String jsonResponse) {
@@ -83,7 +78,7 @@ public class MovieJsonUtils {
          /*
         Create an empty List<MovieItem>
          */
-        List<MovieItem> movieItemsMain = new ArrayList<MovieItem>();
+        List<MovieItem> movieItemsMain = new ArrayList<>();
 
         if (TextUtils.isEmpty(jsonResponse)) {
             return null;
@@ -95,7 +90,7 @@ public class MovieJsonUtils {
         try {
             JSONObject baseJsonResponse = new JSONObject(jsonResponse);
             JSONArray movieResult = baseJsonResponse.getJSONArray(KEY_RESULTS);
-            String poster = null;
+            String poster;
             int id;
             for (int i = 0; i < movieResult.length(); i++) {
                 JSONObject movieObject = movieResult.getJSONObject(i);
@@ -108,6 +103,8 @@ public class MovieJsonUtils {
 
                 MovieItem movieItemMainActivity = new MovieItem(poster,
                         id,
+                        null,
+                        null,
                         null,
                         null,
                         null,
@@ -246,27 +243,11 @@ public class MovieJsonUtils {
                 jsonCrewMembers = null;
             }
 
-            // Check if reviews exist
-            List<ReviewItem> jsonReviewItems = new ArrayList<>();
-            JSONObject jsonReview = baseJsonResponse.getJSONObject(URL_PATH_REVIEWS);
-            JSONArray jsonReviewResults = jsonReview.optJSONArray(DETAIL_REVIEW_RESULTS);
-            if (jsonReviewResults.length() > 0) {
-                for (int i = 0; i < Math.min(jsonReviewResults.length(), 5); i++) {
-                    JSONObject jsonReviewItem = jsonReviewResults.getJSONObject(i);
-                    String jsonReviewAuthor = jsonReviewItem.optString(DETAIL_REVIEW_AUTHOR_NAME);
-                    String jsonReviewContent = jsonReviewItem.optString(DETAIL_REVIEW_CONTENT);
-
-                    jsonReviewItems.add(new ReviewItem(jsonReviewAuthor, jsonReviewContent));
-                }
-            } else {
-                jsonReviewItems = null;
-
-            }
-
             // return movieList
             movieList = new MovieItem(poster,
                     jsonID,
                     jsonBackdrop,
+                    null,
                     title,
                     releaseDate,
                     jsonGenres,
@@ -276,7 +257,8 @@ public class MovieJsonUtils {
                     jsonCastMembers,
                     jsonCrewDirector,
                     jsonCrewProducer,
-                    jsonReviewItems,
+                    null,
+                    null,
                     null);
             return movieList;
 
@@ -286,7 +268,7 @@ public class MovieJsonUtils {
         return null;
     }
 
-    public static Object extractVideoFromJson(String jsonResponse) {
+    public static MovieItem extractVideoFromJson(String jsonResponse) {
         if (jsonResponse == null) {
             return null;
         }
@@ -296,10 +278,15 @@ public class MovieJsonUtils {
             JSONObject cJsonResponse = new JSONObject(jsonResponse);
             JSONArray videosJsonArray;
             String videoJsonKey = null;
-            if (cJsonResponse.getJSONArray("results").length()>0) {
-                videosJsonArray = cJsonResponse.getJSONArray("results");
-                JSONObject videoJsonObject = videosJsonArray.optJSONObject(5);
+            String videoJsonKeyTwo = null;
+            if (cJsonResponse.getJSONArray(KEY_RESULTS).length() > 1) {
+                videosJsonArray = cJsonResponse.getJSONArray(KEY_RESULTS);
+
+                JSONObject videoJsonObject = videosJsonArray.optJSONObject(1);
+                JSONObject videoJsonObjectTwo = videosJsonArray.optJSONObject(0);
+
                 videoJsonKey = videoJsonObject.optString("key");
+                videoJsonKeyTwo = videoJsonObjectTwo.optString("key");
             }
 
             movieItem = new MovieItem(null,
@@ -315,12 +302,57 @@ public class MovieJsonUtils {
                     null,
                     null,
                     null,
-                    videoJsonKey
-            );
-
-            Log.e(TAG, "IS video null ???" + videoJsonKey);
+                    null,
+                    videoJsonKey,
+                    videoJsonKeyTwo);
             return movieItem;
+        } catch (
+                JSONException e)
 
+        {
+            Log.e(TAG, "Error parsing JSON results", e);
+        }
+        return null;
+    }
+
+    public static Object extractReviewListFromJson(String jsonResponse) {
+        MovieItem movieItem;
+        List<ReviewItem> jsonReviewItems = new ArrayList<>();
+        if (jsonResponse == null)
+            return null;
+
+        try {
+            JSONObject jsonReviewObject = new JSONObject(jsonResponse);
+            JSONArray jsonReviewArray = jsonReviewObject.getJSONArray(DETAIL_REVIEW_RESULTS);
+            if (jsonReviewArray.length() > 0) {
+                for (int i = 0; i < Math.min(jsonReviewArray.length(), 5); i++) {
+                    JSONObject jsonReviewItems2 = jsonReviewArray.getJSONObject(i);
+                    String jsonReviewAuthor = jsonReviewItems2.optString(DETAIL_REVIEW_AUTHOR_NAME);
+                    String jsonReviewContent = jsonReviewItems2.optString(DETAIL_REVIEW_CONTENT);
+                    jsonReviewItems.add(new ReviewItem(jsonReviewAuthor, jsonReviewContent));
+                }
+            } else {
+                jsonReviewItems = null;
+            }
+
+            movieItem = new MovieItem(null,
+                    0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    jsonReviewItems,
+                    null,
+                    null
+            );
+            return movieItem;
         } catch (JSONException e) {
             Log.e(TAG, "Error parsing JSON results", e);
         }

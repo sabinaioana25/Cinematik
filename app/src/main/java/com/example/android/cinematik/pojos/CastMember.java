@@ -1,9 +1,5 @@
 package com.example.android.cinematik.pojos;
 
-/**
- * Created by Sabina on 4/7/2018.
- */
-
 public class CastMember {
 
     private String castProfile;

@@ -2,16 +2,13 @@ package com.example.android.cinematik.pojos;
 
 import java.util.List;
 
-/**
- * Created by Sabina on 3/19/2018.
- */
-
 public class MovieItem {
 
     // pojos
     private String poster;
     private int movieId;
     private String backdropPath;
+    private String trailerImagePath;
     private String title;
     private String releaseDate;
     private List<String> genres;
@@ -23,11 +20,13 @@ public class MovieItem {
     private String movieProducer;
     private List<ReviewItem> movieReviewItems;
     private String videoId;
+    private String videoIdTwo;
 
     // constructor
     public MovieItem(String poster,
                      int movieId,
                      String backdropPath,
+                     String trailerImagePath,
                      String title,
                      String releaseDate,
                      List<String> genres,
@@ -38,10 +37,13 @@ public class MovieItem {
                      String movieDirector,
                      String movieProducer,
                      List<ReviewItem> movieReviewItems,
-                     String videoId) {
+                     String videoId,
+                     String videoIdTwo) {
+
         this.poster = poster;
         this.movieId = movieId;
         this.backdropPath = backdropPath;
+        this.trailerImagePath = trailerImagePath;
         this.title = title;
         this.releaseDate = releaseDate;
         this.genres = genres;
@@ -53,6 +55,7 @@ public class MovieItem {
         this.movieProducer = movieProducer;
         this.movieReviewItems = movieReviewItems;
         this.videoId = videoId;
+        this.videoIdTwo = videoIdTwo;
     }
 
     // getter methods
@@ -65,6 +68,8 @@ public class MovieItem {
     }
 
     public String getBackdropPath() { return backdropPath; }
+
+    public String getTrailerImagePath() { return trailerImagePath; }
 
     public String getTitle() { return title; }
 
@@ -91,5 +96,7 @@ public class MovieItem {
     public List<ReviewItem> getMovieReviewItems() { return movieReviewItems; }
 
     public String getVideoId() { return videoId; }
+
+    public String getVideoIdTwo() { return videoIdTwo; }
 
 }

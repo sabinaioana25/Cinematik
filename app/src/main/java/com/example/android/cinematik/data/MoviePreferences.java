@@ -6,10 +6,6 @@ import android.preference.PreferenceManager;
 
 import com.example.android.cinematik.R;
 
-/**
- * Created by Sabina on 4/15/2018.
- */
-
 public class MoviePreferences {
 
     public static String getSortByPreference(Context context) {

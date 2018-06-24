@@ -17,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -40,17 +39,20 @@ import java.util.List;
 
 import static com.example.android.cinematik.data.MoviesContract.MovieEntry;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class DetailMovieActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks {
 
     private static final String TAG = DetailMovieActivity.class.getSimpleName();
     public static final int ID_LOADER_DETAIL_MOVIES = 45;
-    public static final int ID_VIDEO_LOADER = 46;
-    private static final int ID_CURSOR_LOADER = 47;
+    public static final int ID_VIDEO_LOADER = 47;
+    public static final int ID_REVIEW_LOADER = 46;
+    private static final int ID_CURSOR_LOADER = 48;
     private static final int ID_CAST_CURSOR_LOADER = 2;
     private static final int ID_REVIEW_CURSOR_LOADER = 3;
     private int movieId;
     private static String urlVideo;
+    private static String urlTwoVideo; //temporarily placed here; will modify the app sometime in the very near future hopefully; not design to be pretty, designed to pass the course
 
     private RecyclerView castListRecyclerView;
     private LinearLayoutManager castLinearLayoutManager = new LinearLayoutManager(this,
@@ -66,10 +68,13 @@ public class DetailMovieActivity extends AppCompatActivity
     // add to favourites button
     Button buttonFavouriteMovies;
     Button buttonPlayTrailer;
+    Button buttonPlaySecondTrailer;
+    ImageView secondTrailerImage;
     boolean buttonIsSelected = false;
 
     // detail activity components
     private String movieBackdrop = null;
+    private String trailerImage = null;
     private String movieTitle = null;
     private String movieReleaseDate = null;
     private String movieRuntime = null;
@@ -78,7 +83,8 @@ public class DetailMovieActivity extends AppCompatActivity
     private String movieOverview = null;
     private String movieDirector = null;
     private String movieProducer = null;
-    private String movieVideoUrl = null;
+    public String movieVideoUrl = null;
+    public String movieTwoVideoUrl = null;
     private String moviePoster = null;
     private List<CastMember> castMembers = null;
     private List<ReviewItem> reviewsList = null;
@@ -86,6 +92,7 @@ public class DetailMovieActivity extends AppCompatActivity
     private final String[] movieProjection = new String[]{
             MovieEntry.COLUMN_MOVIE_ID,
             MovieEntry.COLUMN_MOVIE_BACKDROP,
+            MovieEntry.COLUMN_TRAILER_IMAGE,
             MovieEntry.COLUMN_MOVIE_TITLE,
             MovieEntry.COLUMN_MOVIE_RELEASE_DATE,
             MovieEntry.COLUMN_MOVIE_RUNTIME,
@@ -95,6 +102,7 @@ public class DetailMovieActivity extends AppCompatActivity
             MovieEntry.COLUMN_MOVIE_DIRECTOR,
             MovieEntry.COLUMN_MOVIE_PRODUCER,
             MovieEntry.COLUMN_MOVIE_VIDEO_URL,
+            MovieEntry.COLUMN_MOVIE_VIDEO_TWO_URL,
             MovieEntry.COLUMN_MOVIE_POSTER
     };
 
@@ -168,6 +176,7 @@ public class DetailMovieActivity extends AppCompatActivity
         reviewListRecyclerView.setAdapter(reviewAdapter);
 
         NetworkUtils.buildUrlVideo(movieId);
+        NetworkUtils.buildUrlReviewList(movieId);
         getLoaderManager().initLoader(ID_CURSOR_LOADER, null, this);
     }
 
@@ -209,10 +218,10 @@ public class DetailMovieActivity extends AppCompatActivity
                         reviewProjection, reviewSel, reviewSelArgs, null);
             case ID_LOADER_DETAIL_MOVIES:
                 return new DetailMovieLoader(this, movieId, ID_LOADER_DETAIL_MOVIES);
-
             case ID_VIDEO_LOADER:
                 return new DetailMovieLoader(this, movieId, ID_VIDEO_LOADER);
-
+            case ID_REVIEW_LOADER:
+                return new DetailMovieLoader(this, movieId, ID_REVIEW_LOADER);
             default:
                 return null;
         }
@@ -223,7 +232,6 @@ public class DetailMovieActivity extends AppCompatActivity
         switch (loader.getId()) {
             case ID_CURSOR_LOADER:
                 Cursor movieCursor = (Cursor) data;
-
                 if (movieCursor.getCount() > 0) {
                     movieCursor.moveToFirst();
                     int currentMovieId;
@@ -240,13 +248,13 @@ public class DetailMovieActivity extends AppCompatActivity
                     deleteFromTable();
                     getLoaderManager().initLoader(ID_LOADER_DETAIL_MOVIES, null, this);
                     getLoaderManager().initLoader(ID_VIDEO_LOADER, null, this);
+                    getLoaderManager().initLoader(ID_REVIEW_LOADER, null, this);
                 }
                 break;
             case ID_CAST_CURSOR_LOADER:
                 Cursor cursorCast = (Cursor) data;
                 populateCastItems(cursorCast, ID_CAST_CURSOR_LOADER);
                 break;
-
             case ID_REVIEW_CURSOR_LOADER:
                 Cursor cursorReviews = (Cursor) data;
                 populateReviewsItems(cursorReviews, ID_REVIEW_CURSOR_LOADER);
@@ -254,12 +262,15 @@ public class DetailMovieActivity extends AppCompatActivity
             case ID_LOADER_DETAIL_MOVIES:
                 populateMovieItems(loader.getContext(), data, ID_LOADER_DETAIL_MOVIES);
                 populateCastItems(data, ID_LOADER_DETAIL_MOVIES);
-                populateReviewsItems(data, ID_LOADER_DETAIL_MOVIES);
                 break;
-
             case ID_VIDEO_LOADER:
-                MovieItem movieItem1 = (MovieItem) data;
-                urlVideo = NetworkUtils.buildUrlVideoFromYoutube(movieItem1.getVideoId());
+                MovieItem movieItem = (MovieItem) data;
+                urlVideo = NetworkUtils.buildUrlVideoFromYoutube(movieItem.getVideoId());
+                urlTwoVideo = NetworkUtils.buildUrlVideoFromYoutube(movieItem.getVideoIdTwo());
+                break;
+            case ID_REVIEW_LOADER:
+                MovieItem movieItem2 = (MovieItem) data;
+                populateReviewsItems(movieItem2, ID_REVIEW_LOADER);
                 break;
         }
     }
@@ -271,12 +282,13 @@ public class DetailMovieActivity extends AppCompatActivity
     @SuppressLint("SetTextI18n")
     private void populateMovieItems(Context context, Object object, int type) {
 
-
         switch (type) {
             case ID_CURSOR_LOADER:
                 Cursor movieCursor = (Cursor) object;
                 movieBackdrop = movieCursor.getString(movieCursor.getColumnIndex
                         (MovieEntry.COLUMN_MOVIE_BACKDROP));
+                trailerImage = movieCursor.getString(movieCursor.getColumnIndex(
+                        MovieEntry.COLUMN_TRAILER_IMAGE));
                 movieTitle = movieCursor.getString(movieCursor.getColumnIndex(MovieEntry
                         .COLUMN_MOVIE_TITLE));
                 movieReleaseDate = movieCursor.getString(movieCursor.getColumnIndex
@@ -295,13 +307,16 @@ public class DetailMovieActivity extends AppCompatActivity
                         (MovieEntry.COLUMN_MOVIE_PRODUCER));
                 movieVideoUrl = movieCursor.getString(movieCursor.getColumnIndex
                         (MovieEntry.COLUMN_MOVIE_VIDEO_URL));
+                movieTwoVideoUrl = movieCursor.getString(movieCursor.getColumnIndex(
+                        MovieEntry.COLUMN_MOVIE_VIDEO_TWO_URL));
                 moviePoster = movieCursor.getString(movieCursor.getColumnIndex
                         (MovieEntry.COLUMN_MOVIE_POSTER));
                 break;
+
             case ID_LOADER_DETAIL_MOVIES:
                 MovieItem movieItem = (MovieItem) object;
-
                 movieBackdrop = movieItem.getBackdropPath();
+                trailerImage = movieItem.getTrailerImagePath();
                 movieTitle = movieItem.getTitle();
                 movieReleaseDate = movieItem.getReleaseDate();
                 movieRuntime = movieItem.getRuntime();
@@ -333,6 +348,21 @@ public class DetailMovieActivity extends AppCompatActivity
                 startActivity(goToTrailer);
             }
         });
+
+        secondTrailerImage = findViewById(R.id.detail_activity_backdrop_second_image_id);
+        secondTrailerImage.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Called when a view has been clicked.
+             *
+             * @param v The view that was clicked.
+             */
+            @Override
+            public void onClick(View v) {
+                Intent goToSecondTrailer = new Intent(Intent.ACTION_VIEW, Uri.parse(urlTwoVideo));
+                startActivity(goToSecondTrailer);
+            }
+        });
+
 
         ImageView backdropPhoto = findViewById(R.id.detail_activity_backdrop_image_id);
         Picasso.with(context)
@@ -434,7 +464,7 @@ public class DetailMovieActivity extends AppCompatActivity
                     reviewsList.add(new ReviewItem(reviewAuthor, reviewContent));
                 }
                 break;
-            case ID_LOADER_DETAIL_MOVIES:
+            case ID_REVIEW_LOADER:
                 MovieItem movieItem = (MovieItem) object;
                 reviewsList = movieItem.getMovieReviewItems();
                 break;
@@ -454,6 +484,7 @@ public class DetailMovieActivity extends AppCompatActivity
             case ID_CURSOR_LOADER:
                 contentValues.put(MovieEntry.COLUMN_MOVIE_ID, movieId);
                 contentValues.put(MovieEntry.COLUMN_MOVIE_BACKDROP, movieBackdrop);
+                contentValues.put(MovieEntry.COLUMN_TRAILER_IMAGE, trailerImage);
                 contentValues.put(MovieEntry.COLUMN_MOVIE_TITLE, movieTitle);
                 contentValues.put(MovieEntry.COLUMN_MOVIE_RELEASE_DATE, movieReleaseDate);
                 contentValues.put(MovieEntry.COLUMN_MOVIE_RUNTIME, movieRuntime);
@@ -463,6 +494,7 @@ public class DetailMovieActivity extends AppCompatActivity
                 contentValues.put(MovieEntry.COLUMN_MOVIE_DIRECTOR, movieDirector);
                 contentValues.put(MovieEntry.COLUMN_MOVIE_PRODUCER, movieProducer);
                 contentValues.put(MovieEntry.COLUMN_MOVIE_VIDEO_URL, urlVideo);
+                contentValues.put(MovieEntry.COLUMN_MOVIE_VIDEO_TWO_URL, urlTwoVideo);
                 contentValues.put(MovieEntry.COLUMN_MOVIE_POSTER, moviePoster);
                 getContentResolver().insert(MovieEntry.MOVIES_CONTENT_URI, contentValues);
 

@@ -6,10 +6,7 @@ import android.support.annotation.DimenRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-/**
- * Created by Sabina on 4/19/2018.
- */
-
+@SuppressWarnings("WeakerAccess")
 public class RecyclerViewItemDecorator extends RecyclerView.ItemDecoration {
 
     private int itemOffset;

@@ -11,10 +11,6 @@ import com.example.android.cinematik.utilities.NetworkUtils;
 import java.io.IOException;
 import java.net.URL;
 
-/**
- * Created by Sabina on 3/21/2018.
- */
-
 public class DetailMovieLoader extends AsyncTaskLoader<Object> {
 
     private static final String TAG = DetailMovieLoader.class.getSimpleName();
@@ -41,26 +37,34 @@ public class DetailMovieLoader extends AsyncTaskLoader<Object> {
                 url = NetworkUtils.buildUrlDetailActivity(id);
                 try {
                     String movieJsonResponse = NetworkUtils.makeHttpRequest(url);
-                    Log.e(TAG, "ID Loader details " + url);
                     return MovieJsonUtils.extractDetailsFromJson(movieJsonResponse);
                 } catch (IOException e) {
                     Log.e(TAG, "Could not male Http request", e);
                     return null;
                 }
 
-                case DetailMovieActivity.ID_VIDEO_LOADER:
-                    url = NetworkUtils.buildUrlVideo(id);
-                    Log.e(TAG, "bla bla bla 3 " + url);
-
-                    try {
+            case DetailMovieActivity.ID_VIDEO_LOADER:
+                url = NetworkUtils.buildUrlVideo(id);
+                try {
                         String videoJsonResponse = NetworkUtils.makeHttpRequest(url);
                         return MovieJsonUtils.extractVideoFromJson(videoJsonResponse);
-                    } catch (IOException e) {
-                        Log.e(TAG, "Could not make Http request", e);
-                        return null;
-                    }
-                    default:
-                        return null;
+
+                } catch (IOException e) {
+                    Log.e(TAG, "Could not make Http request", e);
+                    return null;
+                }
+
+            case DetailMovieActivity.ID_REVIEW_LOADER:
+                url = NetworkUtils.buildUrlReviewList(id);
+                try {
+                    String reviewJsonResponse = NetworkUtils.makeHttpRequest(url);
+                    return MovieJsonUtils.extractReviewListFromJson(reviewJsonResponse);
+                } catch (IOException e) {
+                    Log.e(TAG, "Could not make http request", e);
+                    return null;
+                }
+            default:
+                return null;
         }
     }
 

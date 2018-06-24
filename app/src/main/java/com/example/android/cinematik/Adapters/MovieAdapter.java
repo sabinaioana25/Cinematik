@@ -21,12 +21,13 @@ import java.util.List;
 
 import static com.example.android.cinematik.data.MoviesContract.MovieEntry;
 
+@SuppressWarnings("unused")
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private final static String TAG = MovieAdapter.class.getSimpleName();
     private final MovieDetailClickHandler onClickHandler;
     private Context context;
-    private final List<MovieItem> list = new ArrayList<>();
+    private List<MovieItem> list = new ArrayList<>();
     private Cursor cursor;
     private ArrayList<String> cursorPosterList = new ArrayList<>();
     private boolean mCursor = false;
@@ -48,7 +49,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        String imgUrl = null;
+        String imgUrl;
         if (mCursor) {
             this.cursor.moveToPosition(position);
             imgUrl = "http://image.tmdb.org/t/p/w500/" + cursor.getString(cursor.getColumnIndex
@@ -121,6 +122,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 cursor.moveToPosition(getAdapterPosition());
                 id = cursor.getInt(cursor.getColumnIndex(MovieEntry
                         .COLUMN_MOVIE_ID));
+                cursor.close();
             } else {
                 id = list.get(getAdapterPosition()).getMovieId();
             }

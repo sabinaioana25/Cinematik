@@ -8,7 +8,7 @@ import static com.example.android.cinematik.data.MoviesContract.CastEntry;
 import static com.example.android.cinematik.data.MoviesContract.MovieEntry;
 import static com.example.android.cinematik.data.MoviesContract.ReviewsEntry;
 
-public class MoviesDbHelper extends SQLiteOpenHelper  {
+public class MoviesDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "movies.db";
     private static final int DATABASE_VERSION = 1;
@@ -25,6 +25,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper  {
                         MovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         MovieEntry.COLUMN_MOVIE_ID + " INTEGER, " +
                         MovieEntry.COLUMN_MOVIE_BACKDROP + " TEXT, " +
+                        MovieEntry.COLUMN_TRAILER_IMAGE + " TEXT, " +
                         MovieEntry.COLUMN_MOVIE_TITLE + " TEXT NOT NULL, " +
                         MovieEntry.COLUMN_MOVIE_RELEASE_DATE + " TEXT, " +
                         MovieEntry.COLUMN_MOVIE_RUNTIME + " TEXT, " +
@@ -34,6 +35,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper  {
                         MovieEntry.COLUMN_MOVIE_DIRECTOR + " TEXT, " +
                         MovieEntry.COLUMN_MOVIE_PRODUCER + " TEXT, " +
                         MovieEntry.COLUMN_MOVIE_VIDEO_URL + " TEXT, " +
+                        MovieEntry.COLUMN_MOVIE_VIDEO_TWO_URL + " TEXT, " +
                         MovieEntry.COLUMN_MOVIE_POSTER + " TEXT);";
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIES_TABLE);
 
