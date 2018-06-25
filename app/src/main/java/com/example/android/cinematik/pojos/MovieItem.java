@@ -2,6 +2,7 @@ package com.example.android.cinematik.pojos;
 
 import java.util.List;
 
+@SuppressWarnings("CanBeFinal")
 public class MovieItem {
 
     // pojos
@@ -23,6 +24,7 @@ public class MovieItem {
     private String videoIdTwo;
 
     // constructor
+    @SuppressWarnings("SameParameterValue")
     public MovieItem(String poster,
                      int movieId,
                      String backdropPath,

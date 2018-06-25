@@ -1,5 +1,6 @@
 package com.example.android.cinematik.pojos;
 
+@SuppressWarnings("CanBeFinal")
 public class ReviewItem {
 
     private String reviewAuthor;

@@ -6,7 +6,7 @@ import android.support.annotation.DimenRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "CanBeFinal"})
 public class RecyclerViewItemDecorator extends RecyclerView.ItemDecoration {
 
     private int itemOffset;
@@ -15,6 +15,7 @@ public class RecyclerViewItemDecorator extends RecyclerView.ItemDecoration {
         this.itemOffset = itemOffset;
     }
 
+    @SuppressWarnings("SameParameterValue")
     public RecyclerViewItemDecorator(Context context, @DimenRes int itemOffsetId) {
         this(context.getResources().getDimensionPixelOffset(itemOffsetId));
     }

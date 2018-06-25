@@ -14,7 +14,7 @@ import com.example.android.cinematik.pojos.ReviewItem;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings({"WeakerAccess", "unused"})
+@SuppressWarnings({"WeakerAccess", "unused", "CanBeFinal"})
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
     private final static String TAG = ReviewAdapter.class.getSimpleName();
@@ -52,6 +52,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         return 0;
     }
 
+    @SuppressWarnings("CanBeFinal")
     public class ReviewViewHolder extends RecyclerView.ViewHolder {
 
         private TextView reviewAuthor;

@@ -33,7 +33,7 @@ import com.facebook.stetho.Stetho;
 
 import java.util.List;
 
-@SuppressWarnings({"WeakerAccess", "unused"})
+@SuppressWarnings({"WeakerAccess", "unused", "CanBeFinal"})
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks,
         MovieAdapter.MovieDetailClickHandler, SwipeRefreshLayout.OnRefreshListener {
@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements
         ((GridLayoutManager) movieListRV.getLayoutManager()).setSpanCount(spanCount);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private float convertDPToPixels(int dp) {
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -177,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements
         TextView noMoviesMessage = findViewById(R.id.no_movies_found_tv);
         switch (loader.getId()) {
             case ID_LOADER_CURSOR:
-                onRefresh();
+//                onRefresh();
                 adapter.InsertList(data);
                 break;
 

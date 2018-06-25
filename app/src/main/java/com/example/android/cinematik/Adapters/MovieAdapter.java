@@ -21,7 +21,7 @@ import java.util.List;
 
 import static com.example.android.cinematik.data.MoviesContract.MovieEntry;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "CanBeFinal"})
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private final static String TAG = MovieAdapter.class.getSimpleName();

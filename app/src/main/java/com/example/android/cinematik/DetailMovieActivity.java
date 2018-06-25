@@ -55,9 +55,11 @@ public class DetailMovieActivity extends AppCompatActivity
     private static String urlTwoVideo; //temporarily placed here; will modify the app sometime in the very near future hopefully; not design to be pretty, designed to pass the course
 
     private RecyclerView castListRecyclerView;
+    @SuppressWarnings("CanBeFinal")
     private LinearLayoutManager castLinearLayoutManager = new LinearLayoutManager(this,
             LinearLayoutManager.HORIZONTAL, false);
     private RecyclerView reviewListRecyclerView;
+    @SuppressWarnings("CanBeFinal")
     private LinearLayoutManager reviewLinearLayoutManager = new LinearLayoutManager(this,
             LinearLayoutManager.HORIZONTAL, false);
 

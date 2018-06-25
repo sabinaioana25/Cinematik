@@ -8,6 +8,7 @@ import static com.example.android.cinematik.data.MoviesContract.CastEntry;
 import static com.example.android.cinematik.data.MoviesContract.MovieEntry;
 import static com.example.android.cinematik.data.MoviesContract.ReviewsEntry;
 
+@SuppressWarnings("WeakerAccess")
 public class MoviesDbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "movies.db";

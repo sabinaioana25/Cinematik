@@ -25,15 +25,15 @@ public class MoviesContract {
         public static final String COLUMN_TRAILER_IMAGE = "trailerImage";
         public static final String COLUMN_MOVIE_TITLE = "title";
         public static final String COLUMN_MOVIE_RELEASE_DATE = "releaseDate";
-        public static final String COLUMN_MOVIE_GENRES = "genres";
         public static final String COLUMN_MOVIE_RUNTIME = "runtime";
-        public static final String COLUMN_MOVIE_OVERVIEW = "overview";
+        public static final String COLUMN_MOVIE_GENRES = "genres";
         public static final String COLUMN_MOVIE_VOTE_AVERAGE = "voteAverage";
+        public static final String COLUMN_MOVIE_OVERVIEW = "overview";
         public static final String COLUMN_MOVIE_DIRECTOR = "director";
         public static final String COLUMN_MOVIE_PRODUCER = "producer";
-        public static final String COLUMN_MOVIE_POSTER = "poster";
         public static final String COLUMN_MOVIE_VIDEO_URL = "videoKey";
         public static final String COLUMN_MOVIE_VIDEO_TWO_URL = "videoTwoKey";
+        public static final String COLUMN_MOVIE_POSTER = "poster";
     }
 
     public static final class CastEntry implements BaseColumns {
