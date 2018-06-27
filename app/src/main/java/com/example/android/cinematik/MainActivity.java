@@ -33,10 +33,9 @@ import com.facebook.stetho.Stetho;
 
 import java.util.List;
 
-@SuppressWarnings({"WeakerAccess", "unused", "CanBeFinal"})
 public class MainActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks,
-        MovieAdapter.MovieDetailClickHandler, SwipeRefreshLayout.OnRefreshListener {
+    LoaderManager.LoaderCallbacks,
+    MovieAdapter.MovieDetailClickHandler, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String MOVIE_ID = "movieId";
@@ -112,8 +111,8 @@ public class MainActivity extends AppCompatActivity implements
                 SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                adapter.deleteItemsInList();
-                onRefresh();
+//                adapter.deleteItemsInList();
+//                onRefresh();
                 if (key.equals(getString(R.string.pref_sort_by_key))) {
                     initializeloader();
                 }
@@ -123,7 +122,24 @@ public class MainActivity extends AppCompatActivity implements
         initializeloader();
     }
 
+    /**
+     * Dispatch onResume() to fragments.  Note that for better inter-operation
+     * with older versions of the platform, at the point of this call the
+     * fragments attached to the activity are <em>not</em> resumed.  This means
+     * that in some cases the previous state may still be saved, not allowing
+     * fragment transactions that modify the state.  To correctly interact
+     * with fragments in their proper state, you should instead override
+     * {@link #onResumeFragments()}.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getLoaderManager().restartLoader(ID_LOADER_CURSOR, null, this);
+        getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null, this);
+    }
+
     private static final int sColumnWidth = 200;
+
 
     private void calculateSize() {
         int spanCount = (int) Math.floor(movieListRV.getWidth() / convertDPToPixels(sColumnWidth));
@@ -163,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements
             case ID_LOADER_CURSOR:
                 return new CursorLoader(context, MoviesContract.MovieEntry.MOVIES_CONTENT_URI,
                         projection, null, null, null);
-
             case ID_LOADER_LIST_MOVIES:
                 urlMovieActivity = NetworkUtils.buildUrlMovieActivity(context, sortOption);
                 return new MovieLoader(this, urlMovieActivity);
@@ -178,10 +193,9 @@ public class MainActivity extends AppCompatActivity implements
         TextView noMoviesMessage = findViewById(R.id.no_movies_found_tv);
         switch (loader.getId()) {
             case ID_LOADER_CURSOR:
-//                onRefresh();
+                adapter.deleteItemsInList();
                 adapter.InsertList(data);
                 break;
-
             case ID_LOADER_LIST_MOVIES:
                 //noinspection unchecked
                 List<MovieItem> movieItems = (List<MovieItem>) data;
@@ -207,6 +221,11 @@ public class MainActivity extends AppCompatActivity implements
                 adapter.InsertList(null);
                 break;
         }
+    }
+
+    @Override
+    public void onPostResume(Loader loader) {
+        super.onPostResume();
     }
 
     @Override
@@ -282,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements
         restartloader();
         if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
                 .pref_sort_by_favourite))) {
-            getLoaderManager().restartLoader(ID_LOADER_CURSOR, null, MainActivity
+            getLoaderManager().initLoader(ID_LOADER_CURSOR, null, MainActivity
                     .this);
         }
 

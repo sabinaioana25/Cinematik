@@ -2,6 +2,7 @@ package com.example.android.cinematik.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Loader;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +22,6 @@ import java.util.List;
 
 import static com.example.android.cinematik.data.MoviesContract.MovieEntry;
 
-@SuppressWarnings({"unused", "CanBeFinal"})
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private final static String TAG = MovieAdapter.class.getSimpleName();
@@ -60,8 +60,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
         Picasso.with(context)
                 .load(imgUrl)
-                .into(holder.posterImageView);
-    }
+                .into(holder.posterImageView);}
 
     @Override
     public int getItemCount() {
@@ -98,10 +97,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     public void deleteItemsInList() {
         list.clear();
-        notifyDataSetChanged();
+//        notifyDataSetChanged();
     }
 
     public interface MovieDetailClickHandler {
+        void onPostResume(Loader loader);
         void onSelectedItem(int id);
     }
 

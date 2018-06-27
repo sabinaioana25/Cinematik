@@ -247,10 +247,10 @@ public class DetailMovieActivity extends AppCompatActivity
                         getLoaderManager().initLoader(ID_REVIEW_CURSOR_LOADER, null, this);
                     }
                 } else {
-                    deleteFromTable();
-                    getLoaderManager().initLoader(ID_LOADER_DETAIL_MOVIES, null, this);
-                    getLoaderManager().initLoader(ID_VIDEO_LOADER, null, this);
-                    getLoaderManager().initLoader(ID_REVIEW_LOADER, null, this);
+//                    deleteFromTable();
+                    getLoaderManager().restartLoader(ID_LOADER_DETAIL_MOVIES, null, this);
+                    getLoaderManager().restartLoader(ID_VIDEO_LOADER, null, this);
+                    getLoaderManager().restartLoader(ID_REVIEW_LOADER, null, this);
                 }
                 break;
             case ID_CAST_CURSOR_LOADER:

@@ -21,6 +21,8 @@ public class SettingsActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.WHITE);
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
