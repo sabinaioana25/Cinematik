@@ -20,8 +20,6 @@ and optimize the experience for various mobile devices.
 By building this app, they will demonstrate their understanding of the foundational elements of programming for Android.
 THe app will communicate with the Internet and provide a responsive and delightful user experience.
 
-![](DetailScreen.png)
-
 # Pre-requisites
 - Android SDK v22
 - Android Build Tools v22.0.1
