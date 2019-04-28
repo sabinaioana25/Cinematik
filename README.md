@@ -1,7 +1,7 @@
 # Android Developer Nanodegree Program | Popular Movies App
 
 In this stage the task was to build the core experience of a movies app.
-Thee app:
+The app will:
 
 - Present the user with a grid arrangement of movie posters upon launch
 - Allow your user to change sort order via a setting, by most popular or by highest-rated
