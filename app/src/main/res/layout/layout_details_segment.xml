@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/detail_activity_layout_banner_margin_bottom">
+    android:layout_marginBottom="@dimen/detail_activity_layout_banner_margin_bottom"
+    tools:ignore="MissingClass">
 
     <LinearLayout
         style="@style/segment_details_linear_layout_style"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
 
         <TextView
             style="@style/segment_details_runtime_tv_style"
@@ -26,4 +28,4 @@
             android:id="@+id/detail_activity_imdb_rating_id"
             tools:text="Vote average" />
     </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

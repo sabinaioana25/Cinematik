@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,14 +26,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     private final static String TAG = MovieAdapter.class.getSimpleName();
     private final MovieDetailClickHandler onClickHandler;
-    private Context context;
-    private List<MovieItem> list = new ArrayList<>();
+    private final List<MovieItem> list = new ArrayList<>();
     private Cursor cursor;
-    private ArrayList<String> cursorPosterList = new ArrayList<>();
+    private final ArrayList<String> cursorPosterList = new ArrayList<>();
     private boolean mCursor = false;
 
     public MovieAdapter(Context context, MovieDetailClickHandler onClickHandler) {
-        this.context = context;
         this.onClickHandler = onClickHandler;
     }
 
@@ -47,18 +45,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return new MovieViewHolder(layout);
     }
 
+    @SuppressLint("Range")
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         String imgUrl;
         if (mCursor) {
             this.cursor.moveToPosition(position);
-            imgUrl = "http://image.tmdb.org/t/p/w500/" + cursor.getString(cursor.getColumnIndex
-                    (MovieEntry.COLUMN_MOVIE_POSTER));
+            imgUrl = "http://image.tmdb.org/t/p/w500/" + cursor.getString(cursor.getColumnIndex(MovieEntry.COLUMN_MOVIE_POSTER));
         } else {
             imgUrl = NetworkUtils.buildUrlImage(list.get(position).getPoster()
                     .substring(1), NetworkUtils.URL_POSTER_SIZE_VALUE);
         }
-        Picasso.with(context)
+        Picasso.get()
                 .load(imgUrl)
                 .into(holder.posterImageView);}
 
@@ -74,6 +72,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return 0;
     }
 
+    @SuppressLint({"NotifyDataSetChanged", "Range"})
     public void InsertList(Object movies) {
         list.clear();
         if (movies != null) {
@@ -97,11 +96,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     public void deleteItemsInList() {
         list.clear();
-//        notifyDataSetChanged();
     }
 
     public interface MovieDetailClickHandler {
         void onPostResume(Loader loader);
+
         void onSelectedItem(int id);
     }
 
@@ -115,6 +114,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             itemView.setOnClickListener(this);
         }
 
+        @SuppressLint("Range")
         @Override
         public void onClick(View view) {
             int id;

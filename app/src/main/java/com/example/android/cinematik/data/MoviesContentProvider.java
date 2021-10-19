@@ -7,7 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.example.android.cinematik.data.MoviesContract.CastEntry;
@@ -163,9 +163,6 @@ public class MoviesContentProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case CODE_MOVIES:
-                rowsDeleted = database.delete(MovieEntry.TABLE_NAME,
-                        selection, selectionArgs);
-                break;
 
             case CODE_MOVIES_ID:
                 rowsDeleted = database.delete(MovieEntry.TABLE_NAME,

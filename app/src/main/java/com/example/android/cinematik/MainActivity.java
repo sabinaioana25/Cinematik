@@ -1,26 +1,32 @@
 package com.example.android.cinematik;
 
+import android.annotation.SuppressLint;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
+
+import 	androidx.recyclerview.widget.RecyclerView.ItemDecoration;
+import 	androidx.appcompat.app.AppCompatActivity;
+import 	androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.android.cinematik.Adapters.MovieAdapter;
 import com.example.android.cinematik.data.MoviePreferences;
@@ -33,18 +39,19 @@ import com.facebook.stetho.Stetho;
 
 import java.util.List;
 
+import static com.example.android.cinematik.R.*;
+
 public class MainActivity extends AppCompatActivity implements
     LoaderManager.LoaderCallbacks,
     MovieAdapter.MovieDetailClickHandler, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
     public static final String MOVIE_ID = "movieId";
 
     private final static String LIFECYCLE_CALLBACKS_LAYOUT_MANAGER_KEY = "KeyForLayoutManagerState";
     Parcelable savedLayoutManagerState;
 
     public RecyclerView movieListRV;
-    private GridLayoutManager gridLayoutManager =
+    private final GridLayoutManager gridLayoutManager =
             new GridLayoutManager(this, 1);
     Context context = this;
 
@@ -73,21 +80,21 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(layout.activity_main);
 
         Stetho.initializeWithDefaults(this);
 
-        Toolbar toolbar = findViewById(R.id.settings_activity_toolbar);
+        Toolbar toolbar = findViewById(id.settings_activity_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
 
         networkDetection = new NetworkDetection(this);
 
-        swipeRefreshLayout = findViewById(R.id.discover_swipe_refresh);
+        swipeRefreshLayout = findViewById(id.discover_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(MainActivity.this);
         swipeRefreshLayout.setColorScheme(android.R.color.holo_red_dark);
 
-        movieListRV = findViewById(R.id.recycler_view_movies);
+        movieListRV = findViewById(id.recycler_view_movies);
         movieListRV.setLayoutManager(gridLayoutManager);
         movieListRV.setHasFixedSize(true);
 
@@ -101,25 +108,25 @@ public class MainActivity extends AppCompatActivity implements
         adapter = new MovieAdapter(this, this);
         movieListRV.setAdapter(adapter);
 
-        RecyclerViewItemDecorator itemDecorator = new RecyclerViewItemDecorator(context,
-                R.dimen.item_offset);
-        movieListRV.addItemDecoration(itemDecorator);
+        ItemDecoration decoration = new ItemDecoration() {
+            @Override
+            public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                super.onDraw(c, parent, state);
+            }
+        };
+        movieListRV.addItemDecoration(decoration);
 
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences
                 (context);
-        SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = new
-                SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-//                adapter.deleteItemsInList();
-//                onRefresh();
-                if (key.equals(getString(R.string.pref_sort_by_key))) {
-                    initializeloader();
-                }
+        SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener = (sharedPreferences, key) -> {
+                adapter.deleteItemsInList();
+                onRefresh();
+            if (key.equals(getString(string.pref_sort_by_key))) {
+                initializeLoader();
             }
         };
         preferences.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
-        initializeloader();
+        initializeLoader();
     }
 
     /**
@@ -139,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private static final int sColumnWidth = 200;
-
 
     private void calculateSize() {
         int spanCount = (int) Math.floor(movieListRV.getWidth() / convertDPToPixels(sColumnWidth));
@@ -190,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader loader, Object data) {
         adapter.deleteItemsInList();
-        TextView noMoviesMessage = findViewById(R.id.no_movies_found_tv);
+        TextView noMoviesMessage = findViewById(id.no_movies_found_tv);
         switch (loader.getId()) {
             case ID_LOADER_CURSOR:
                 adapter.deleteItemsInList();
@@ -215,8 +221,6 @@ public class MainActivity extends AppCompatActivity implements
     public void onLoaderReset(Loader loader) {
         switch (loader.getId()) {
             case ID_LOADER_CURSOR:
-                adapter.InsertList(null);
-                break;
             case ID_LOADER_LIST_MOVIES:
                 adapter.InsertList(null);
                 break;
@@ -269,26 +273,26 @@ public class MainActivity extends AppCompatActivity implements
 //                swipeRefreshLayout.setRefreshing(false);
 //            }
 //        }, 0);
-        restartloader();
+        restartLoader();
         adapter.notifyDataSetChanged();
     }
 
-    private void restartloader() {
+    private void restartLoader() {
         adapter.deleteItemsInList();
-        if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
+        if (MoviePreferences.getSortByPreference(context).equals(getString(string
                 .pref_sort_by_favourite))) {
             getLoaderManager().restartLoader(ID_LOADER_CURSOR, null, MainActivity
                     .this);
         }
 
-        if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
+        if (MoviePreferences.getSortByPreference(context).equals(getString(string
                 .pref_sort_by_popularity))) {
             sortOption = NetworkUtils.MOST_POPULAR_PARAM;
             getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null,
                     MainActivity.this);
         }
 
-        if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
+        if (MoviePreferences.getSortByPreference(context).equals(getString(string
                 .pref_sort_by_rating))) {
             sortOption = NetworkUtils.TOP_RATED_PARAM;
             getLoaderManager().restartLoader(ID_LOADER_LIST_MOVIES, null,
@@ -297,15 +301,16 @@ public class MainActivity extends AppCompatActivity implements
         adapter.notifyDataSetChanged();
     }
 
-    public void initializeloader() {
-        restartloader();
-        if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
+    @SuppressLint("NotifyDataSetChanged")
+    public void initializeLoader() {
+        restartLoader();
+        if (MoviePreferences.getSortByPreference(context).equals(getString(string
                 .pref_sort_by_favourite))) {
             getLoaderManager().initLoader(ID_LOADER_CURSOR, null, MainActivity
                     .this);
         }
 
-        if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
+        if (MoviePreferences.getSortByPreference(context).equals(getString(string
                 .pref_sort_by_popularity))) {
             onRefresh();
 
@@ -314,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements
                     MainActivity.this);
         }
 
-        if (MoviePreferences.getSortByPreference(context).equals(getString(R.string
+        if (MoviePreferences.getSortByPreference(context).equals(getString(string
                 .pref_sort_by_rating))) {
             onRefresh();
 

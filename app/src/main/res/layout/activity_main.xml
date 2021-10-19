@@ -6,7 +6,7 @@
 
     tools:context="com.example.android.cinematik.MainActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/settings_activity_toolbar"
         style="@style/Theme.AppCompat.Light"
         android:layout_width="match_parent"
@@ -19,12 +19,13 @@
         android:id="@+id/no_movies_found_tv"
         style="@style/main_activity_tv_style" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/discover_swipe_refresh"
-        style="@style/main_activity_swipe_refresh_style">
+        style="@style/main_activity_swipe_refresh_style"
+        tools:ignore="MissingClass">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_movies"
             style="@style/main_activity_rv_style" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>

@@ -12,11 +12,14 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.RequiresApi;
+import 	androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,11 +39,12 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.example.android.cinematik.data.MoviesContract.MovieEntry;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class DetailMovieActivity extends AppCompatActivity
+public class DetailMovieActivity  extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks {
 
     private static final String TAG = DetailMovieActivity.class.getSimpleName();
@@ -56,11 +60,11 @@ public class DetailMovieActivity extends AppCompatActivity
 
     private RecyclerView castListRecyclerView;
     @SuppressWarnings("CanBeFinal")
-    private LinearLayoutManager castLinearLayoutManager = new LinearLayoutManager(this,
+    private final LinearLayoutManager castLinearLayoutManager = new LinearLayoutManager(this,
             LinearLayoutManager.HORIZONTAL, false);
     private RecyclerView reviewListRecyclerView;
     @SuppressWarnings("CanBeFinal")
-    private LinearLayoutManager reviewLinearLayoutManager = new LinearLayoutManager(this,
+    private final LinearLayoutManager reviewLinearLayoutManager = new LinearLayoutManager(this,
             LinearLayoutManager.HORIZONTAL, false);
 
     // adapters
@@ -121,6 +125,7 @@ public class DetailMovieActivity extends AppCompatActivity
             ReviewsEntry.COLUMN_REVIEWS_CONTENT
     };
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,40 +133,41 @@ public class DetailMovieActivity extends AppCompatActivity
 
         Toolbar toolbar = findViewById(R.id.detail_activity_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+//        }
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         toolbar.setTitleTextColor(Color.WHITE);
 
         Intent getMovieDetails = getIntent();
         movieId = getMovieDetails.getExtras().getInt(MainActivity.MOVIE_ID);
 
         buttonFavouriteMovies = findViewById(R.id.detail_activity_button_favourites);
-        buttonFavouriteMovies.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        buttonFavouriteMovies.setOnClickListener(view -> {
 
-                // clear state
-                if (!buttonIsSelected) {
-                    buttonFavouriteMovies.setSelected(true);
-                    buttonIsSelected = true;
-                    addToDatabaseTable(ID_CURSOR_LOADER);
-                    addToDatabaseTable(ID_VIDEO_LOADER);
-                    addToDatabaseTable(ID_CAST_CURSOR_LOADER);
-                    addToDatabaseTable(ID_REVIEW_CURSOR_LOADER);
+            // clear state
+            if (!buttonIsSelected) {
+                buttonFavouriteMovies.setSelected(true);
+                buttonIsSelected = true;
+                addToDatabaseTable(ID_CURSOR_LOADER);
+                addToDatabaseTable(ID_VIDEO_LOADER);
+                addToDatabaseTable(ID_CAST_CURSOR_LOADER);
+                addToDatabaseTable(ID_REVIEW_CURSOR_LOADER);
 
-                } else {
-                    // change state
-                    buttonFavouriteMovies.setSelected(false);
-                    buttonIsSelected = false;
-                    deleteFromTable();
-                }
+            } else {
+                // change state
+                buttonFavouriteMovies.setSelected(false);
+                buttonIsSelected = false;
+                deleteFromTable();
             }
         });
 
-        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_18dp);
+        @SuppressLint("UseCompatLoadingForDrawables") final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_18dp);
         upArrow.setColorFilter(getResources().getColor(R.color.colorUpArrow), PorterDuff.Mode
                 .DST_IN);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(upArrow);
+        }
 
         // CastAdapter
         castListRecyclerView = findViewById(R.id.detail_activity_recycler_view_cast_id);
@@ -229,6 +235,7 @@ public class DetailMovieActivity extends AppCompatActivity
         }
     }
 
+    @SuppressLint("Range")
     @Override
     public void onLoadFinished(Loader loader, Object data) {
         switch (loader.getId()) {
@@ -281,7 +288,7 @@ public class DetailMovieActivity extends AppCompatActivity
     public void onLoaderReset(Loader loader) {
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "Range"})
     private void populateMovieItems(Context context, Object object, int type) {
 
         switch (type) {
@@ -365,9 +372,8 @@ public class DetailMovieActivity extends AppCompatActivity
             }
         });
 
-
         ImageView backdropPhoto = findViewById(R.id.detail_activity_backdrop_image_id);
-        Picasso.with(context)
+        Picasso.get()
                 .load(movieBackdrop)
                 .into(backdropPhoto);
 
@@ -415,6 +421,7 @@ public class DetailMovieActivity extends AppCompatActivity
         }
     }
 
+    @SuppressLint("Range")
     private void populateCastItems(Object castObject, int idType) {
         switch (idType) {
             case ID_CAST_CURSOR_LOADER:
@@ -449,6 +456,7 @@ public class DetailMovieActivity extends AppCompatActivity
         }
     }
 
+    @SuppressLint("Range")
     private void populateReviewsItems(Object object, int idType) {
         switch (idType) {
 

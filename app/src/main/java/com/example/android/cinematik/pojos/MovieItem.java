@@ -6,22 +6,22 @@ import java.util.List;
 public class MovieItem {
 
     // pojos
-    private String poster;
-    private int movieId;
-    private String backdropPath;
-    private String trailerImagePath;
-    private String title;
-    private String releaseDate;
-    private List<String> genres;
-    private String voteAverage;
-    private String overview;
-    private String runtime;
-    private List<CastMember> movieCastMembers;
-    private String movieDirector;
-    private String movieProducer;
-    private List<ReviewItem> movieReviewItems;
-    private String videoId;
-    private String videoIdTwo;
+    private final String poster;
+    private final int movieId;
+    private final String backdropPath;
+    private final String trailerImagePath;
+    private final String title;
+    private final String releaseDate;
+    private final List<String> genres;
+    private final String voteAverage;
+    private final String overview;
+    private final String runtime;
+    private final List<CastMember> movieCastMembers;
+    private final String movieDirector;
+    private final String movieProducer;
+    private final List<ReviewItem> movieReviewItems;
+    private final String videoId;
+    private final String videoIdTwo;
 
     // constructor
     @SuppressWarnings("SameParameterValue")

@@ -3,8 +3,8 @@ package com.example.android.cinematik.pojos;
 @SuppressWarnings("CanBeFinal")
 public class ReviewItem {
 
-    private String reviewAuthor;
-    private String reviewContent;
+    private final String reviewAuthor;
+    private final String reviewContent;
 
     public ReviewItem(String reviewAuthor, String reviewContent) {
         this.reviewAuthor = reviewAuthor;

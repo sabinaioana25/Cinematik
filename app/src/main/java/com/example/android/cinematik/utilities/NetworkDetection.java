@@ -1,5 +1,6 @@
 package com.example.android.cinematik.utilities;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -18,11 +19,9 @@ public class NetworkDetection {
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 context.getSystemService(Service.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {
-            NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+            @SuppressLint("MissingPermission") NetworkInfo info = connectivityManager.getActiveNetworkInfo();
             if (info != null) {
-                if(info.getState() == NetworkInfo.State.CONNECTED) {
-                    return true;
-                }
+                return info.getState() == NetworkInfo.State.CONNECTED;
             }
         }
         return false;

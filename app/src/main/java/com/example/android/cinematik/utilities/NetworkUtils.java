@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 @SuppressWarnings("unused")
 public class NetworkUtils {
@@ -42,8 +43,6 @@ public class NetworkUtils {
     private static final String API_KEY_PARAM = "api_key";
     private static final String API_KEY = BuildConfig.API_KEY;
 
-    //    private static final String URL_VOTE_COUNT_KEY = "vote_count.gte";
-    //    public static final String URL_VOTE_COUNT = "2500";
 
     private static final int READ_TIME_OUT = 10000;
     private static final int CONN_TIME_OUT = 10000;
@@ -116,8 +115,7 @@ public class NetworkUtils {
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset
-                    .forName("UTF-8"));
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             String line = bufferedReader.readLine();
             while (line != null) {

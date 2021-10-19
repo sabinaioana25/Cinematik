@@ -3,9 +3,9 @@ package com.example.android.cinematik.pojos;
 @SuppressWarnings("CanBeFinal")
 public class CastMember {
 
-    private String castProfile;
-    private String castActorName;
-    private String castCharName;
+    private final String castProfile;
+    private final String castActorName;
+    private final String castCharName;
 
     public CastMember(String castProfile, String castActorName, String castCharName) {
         this.castProfile = castProfile;
@@ -18,6 +18,4 @@ public class CastMember {
     public String getCastActorName() { return castActorName; }
 
     public String getCastCharName() { return castCharName; }
-
-
 }

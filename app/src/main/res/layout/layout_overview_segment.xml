@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="MissingClass">
 
     <!-- not pretty and not what I had in mind for my app, but I guess design and getting only one trailer
     isn't really the purpose here -->
@@ -13,14 +14,16 @@
         style="@style/segment_poster_style_image"
         android:background="@drawable/watch_video_click"
         android:contentDescription="@string/content_description_poster"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:ignore="MissingConstraints" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/detail_activity_overview_padding">
+        android:padding="@dimen/detail_activity_overview_padding"
+        tools:ignore="MissingConstraints">
 
         <TextView style="@style/segment_details_overview_label_tv_style" />
 
@@ -29,4 +32,4 @@
             style="@style/segment_details_overview_descr_tv_style"
             tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in libero tincidunt, finibus dolor non, tristique ligula. Cras sit amet scelerisque dui, quis hendrerit quam. Curabitur eu sollicitudin sapien. Donec sagittis nulla lorem." />
     </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

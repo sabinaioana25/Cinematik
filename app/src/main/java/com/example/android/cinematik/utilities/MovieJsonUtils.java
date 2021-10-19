@@ -23,8 +23,8 @@ public class MovieJsonUtils {
     private static final String TAG = MovieJsonUtils.class.getSimpleName();
 
     /*
-   * DetailActivity review components
-   */
+     * DetailActivity review components
+     */
     private static final String URL_PATH_REVIEWS = "reviews";
     private static final String DETAIL_REVIEW_RESULTS = "results";
     private static final String DETAIL_REVIEW_AUTHOR_NAME = "author";
@@ -75,7 +75,7 @@ public class MovieJsonUtils {
 
     public static List<MovieItem> extractFeatureFromJson(String jsonResponse) {
 
-         /*
+        /*
         Create an empty List<MovieItem>
          */
         List<MovieItem> movieItemsMain = new ArrayList<>();
@@ -217,30 +217,24 @@ public class MovieJsonUtils {
             JSONArray jsonCrewArray = jsonCredits.optJSONArray(DETAIL_CREW);
             String jsonCrewDirector = null;
             String jsonCrewProducer = null;
-            if (jsonCrewArray.length() > 0) {
-                for (int i = 0; i < jsonCrewArray.length(); i++) {
-                    JSONObject jsonCrew = jsonCrewArray.optJSONObject(i);
-                    String jsonCrewJob = jsonCrew.optString(CREW_JOB);
-                    if (!(jsonCrewJob.equals(CREW_JOB_DIRECTOR) || jsonCrewJob.equals
-                            (CREW_JOB_PRODUCER)))
-                        continue;
+            if (jsonCrewArray != null) {
+                if (jsonCrewArray.length() > 0) {
+                    for (int i = 0; i < jsonCrewArray.length(); i++) {
+                        JSONObject jsonCrew = jsonCrewArray.optJSONObject(i);
+                        String jsonCrewJob = jsonCrew.optString(CREW_JOB);
+                        if (!(jsonCrewJob.equals(CREW_JOB_DIRECTOR) || jsonCrewJob.equals
+                                (CREW_JOB_PRODUCER)))
+                            continue;
 
-                    String jsonCrewName = jsonCrew.optString(CREW_PERSON_NAME);
-                    jsonCrewDirector = jsonCrew.optString(CREW_PERSON_NAME);
-                    jsonCrewProducer = jsonCrew.optString(CREW_PERSON_NAME);
-                    String jsonCrewProfilePath = jsonCrew.optString(CREW_PROFILE_PATH);
-                    if (jsonCrewProfilePath != null) {
-                        continue;
+                        String jsonCrewName = jsonCrew.optString(CREW_PERSON_NAME);
+                        jsonCrewDirector = jsonCrew.optString(CREW_PERSON_NAME);
+                        jsonCrewProducer = jsonCrew.optString(CREW_PERSON_NAME);
+                        String jsonCrewProfilePath = jsonCrew.optString(CREW_PROFILE_PATH);
+
                     }
-
-                    String jsonCrewProfileImage = NetworkUtils.buildUrlImage(
-                            jsonCrewProfilePath, NetworkUtils.URL_PROFILE_SIZE_VALUE);
-
-                    jsonCrewMembers.add(new CastMember(jsonCrewName, jsonCrewJob,
-                            jsonCrewProfileImage));
+                } else {
+                    jsonCrewMembers = null;
                 }
-            } else {
-                jsonCrewMembers = null;
             }
 
             // return movieList

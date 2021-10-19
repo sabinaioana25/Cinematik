@@ -2,14 +2,14 @@ package com.example.android.cinematik;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.annotation.DimenRes;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.DimenRes;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 @SuppressWarnings({"WeakerAccess", "CanBeFinal"})
 public class RecyclerViewItemDecorator extends RecyclerView.ItemDecoration {
 
-    private int itemOffset;
+    private final int itemOffset;
 
     public RecyclerViewItemDecorator(int itemOffset) {
         this.itemOffset = itemOffset;

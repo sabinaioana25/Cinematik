@@ -6,10 +6,11 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="auto">
+        android:focusable="auto"
+        tools:ignore="MissingClass">
 
         <ImageView
             android:id="@+id/cast_activity_user_profile"
@@ -31,6 +32,7 @@
             style="@style/review_grid_item_tv_content_style"
             android:padding="@dimen/cast_activity_comment_padding"
             app:layout_constraintTop_toBottomOf="@+id/cast_activity_user_profile"
-            tools:text="Doesn't matter how you look at it, this movie is darn good fun. I loved it from opening credits to the close. So what if the acting ... " />
-    </android.support.constraint.ConstraintLayout>
+            tools:text="Doesn't matter how you look at it, this movie is darn good fun. I loved it from opening credits to the close. So what if the acting ... "
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
