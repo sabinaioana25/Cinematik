@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.android.cinematik.R;
+import com.main.android.cinematik.R;
 import com.main.android.cinematik.pojos.ReviewItem;
 
 import java.util.ArrayList;

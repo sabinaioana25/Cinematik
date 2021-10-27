@@ -28,7 +28,7 @@ import android.widget.Toast;
 
 import com.main.android.cinematik.Adapters.CastAdapter;
 import com.main.android.cinematik.Adapters.ReviewAdapter;
-import com.example.android.cinematik.R;
+import com.main.android.cinematik.R;
 import com.main.android.cinematik.loaders.DetailMovieLoader;
 import com.main.android.cinematik.pojos.CastMember;
 import com.main.android.cinematik.pojos.MovieItem;

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.example.android.cinematik.R;
+import com.main.android.cinematik.R;
 
 public class MoviePreferences {
 

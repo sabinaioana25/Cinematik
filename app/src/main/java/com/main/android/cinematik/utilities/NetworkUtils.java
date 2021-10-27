@@ -2,7 +2,10 @@ package com.main.android.cinematik.utilities;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.main.android.cinematik.BuildConfig;
 import com.main.android.cinematik.data.MoviePreferences;
@@ -96,8 +99,9 @@ public class NetworkUtils {
 
             if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 inputStream = urlConnection.getInputStream();
-                jsonResponse = readFromStream(inputStream);
-            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    jsonResponse = readFromStream(inputStream);
+                }
             }
         } catch (IOException ignored) {
         } finally {
@@ -111,6 +115,7 @@ public class NetworkUtils {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
         if (inputStream != null) {

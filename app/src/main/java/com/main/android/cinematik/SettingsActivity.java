@@ -8,7 +8,7 @@ import 	androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.example.android.cinematik.R;
+import com.main.android.cinematik.R;
 
 import java.util.Objects;
 

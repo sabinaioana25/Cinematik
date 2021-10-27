@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.android.cinematik.R;
+import com.main.android.cinematik.R;
 import com.main.android.cinematik.data.MoviesContract;
 import com.main.android.cinematik.pojos.MovieItem;
 import com.main.android.cinematik.utilities.NetworkUtils;

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.cinematik.R;
+import com.main.android.cinematik.R;
 import com.main.android.cinematik.pojos.CastMember;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;

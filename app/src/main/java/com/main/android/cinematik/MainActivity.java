@@ -29,7 +29,7 @@ import 	androidx.appcompat.app.AppCompatActivity;
 import 	androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.main.android.cinematik.Adapters.MovieAdapter;
-import com.example.android.cinematik.R;
+import com.main.android.cinematik.R;
 import com.main.android.cinematik.data.MoviePreferences;
 import com.main.android.cinematik.data.MoviesContract;
 import com.main.android.cinematik.loaders.MovieLoader;
@@ -40,7 +40,7 @@ import com.facebook.stetho.Stetho;
 
 import java.util.List;
 
-import static com.example.android.cinematik.R.*;
+import static com.main.android.cinematik.R.*;
 
 public class MainActivity extends AppCompatActivity implements
     LoaderManager.LoaderCallbacks,

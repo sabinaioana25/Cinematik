@@ -9,7 +9,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import com.example.android.cinematik.R;
+import com.main.android.cinematik.R;
 
 /**
  * A simple {@link Fragment} subclass.
