@@ -14,7 +14,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/cinematik_settings_fragmemt"
-        android:name="com.example.android.cinematik.SettingsFragment"
+        android:name="com.main.android.cinematik.SettingsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/settings_activity_toolbar" />

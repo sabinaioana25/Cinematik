@@ -4,7 +4,7 @@ android {
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
     defaultConfig {
-        applicationId "com.example.android.cinematik"
+        applicationId "com.main.android.cinematik"
         minSdkVersion 14
         targetSdkVersion 31
         versionCode 7

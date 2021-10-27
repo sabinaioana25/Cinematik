@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:context="com.example.android.cinematik.DetailMovieActivity"
+        tools:context="com.example.android.cinematik.com.main.android.cinematik.DetailMovieActivity"
         tools:ignore="MissingClass">
 
         <ImageView

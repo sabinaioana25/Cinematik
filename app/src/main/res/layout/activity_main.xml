@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="com.example.android.cinematik.MainActivity">
+    tools:context="com.example.android.cinematik.com.main.android.cinematik.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/settings_activity_toolbar"
